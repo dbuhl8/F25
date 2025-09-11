@@ -1,0 +1,5 @@
+*.cdf
+*.o
+*.mod
+*.dat
+*.npz
