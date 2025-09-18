@@ -1,0 +1,97 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pyvista as pv
+import dbuhlMod as db
+from netCDF4 import MFDataset
+
+fn = 'simdat14.cdf'
+cdf_file = MFDataset(fn)
+
+x = np.array(cdf_file.variables["x"])
+y = np.array(cdf_file.variables["y"])
+z = np.array(cdf_file.variables["z"])
+t = np.array(cdf_file.variables["t"][:])
+Nx = len(x)
+Ny = len(y)
+Nz = len(z)
+Nt = len(t)
+del x
+del y
+del z
+gx = cdf_file.variables["Gammax"][0]
+gy = cdf_file.variables["Gammay"][0]
+gz = cdf_file.variables["Gammaz"][0]
+dx = gx/Nx
+dy = gy/Ny
+dz = gz/Nz
+Re = cdf_file.variables["D_visc"][0]
+Pe = cdf_file.variables["D_therm"][0]
+B = cdf_file.variables["B_therm"][0]
+Fr = 1./np.sqrt(B)
+
+ptstp = -1
+ux =  np.array(cdf_file.variables["ux"][:])
+ux_inst =  ux[ptstp,:,:,:]
+del ux
+uy =  np.array(cdf_file.variables["uy"][:])
+uy_inst =  uy[ptstp,:,:,:]
+del uy
+uz =  np.array(cdf_file.variables["uz"][:])
+uz_inst =  uz[ptstp,:,:,:]
+del uz
+temp =  np.array(cdf_file.variables["Temp"][:])
+temp_inst =  temp[ptstp,:,:,:]
+del temp
+
+dTdz = db.iFD6Z(temp_inst,Nz,dz)
+tdisp = np.sqrt(db.iFD6Z(temp_inst,Nz,dz)**2 + db.iFD6Y(temp_inst,Ny,dy)**2 +\
+    db.iFD6X(temp_inst,Nx,dx)**2)
+mdisp = np.sqrt(db.iFD6Z(ux_inst,Nz,dz)**2 + db.iFD6Y(ux_inst,Ny,dy)**2 +\
+    db.iFD6X(ux_inst,Nx,dx)**2 + db.iFD6Z(uy_inst,Nz,dz)**2 + db.iFD6Y(uy_inst,Ny,dy)**2 +\
+    db.iFD6X(uy_inst,Nx,dx)**2 +db.iFD6Z(uz_inst,Nz,dz)**2 + db.iFD6Y(uz_inst,Ny,dy)**2 +\
+    db.iFD6X(uz_inst,Nx,dx)**2)
+Ri = (1 + dTdz)/((Fr**2)*np.minimum((db.iFD6Z(ux_inst,Nz,dz)**2 + db.iFD6Z(uy_inst,Nz,dz)**2),1e-4)) 
+eta = (B*tdisp/Pe)/(B*tdisp/Pe + mdisp/Re)
+#print(Ri.min(), Ri.max(), Ri.mean())
+vortz_max = np.abs(ux_inst).max()
+
+# computing max
+temp_max = np.abs(temp_inst).max()
+dtemp_max = np.abs(dTdz).max()
+vortz = db.iFD6X(uy_inst,Nx,dx) - db.iFD6Y(ux_inst,Ny,dy)
+
+# transposing 
+vortz = np.transpose(vortz, axes=(2,1,0))
+dTdz = np.transpose(dTdz, axes=(2,1,0))
+Ri = np.transpose(Ri, axes=(2,1,0))
+ux_inst = np.transpose(ux_inst,axes=(2,1,0))
+temp_inst = np.transpose(temp_inst,axes=(2,1,0))
+eta = np.transpose(eta,axes=(2,1,0))
+
+pl = pv.Plotter(border=False)
+
+#ux plot
+#opacity = [.3,0,0,0,.3]
+#pl.add_volume(ux_inst,clim=[-vortz_max/2,vortz_max/2],cmap='RdYlBu_r',opacity=opacity)
+
+#vort plot
+#opacity = [.3,0,0,0,.3]
+#pl.add_volume(vortz,clim=[-vortz_max,vortz_max],cmap='RdYlBu_r',opacity=opacity)
+
+# temp plot
+#opacity = [.3,0,0.05,0,.3]
+#pl.add_volume(temp_inst,clim=[-temp_max,temp_max],cmap='RdYlBu_r',opacity=opacity)
+
+#Ri Plot
+#opacity = [.1,.1,.3,0,0]
+#pl.add_volume(Ri,clim=[-0.75,1.25],cmap='RdYlBu_r',opacity=opacity)
+
+# eta Plot
+opacity = [.1,0,.3,0,.02]
+pl.add_volume(Ri,clim=[0,1],cmap='RdYlBu_r',opacity=opacity)
+
+pl.add_bounding_box()
+pl.view_xz()
+#pl.set_viewup([0,1,0])
+pl.show()
+
