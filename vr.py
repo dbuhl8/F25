@@ -15,6 +15,7 @@ Nx = len(x)
 Ny = len(y)
 Nz = len(z)
 Nt = len(t)
+print('Number of Timesteps: ', Nt)
 del x
 del y
 del z
@@ -24,10 +25,11 @@ gz = cdf_file.variables["Gammaz"][0]
 dx = gx/Nx
 dy = gy/Ny
 dz = gz/Nz
-Re = cdf_file.variables["D_visc"][0]
-Pe = cdf_file.variables["D_therm"][0]
+Re = 1./cdf_file.variables["D_visc"][0]
+Pe = 1./cdf_file.variables["D_therm"][0]
 B = cdf_file.variables["B_therm"][0]
 Fr = 1./np.sqrt(B)
+print("Parameters: Re - ", Re, ", Pe - ", Pe, ', B - ', B)
 
 ptstp = -1
 ux =  np.array(cdf_file.variables["ux"][:])
@@ -43,13 +45,19 @@ temp =  np.array(cdf_file.variables["Temp"][:])
 temp_inst =  temp[ptstp,:,:,:]
 del temp
 
+cdf_file.close()
+
 dTdz = db.iFD6Z(temp_inst,Nz,dz)
-tdisp = np.sqrt(db.iFD6Z(temp_inst,Nz,dz)**2 + db.iFD6Y(temp_inst,Ny,dy)**2 +\
-    db.iFD6X(temp_inst,Nx,dx)**2)
-mdisp = np.sqrt(db.iFD6Z(ux_inst,Nz,dz)**2 + db.iFD6Y(ux_inst,Ny,dy)**2 +\
+tdisp = db.iFD6Z(temp_inst,Nz,dz)**2 + db.iFD6Y(temp_inst,Ny,dy)**2 +\
+    db.iFD6X(temp_inst,Nx,dx)**2
+mdisp = db.iFD6Z(ux_inst,Nz,dz)**2 + db.iFD6Y(ux_inst,Ny,dy)**2 +\
     db.iFD6X(ux_inst,Nx,dx)**2 + db.iFD6Z(uy_inst,Nz,dz)**2 + db.iFD6Y(uy_inst,Ny,dy)**2 +\
     db.iFD6X(uy_inst,Nx,dx)**2 +db.iFD6Z(uz_inst,Nz,dz)**2 + db.iFD6Y(uz_inst,Ny,dy)**2 +\
-    db.iFD6X(uz_inst,Nx,dx)**2)
+    db.iFD6X(uz_inst,Nx,dx)**2
+print('Average TDisp: ',tdisp.mean())
+print('Average MDisp: ',mdisp.mean())
+print('Average ETA (global): ', (B*tdisp.mean()/Pe)/\
+    (B*tdisp.mean()/Pe + mdisp.mean()/Re))
 Ri = (1 + dTdz)/((Fr**2)*np.minimum((db.iFD6Z(ux_inst,Nz,dz)**2 + db.iFD6Z(uy_inst,Nz,dz)**2),1e-4)) 
 eta = (B*tdisp/Pe)/(B*tdisp/Pe + mdisp/Re)
 #print(Ri.min(), Ri.max(), Ri.mean())
@@ -58,7 +66,17 @@ vortz_max = np.abs(ux_inst).max()
 # computing max
 temp_max = np.abs(temp_inst).max()
 dtemp_max = np.abs(dTdz).max()
+tdisp_max = tdisp.max()
+mdisp_max = mdisp.max()
 vortz = db.iFD6X(uy_inst,Nx,dx) - db.iFD6Y(ux_inst,Ny,dy)
+
+idx_lam = np.where(vortz**2 <= 1./Fr)
+idx_turb = np.where(vortz**2 > 1./Fr)
+std_lam_eta = eta[idx_lam].std()
+print('Avg Lam eta: ', eta[idx_lam].mean(), ' +/- ', eta[idx_lam].std())
+print('Avg Turb eta: ', eta[idx_turb].mean(), ' +/- ', eta[idx_turb].std())
+print('VLam: ', len(idx_lam[0])/(Nx*Ny*Nz))
+print('VTurb: ', len(idx_turb[0])/(Nx*Ny*Nz))
 
 # transposing 
 vortz = np.transpose(vortz, axes=(2,1,0))
@@ -67,6 +85,10 @@ Ri = np.transpose(Ri, axes=(2,1,0))
 ux_inst = np.transpose(ux_inst,axes=(2,1,0))
 temp_inst = np.transpose(temp_inst,axes=(2,1,0))
 eta = np.transpose(eta,axes=(2,1,0))
+mdisp = np.transpose(mdisp,axes=(2,1,0))
+tdisp = np.transpose(tdisp,axes=(2,1,0))
+
+print('Average ETA (local): ',eta.mean())
 
 pl = pv.Plotter(border=False)
 
@@ -86,9 +108,18 @@ pl = pv.Plotter(border=False)
 #opacity = [.1,.1,.3,0,0]
 #pl.add_volume(Ri,clim=[-0.75,1.25],cmap='RdYlBu_r',opacity=opacity)
 
+
+# mdisp Plot
+#opacity = [0,0,.1,.3,.3]
+#pl.add_volume(mdisp/Re,clim=[0,mdisp_max/(2*Re)],cmap='viridis_r',opacity=opacity)
+
+# tdisp Plot
+#opacity = [0,0,.1,.3,.3]
+#pl.add_volume(tdisp,clim=[0,tdisp_max/2],cmap='viridis_r',opacity=opacity)
+
 # eta Plot
-opacity = [.1,0,.3,0,.02]
-pl.add_volume(Ri,clim=[0,1],cmap='RdYlBu_r',opacity=opacity)
+opacity = [.01,.01,.01,0,.4]
+pl.add_volume(eta,clim=[0,1],cmap='RdYlBu_r',opacity=opacity)
 
 pl.add_bounding_box()
 pl.view_xz()
