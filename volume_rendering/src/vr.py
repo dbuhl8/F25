@@ -68,19 +68,23 @@ tdisp_max = tdisp.max()
 mdisp_max = mdisp.max()
 vortz_max = 2*np.abs(ux_inst).max()
 
-#print('Avg TDisp: ',tdisp.mean())
-#print('Avg MDisp: ',mdisp.mean())
-#print('Avg Eta (local): ',eta.mean())
-#print('Avg Eta (global): ', (B*tdisp.mean()/Pe)/\
-    #(B*tdisp.mean()/Pe + mdisp.mean()/Re))
-#print('Avg Lam Eta (local): ', eta[idx_lam].mean(), ' +/- ', eta[idx_lam].std())
-#print('Avg Lam Eta (global): ', (B*tdisp[idx_lam].mean()/Pe)/\
-    #(B*tdisp[idx_lam].mean()/Pe + mdisp[idx_lam].mean()/Re))
-#print('Avg Turb Eta (local): ', eta[idx_turb].mean(), ' +/- ', eta[idx_turb].std())
-#print('Avg Turb Eta (global): ', (B*tdisp[idx_turb].mean()/Pe)/\
-    #(B*tdisp[idx_turb].mean()/Pe + mdisp[idx_turb].mean()/Re))
-#print('VLam: ', len(idx_lam[0])/(Nx*Ny*Nz))
-#print('VTurb: ', len(idx_turb[0])/(Nx*Ny*Nz))
+print('Avg TDisp: ',tdisp.mean())
+print('Avg MDisp: ',mdisp.mean())
+print('Avg Eta (local): ',eta.mean())
+print('Avg Eta (global): ', (B*tdisp.mean()/Pe)/\
+    (B*tdisp.mean()/Pe + mdisp.mean()/Re))
+print('Avg Lam Eta (local): ', eta[idx_lam].mean(), ' +/- ', eta[idx_lam].std())
+print('Avg Lam Eta (global): ', (B*tdisp[idx_lam].mean()/Pe)/\
+    (B*tdisp[idx_lam].mean()/Pe + mdisp[idx_lam].mean()/Re))
+print('Avg Lam TDisp: ',tdisp[idx_lam].mean())
+print('Avg Lam MDisp: ',mdisp[idx_lam].mean())
+print('Avg Turb Eta (local): ', eta[idx_turb].mean(), ' +/- ', eta[idx_turb].std())
+print('Avg Turb Eta (global): ', (B*tdisp[idx_turb].mean()/Pe)/\
+    (B*tdisp[idx_turb].mean()/Pe + mdisp[idx_turb].mean()/Re))
+print('Avg Turb TDisp: ',tdisp[idx_turb].mean())
+print('Avg Turb MDisp: ',mdisp[idx_turb].mean())
+print('VLam: ', len(idx_lam[0])/(Nx*Ny*Nz))
+print('VTurb: ', len(idx_turb[0])/(Nx*Ny*Nz))
 
 # transposing 
 vortz = np.transpose(vortz, axes=(2,1,0))
