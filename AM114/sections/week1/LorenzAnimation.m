@@ -9,13 +9,21 @@ sigma = 10; b = 8/3; r = 28;
 c_plus  = [sqrt(b*(r-1));sqrt(b*(r-1));r-1];
 c_minus = [-sqrt(b*(r-1));-sqrt(b*(r-1));r-1];
 
+
+% initial condition
 x0 = c_plus+10*(-1+2*rand(3,1)); 
 
+% start time t0, end time tf
 t0 = 0; tf = 50; 
 tspan = [t0,tf];
 
+
 OPTIONS = odeset('AbsTol',1e-10, 'RelTol', 1e-10);
 [t,x] = ode45('LorenzDynamics', tspan, x0, OPTIONS); 
+% x = (x(t), y(t), z(t))
+% x(t) = (x0, x1, x2, x3, x4, ...)
+% y(t) = (y0, y1, y2, y3, y4, ...)
+% z(t) = (z0, z1, z2, z3, z4, ...)
 
 x1_max = max(x(:,1)); x1_min = min(x(:,1));
 x2_max = max(x(:,2)); x2_min = min(x(:,2));
