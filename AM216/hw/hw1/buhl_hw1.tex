@@ -32,7 +32,7 @@
 
 \begin{document}
 
-\title{AM 216 - Stochastic Differential Equations: Assignment }
+\title{AM 216 - Stochastic Differential Equations: Assignment 1}
 \author{Dante Buhl}
 
 
@@ -44,6 +44,9 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathcal{N}}
+\newcommand{\Var}{\text{Var}}
+\newcommand{\Bino}{\text{Bino}}
+\newcommand{\Norm}{\mathcal{N}}
 %\newcommand{\K}{\bs{\mathrm{K}}}
 \newcommand{\m}{\bs{\mu}_*}
 \newcommand{\s}{\bs{\Sigma}_*}
@@ -104,7 +107,7 @@
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
 
-\section{Problem 1}
+\section{Two Dice}
 Roll a set of two fair 6-sided dice, one colored red the other white. Assume that the two dice
 roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
 
@@ -153,6 +156,67 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
             \[ E(X) = 1(0.277...) + 2(0.222...) + 3(0.166...) + 4(0.111...)
             + 5(0.055...) =  1.944...\]
         \end{proof}
+    \item Let $A = \{X_2^2 \ge 2X_1\}$. Find $Pr(A|X_1 = n)$ for $n = 1,
+    2,\ldots,6$. Then use the law of total probability to find $Pr(A)$. 
+        \begin{proof}
+            We will construct a table to show the values of $Pr(A|X_1 = n)$ for
+            all possible $n$. 
+            \begin{center}
+            \begin{tabular}{| c || c | c | c | c | c | c |}
+                \hline
+                n & 1 & 2 & 3 & 4 & 5 & 6\\
+                \hline
+                Pr(A) & 0.833\ldots & 0.833\ldots & 0.666\ldots & 0.666\ldots &
+                0.5 & 0.5\\
+                \hline
+            \end{tabular}
+            \end{center}
+            From this, we can find the probability that $Pr(X_1 = n) =
+            0.166\ldots \forall n$, and therefore find that $Pr(A) =
+            0.666\ldots$. 
+        \end{proof}
 \end{enumerate}
+
+\section{Variance}
+    \begin{enumerate}[label=\roman*)]
+        \item Show that $\Var(\alpha X) = \alpha^2\Var(X)$.  
+            \begin{proof}
+                \begin{align*}
+                    \Var(\alpha X) &= E(\alpha X)^2 - E^2(\alpha X)\\
+                    &= E(\alpha^2X^2) - (\alpha E(X))^2\\
+                    &= \alpha^2E(X^2) - \alpha^2 E^2(X)\\
+                    &= \alpha^2\Var(X)
+                \end{align*}
+            \end{proof}
+        \item Show that $\Var(X + Y) = \Var(X) + \Var(Y)$ if $X$ and $Y$ are
+        independent.
+            \begin{proof}
+                \begin{align*}
+                    \Var(X + Y) &= E(X + Y)^2 - E^2(X + Y)\\
+                    &= E(X^2 + 2XY + Y^2) - (E^2(X) + 2E(X)E(Y) + E^2(Y))\\
+                    &= E(X^2) + E(2XY) + E(Y^2) - E^2(X) - 2E(X)E(Y) - E^2(Y)\\
+                    &= E(X^2) + E(Y^2) - E^2(X) - E^2(Y)\\
+                    &= \Var(X) + \Var(Y)
+                \end{align*} 
+                where the change between the third and fourth lines follows from
+                the fact that $X$ and $Y$ are independent, i.e. $E(XY) =
+                E(X)E(Y)$.
+            \end{proof}
+        \item Find an example where $\Var(X + Y) = \Var(X) + \Var(Y)$ does not
+        imply that $X$ and $Y$ are independent. 
+            \begin{proof}
+                To be continued
+            \end{proof}
+    \end{enumerate}
+
+\section{Binomial and Normal Distributions}
+    Calculate $E(X^2 + Y^2)$ where $X \sim \Bino(n, p)$ and $Y \sim
+    \Norm(\mu,\sigma)$. 
+    \begin{proof}
+        \begin{align*}
+            E(X^2 + Y^2) &= E(X^2) + E(Y^2)\\
+            &= 
+        \end{align*}
+    \end{proof}
 
 \end{document}
