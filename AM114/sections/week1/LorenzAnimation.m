@@ -3,6 +3,7 @@ close all
 
 global r sigma b
 
+% parameters for the ODE system
 sigma = 10; b = 8/3; r = 28;
   
 % initial condition is a column vector
@@ -17,8 +18,10 @@ x0 = c_plus+10*(-1+2*rand(3,1));
 t0 = 0; tf = 50; 
 tspan = [t0,tf];
 
-
+% this options thing isnt that important you can kind of ignore it
 OPTIONS = odeset('AbsTol',1e-10, 'RelTol', 1e-10);
+
+% ODE 45 runs the 'LorenzDynamics' system starting at x0 from t0 to tf
 [t,x] = ode45('LorenzDynamics', tspan, x0, OPTIONS); 
 % x = (x(t), y(t), z(t))
 % x(t) = (x0, x1, x2, x3, x4, ...)
