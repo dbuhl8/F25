@@ -47,6 +47,7 @@
 \newcommand{\Var}{\text{Var}}
 \newcommand{\Bino}{\text{Bino}}
 \newcommand{\Norm}{\mathcal{N}}
+\newcommand{\erf}{\text{erf}}
 %\newcommand{\K}{\bs{\mathrm{K}}}
 \newcommand{\m}{\bs{\mu}_*}
 \newcommand{\s}{\bs{\Sigma}_*}
@@ -218,5 +219,53 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
             &= 
         \end{align*}
     \end{proof}
+
+\section{Falling within some standard deviation}
+    \begin{proof}
+        \begin{align*}
+            Pr(\mu - \eta\sigma \le X \le \mu + \eta\sigma) &= \cdots = 
+            \frac{1}{\sigma\sqrt{2\pi}}\int_{\mu -
+            \eta\sigma}^{\mu + \eta\sigma} e^{-(x-\mu)^2/2\sigma^2}dx\\
+            &= \frac{2}{\sigma\sqrt{2\pi}}\int_{\mu}
+            ^{\mu + \eta\sigma} e^{-(x-\mu)^2/2\sigma^2}dx\\
+            &= \frac{2}{\sqrt{\pi}} \int_0^{\eta/\sqrt{2}}e^{-z^2}dz,\quad z = (x -
+            \mu)/\sigma\sqrt{2}\\
+            &= \erf\left(\frac{\eta}{\sqrt{2}}\right)
+        \end{align*}
+    \end{proof}
+
+\section{Simple Convoluted Experiment}
+    \begin{enumerate}[label=\roman*)]
+        \item E(X)
+            \begin{proof}
+                We begin by first using the Law of Total Probability. We have, 
+                \begin{align*}
+                    Pr(X = k) &= \sum_{i=0}^n Pr(X = k|Y = i) Pr(Y = i)
+                \end{align*}
+                We notice some interesting things at first. We have as a given
+                that $Pr(X = k | Y = m) = 0$ if $k > m$. Then applying the law
+                of total expectation that, 
+                \begin{align*}
+                    E(X) &=  \sum_{i=0}^n E(X|Y=i)Pr(Y=i)\\
+                    &= \sum_{i=0}^n \frac{i}{2}Pr(Y=i)\\
+                    &= \sum_{i=0}^n \frac{n!}{2^{n+1}(i-1)!(n-i)!}
+                \end{align*}
+            \end{proof}
+        \item E(XY)
+            \begin{proof}
+                \begin{align*}
+                    E(X) &=  \sum_{i=0}^n E(XY|Y=i)Pr(Y=i)\\
+                    &= \sum_{i=0}^n \frac{i^2}{2}Pr(Y=i)\\
+                    &= \sum_{i=0}^n \frac{in!}{2^{n+1}(i-1)!(n-i)!}
+                \end{align*}
+
+            \end{proof}
+    \end{enumerate}
+
+\section{Confidence Interval}
+
+\section{Characteristic Functions}
+
+\section{Making an experiment well-posed}
 
 \end{document}
