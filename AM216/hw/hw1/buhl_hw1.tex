@@ -218,7 +218,7 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
             E(X^2 + Y^2) &= E(X^2) + E(Y^2)\\
             &= 
         \end{align*}
-    \end{proof}
+    ]\end{proof}
 
 \section{Falling within some standard deviation}
     \begin{proof}
@@ -263,9 +263,41 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
     \end{enumerate}
 
 \section{Confidence Interval}
+    Here is a picture of my code for this problem, Figure \ref{fig:prob6_code}.
+    \begin{figure}[t]
+        \centering
+        \includegraphics[width=\textwidth]{prob6_code.png}
+        \caption{Code to produce the results for this problem}
+        \label{fig:prob6_code}
+    \end{figure}
+    \begin{enumerate}[label=\roman*)]
+        \item 1.0
+        \item 0.999858
+    \end{enumerate}
 
 \section{Characteristic Functions}
-
+    \begin{enumerate}[label=\roman*)]
+        \item $E(X) = \mu$
+            \begin{proof}
+                \begin{align*}
+                    E(X) &= \frac{1}{i}\pp{\phi_x}{\xi}\Big|_{\xi = 0}\\
+                    &= \left(\mu - \frac{\sigma^2\xi}{i}\right)\exp\left(i\mu\xi -
+                    \frac{\sigma^2\xi^2}{2}\right)\Big|_{\xi = 0}\\
+                    &= \mu
+                \end{align*}
+            \end{proof}
+        \item $\Var(X) = \sigma^2$
+            \begin{proof}
+                \begin{align*}
+                    \Var(X) &= (E(X))^2 - E(X^2)\\
+                    &= \left(\frac{1}{i}\pp{\phi_x}{\xi}\Big|_{\xi = 0}\right)^2
+                    + \pptwo{\phi_X}{\xi}\Big|_{\xi = 0}\\
+                    &= 
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
 \section{Making an experiment well-posed}
-
+    \begin{enumerate}[label=\roman*)]
+        \item
+    \end{enumerate}
 \end{document}
