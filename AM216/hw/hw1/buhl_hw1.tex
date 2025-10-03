@@ -216,9 +216,10 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
     \begin{proof}
         \begin{align*}
             E(X^2 + Y^2) &= E(X^2) + E(Y^2)\\
-            &= 
+            &= \Var(X) + (E(X))^2 + \Var(Y) + (E(Y))^2\\
+            &= np(1-p+np) + \sigma^2 - \mu^2
         \end{align*}
-    ]\end{proof}
+    \end{proof}
 
 \section{Falling within some standard deviation}
     \begin{proof}
@@ -289,15 +290,34 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
         \item $\Var(X) = \sigma^2$
             \begin{proof}
                 \begin{align*}
-                    \Var(X) &= (E(X))^2 - E(X^2)\\
-                    &= \left(\frac{1}{i}\pp{\phi_x}{\xi}\Big|_{\xi = 0}\right)^2
-                    + \pptwo{\phi_X}{\xi}\Big|_{\xi = 0}\\
-                    &= 
+                    \Var(X) &= E(X^2) - (E(X))^2\\
+                    &= - \left(\frac{1}{i}\pp{\phi_x}{\xi}\Big|_{\xi = 0}\right)^2
+                    - \pptwo{\phi_X}{\xi}\Big|_{\xi = 0}\\
+                    &= -\mu^2 - \frac{\partial}{\partial \xi}\left(i\mu -
+                    \sigma^2\xi\right)\exp\left(i\mu\xi -
+                    \frac{\sigma^2\xi^2}{2}\right)\Big|_{\xi = 0}\\
+                    &= -\mu^2 - \left(i\mu -
+                    \sigma^2\xi\right)^2\exp\left(i\mu\xi -
+                    \frac{\sigma^2\xi^2}{2}\right)\Big|_{\xi = 0} +
+                    \sigma^2\exp\left(i\mu\xi -
+                    \frac{\sigma^2\xi^2}{2}\right)\Big|_{\xi = 0}\\
+                    &= \sigma^2
                 \end{align*}
             \end{proof}
     \end{enumerate}
+
 \section{Making an experiment well-posed}
     \begin{enumerate}[label=\roman*)]
-        \item
+        \item No, currently we have no idea of the quantity, nor ratio of coins
+        contained in the bin. For example, it could be the case that the bin
+        contains 9 type 1 coins for every type 2 coin. If this were the case,
+        then this would influence the conditional probability. We also don't
+        know if, but would assume that, they are keeping the ratio of the coins
+        inside the bins constant, i.e. they are placing the coin back into the
+        bag and mixing it up before selecting the next coin. 
+        \item In order to make this well-posed, I suggest we include the changes
+        to control the number/ratio of each coin in the bin, and make each
+        sample identically distributed by placing the coin back into the bin and
+        mixing the bin before sampling again. 
     \end{enumerate}
 \end{document}
