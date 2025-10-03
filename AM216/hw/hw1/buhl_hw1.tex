@@ -45,6 +45,7 @@
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\N}{\mathcal{N}}
 \newcommand{\Var}{\text{Var}}
+\newcommand{\Cov}{\text{Cov}}
 \newcommand{\Bino}{\text{Bino}}
 \newcommand{\Norm}{\mathcal{N}}
 \newcommand{\erf}{\text{erf}}
@@ -206,7 +207,25 @@ roll independently. Record the two numbers facing up as $X_1$ and $X_2$.
         \item Find an example where $\Var(X + Y) = \Var(X) + \Var(Y)$ does not
         imply that $X$ and $Y$ are independent. 
             \begin{proof}
-                To be continued
+                To begin we shall imagine that we have some random variable $X$
+                which is symmetrically distributed about its mean. To make it
+                simpler, let us assume that its mean is zero. Let us assume that
+                $X$ is a uniform distribution centered on zero $X \in [-1,1]$. We can then make
+                $Y$ ANY even function of $X$. We can consider $Y = X^2$, $Y =
+                \cos(X)$, or $Y = \ln(|X| + 1)$. In any of these cases, we are
+                guaranteed that the covariance of X and Y is zero. We can define
+                the covariance to be $\Cov(X,Y) = E(XY) - E(X)E(Y) = \Var(X + Y) -
+                \Var(X) - \Var(Y)$. We have, 
+                \begin{align*}
+                    Y = X^2, \quad \Cov(X,Y) &= E(XY) - E(X)E(Y)\\
+                    &= E(XY) \\
+                    &= \int_{-1}^1 XX^2\frac{1}{2}dX\\
+                    &= \frac{1}{8}X^4\Big|_{-1}^1\\
+                    &= 0 
+                \end{align*}
+                For the case of $\mu = 0$, this can be done for any PDF and
+                $f(X)$ (such that $Y = f(X)$)  which is even-symmetrically centered on
+                the origin. 
             \end{proof}
     \end{enumerate}
 
