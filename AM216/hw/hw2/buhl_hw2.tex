@@ -32,7 +32,7 @@
 
 \begin{document}
 
-\title{AM 216 - Stochastic Differential Equations: Assignment }
+\title{AM 216 - Stochastic Differential Equations: Assignment 2}
 \author{Dante Buhl}
 
 
@@ -108,5 +108,54 @@
 \maketitle 
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
+
+\section{MLE and the Normal Distribution}
+    
+    Find $\mu_{(MLE)}$ and $\sigma_{(MLE)}$. 
+    \begin{proof}
+    \begin{align*}
+        \ell(\mu, \sigma^2 | \bs{X}) &= -\frac{n}{2}\ln(2\pi) -
+        \frac{n}{2}\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_{j=1}^n (X_j - \mu)^2
+        \\
+        \pp{\ell}{\mu} &= \frac{1}{\sigma^2}\sum_{i=1}^n (X_i-\mu)
+        \\
+        \mu_{(MLE)} &= \frac{1}{n}\sum_{i=1}^n X_i
+        \\
+        \pp{\ell}{\sigma^2} &= -\frac{n}{2\sigma^2} +
+        \frac{1}{2\sigma^4}\sum_{i=1}^n (X_i - \mu)^2
+        \\
+        &= -\frac{n}{2\sigma^2} +
+        \frac{1}{2\sigma^4}\sum_{i=1}^n (X_i - \frac{1}{n}\sum_{j=1}^n X_j)^2
+        \\
+        \sigma_{(MLE)} &= \sqrt{\frac{1}{n}\sum_{i=1}^n\left(X_i -
+        \frac{1}{n}\sum_{j=1}^n X_j\right)^2}
+    \end{align*}
+    \end{proof}
+
+\section{MLE Variance and unbiased sample variance}
+    Show that the MLE of variance is biased. 
+    \begin{proof}
+        \begin{align*}
+            E\left(\sum_{i=1}^n \left(X_i - \frac{1}{n}\sum_{j=1}^n
+            X_j\right)^2\right) &= E\left(\sum_{i=1}^n \left(X_i -
+            \frac{1}{n}\sum_{j=1}^n
+            X_j\right)^2\right)
+            \\
+            &= E(\sum_{i=1}^{n} X_i^2 - \left(\frac{1}{n}\sum_{j=1}^n 2X_iX_j +
+            \frac{1}{n}X_j^2\right)
+        \end{align*}
+    \end{proof}
+
+\section{Central Limit Theorem}
+
+\section{Sample Variance v.s. MLE variance}
+
+\section{Deriving the CF of a multivariate gaussian}
+
+\section{Deriving the Conditional Gaussian Distribution}
+
+\section{Monty Hall's Game}
+
+\section{Finite Difference Equation?}
 
 \end{document}
