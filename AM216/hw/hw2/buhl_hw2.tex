@@ -141,12 +141,41 @@
             \frac{1}{n}\sum_{j=1}^n
             X_j\right)^2\right)
             \\
-            &= E(\sum_{i=1}^{n} X_i^2 - \left(\frac{1}{n}\sum_{j=1}^n 2X_iX_j +
-            \frac{1}{n}X_j^2\right)
+            &= E\left(\sum_{i=1}^{n} X_i^2 - \left(\frac{1}{n}\sum_{j=1}^n 2X_iX_j +
+            \frac{1}{n}X_j^2\right)\right)
+            \\
+            &= \sum_{i=1}^n E\left(X_i^2 - \left(\frac{1}{n}\sum_{j=1}^n 2X_iX_j +
+            \frac{1}{n}X_j^2\right)\right)
         \end{align*}
+        IM mad, gonna do it later
     \end{proof}
 
 \section{Central Limit Theorem}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                \phi_X(\xi) &= \int_{-\infty}^{\infty} e^{i\xi x}f(x)dx 
+                \\
+                &= pe^{i\xi} + q
+            \end{align*}
+        \item 
+            \begin{align*}
+                \phi_N(\xi) &= \int_{-\infty}^{\infty} e^{i\xi x}f(x)dx 
+                \\
+                &= \sum_{k=0}^n \left(\begin{array}{c} n\\k\end{array}\right)
+                p^k(1-p)^{n-k}e^{i\xi k}
+            \end{align*}
+        \item 
+            \begin{align*}
+                \phi_Y(\xi) &= \int_{-\infty}^{\infty} e^{i\xi y}f(y)dy
+                \\
+                &= \frac{1}{\sqrt{n}}\int_{-\infty}^{\infty} e^{i\xi k+np}f(k + np)dk
+                \\
+                &= \sum_{k=-np}^{n-np} \left(\begin{array}{c} n\\k +
+                np\end{array}\right)
+                p^{k+np}(1-p)^{n-k+np}e^{i\xi k+np}
+            \end{align*}
+    \end{enumerate}
 
 \section{Sample Variance v.s. MLE variance}
 
