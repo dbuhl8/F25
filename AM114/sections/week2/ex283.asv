@@ -27,38 +27,21 @@ hold on;
 
 % plot the 1st order euler method with different dt
 % repeating for dt = 10^(-n)
-error = zeros(1,4);
-dt_array = zeros(1,4);
 for i = 1:4
     dt = 10^(-i); % dt = 0.1, dt = 0.01, dt = 0.001, dt = 0.0001
-    dt_array(i) = dt;
     nt = tstop/dt; % figuring out how many timesteps are needed
     tt = zeros(1,nt); % initializing an array full of zeros
     xt = zeros(1,nt);
-    tt(1) = tstart; % putting in the IC for time
-    xt(1) = x0; % putting in IC for x
+    tt(1) = tstart; 
+    xt(1) = x0;
     % this is where the eulers method is implemented 
     for j = 2:nt
-        % incrementing time
         tt(j) = tt(j-1) + dt;
         % x_n+1 = x_n + dt*(f(x_n))
         xt(j) = xt(j-1) + dt*ode283(tt(j-1),xt(j-1));
-        %xt = [x0, x1, x2, x3, x4, x5, ..., x_nt]
-        %tt = [t0, t1, t2, t3, t4, t5, ..., t_nt]
     end
-    % tt and xt are full of timeseries data 
-    error(i) = abs(1/exp(1) - xt(end));
     plot(tt,xt, '--') ;
 end
 
 legend('Actual', 'n = 1', 'n = 2', 'n = 3', 'n = 4')
-
-f2 = figure;
-
-
-loglog(1./dt_array, error,'x');
-
-
-
-
 
