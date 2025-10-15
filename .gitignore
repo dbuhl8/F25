@@ -9,3 +9,5 @@
 *.log
 *.out
 *.aux
+!safe_nonrotating_stoch_eta.dat
+!safe_nonrotating_steady_eta.dat
