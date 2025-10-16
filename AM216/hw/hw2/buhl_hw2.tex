@@ -137,17 +137,39 @@
     \begin{proof}
         \begin{align*}
             E\left(\sum_{i=1}^n \left(X_i - \frac{1}{n}\sum_{j=1}^n
-            X_j\right)^2\right) &= E\left(\sum_{i=1}^n \left(X_i -
+            X_j\right)^2\right) &= \sum_{i=1}^n E\left(\left(X_i -
             \frac{1}{n}\sum_{j=1}^n
             X_j\right)^2\right)
             \\
-            &= E\left(\sum_{i=1}^{n} X_i^2 - \left(\frac{1}{n}\sum_{j=1}^n 2X_iX_j +
-            \frac{1}{n}X_j^2\right)\right)
+            &= \sum_{i=1}^n \Var\left(X_i -
+            \frac{1}{n}\sum_{j=1}^n X_j\right) + \left(E\left(X_i -
+            \frac{1}{n}\sum_{j=1}^n X_j\right)\right)^2
             \\
-            &= \sum_{i=1}^n E\left(X_i^2 - \left(\frac{1}{n}\sum_{j=1}^n 2X_iX_j +
-            \frac{1}{n}X_j^2\right)\right)
+            E\left(X_i -
+            \frac{1}{n}\sum_{j=1}^n X_j\right) &= E(X_i) +
+            \frac{1}{n}\sum_{j=1}^n E(X_j)
+            \\
+            &= \mu + \frac{1}{n}n\mu
+            \\
+            &= 0 
+            \\
+            \Var\left(X_i -
+            \frac{1}{n}\sum_{j=1}^n X_j\right) &= 
+            \Var(X_i) + \Var(\mu) - 2\Cov(X_i,\mu)
+            \\
+            &= \sigma^2 + \frac{1}{n}\sigma^2 -
+            \frac{2}{n}\sigma^2
+            \\
+            &= \left(1-\frac{1}{n}\right)\sigma^2
+            \\
+            E\left(\sum_{i=1}^n \left(X_i - \frac{1}{n}\sum_{j=1}^n
+            X_j\right)^2\right) &= \sum_{i=1}^n \left(1 -
+            \frac{1}{n}\right)\sigma^2
+            \\
+            &= (n-1)\sigma^2
+            \\
+            &= (n-1)\Var(X)
         \end{align*}
-        IM mad, gonna do it later
     \end{proof}
 
 \section{Central Limit Theorem}
@@ -167,24 +189,141 @@
             \end{align*}
         \item 
             \begin{align*}
-                \phi_Y(\xi) &= \int_{-\infty}^{\infty} e^{i\xi y}f(y)dy
+                \phi_Y(\xi) &= \phi_N(\xi/\sqrt{n})\exp(i\xi\sqrt{n}p)
                 \\
-                &= \frac{1}{\sqrt{n}}\int_{-\infty}^{\infty} e^{i\xi k+np}f(k + np)dk
-                \\
-                &= \sum_{k=-np}^{n-np} \left(\begin{array}{c} n\\k +
+                &= \sum_{k=0}^{n} \left(\begin{array}{c} n\\k +
                 np\end{array}\right)
-                p^{k+np}(1-p)^{n-k+np}e^{i\xi k+np}
+                p^{k}(1-p)^{n-k}e^{i\xi\left(\frac{k}{\sqrt{n}}+\sqrt{n}p\right)}
             \end{align*}
+        \item
+            \begin{align*}
+                \lim_{n\to\infty} \phi_Y(\xi) &= 
+                \lim_{n\to\infty}\sum_{k=0}^{n} \left(\begin{array}{c} n\\k +
+                np\end{array}\right)
+                p^{k}(1-p)^{n-k}e^{i\xi\left(\frac{k}{\sqrt{n}}+\sqrt{n}p\right)}
+            \end{align*}
+            My proof ends here, I have not figured out how to pull an extra
+            $\xi$ out of the PMF function and obtain a $e^{\xi^2(\cdots)}$. As
+            such, I will resubmit this assignment once I have solved this
+            particular problem. 
     \end{enumerate}
 
 \section{Sample Variance v.s. MLE variance}
+    See Figure \ref{fig:p4}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=\textwidth]{prob4.png}
+        \caption{Results from problem 4}
+        \label{fig:p4}
+    \end{figure}
+    Generally we find that minimizing the fluctuations (using the MLE
+    variance) decreases the error in estimating the distributions
+    variance as opposed to minimizing the bias (using the sample
+    variance). 
 
 \section{Deriving the CF of a multivariate gaussian}
+    \begin{proof}
+        {\small
+        \begin{align*}
+            i\xi^Tx - \frac{1}{2}(x - \mu)^T \Sigma^{-1}(x-\mu) &=
+            -\frac{1}{2}\left(x - \mu - i\Sigma\xi\right)^T\Sigma^{-1}\left(x -
+            \mu - i\Sigma\xi\right) + \left(i\xi^T\mu -
+            \frac{1}{2}\xi^T\Sigma\xi\right)
+            \\
+            i\xi^Tx &=
+            -\frac{1}{2}\left[-i(x - \mu)^T\Sigma^{-1}\Sigma\xi + 
+            -i\xi^T\Sigma^T\Sigma^{-1}(x - \mu) -
+            \xi^T\Sigma^T\Sigma^{-1}\Sigma\xi\right]
+             + \left(i\xi^T\mu -
+            \frac{1}{2}\xi^T\Sigma\xi\right)
+            \\
+            &= \frac{i}{2}(x-\mu)^T\xi + \frac{i}{2}\xi^T(x-\mu)  + i\xi^T\mu
+            \\
+            &= i\xi^Tx
+        \end{align*}
+        }
+        where here the symmetry of the inner product operator satisfies the
+        movement between the third and fourth lines and its distributive
+        properly allows the movement between the 1st and 2nd lines. 
+    \end{proof}
 
 \section{Deriving the Conditional Gaussian Distribution}
+    \begin{proof}
+        \begin{gather*}
+            \Sigma = \left[\begin{array}{c c} \Sigma_{XX} & \Sigma_{XY} \\
+               \Sigma_{YX} & \Sigma_{YY}\end{array}\right], \quad\quad
+                \Sigma^{-1} = \left[\begin{array}{c c} A & B \\
+                B^T & C\end{array}\right]
+                \\
+                \Sigma^{-1}\Sigma = I
+                \\
+                \left[\begin{array}{c c}
+                A\Sigma_{XX} + B\Sigma_{YX} & A\Sigma_{XY} + B\Sigma_{YY}\\
+                B^T\Sigma_{XX} + C\Sigma_{YX} & B^T\Sigma_{XY} + C\Sigma_{YY}
+                \end{array}\right] = \left[\begin{array}{c c} I & 0 \\ 0 &
+                I\end{array}\right]
+                \\
+                A\Sigma_{XY} + B\Sigma_{YY} = 0
+                \\
+                -A\Sigma_{XY} =  B\Sigma_{YY}
+                \\
+                -\Sigma_{XY}\Sigma_{YY}^{-1} = A^{-1}B
+                \\
+                A\Sigma_{XX} + B\Sigma_{YX} = 0 
+                \\
+                A\left(\Sigma_{XX} -
+                \Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX}\right) = I
+                \\
+                A^{-1} = \left(\Sigma_{XX} -
+                \Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX}\right)
+        \end{gather*}
+    \end{proof}
 
-\section{Monty Hall's Game}
+\section{Random Monty Hall's Game}
+    \begin{proof}
+        In order to make this decision we must look at the conditional
+        probabiliites involved with the random variant of the Monty Hall's game.
+        In this problem, we study the conditional probability $Pr(X|Y =
+        \text{empty})$ where
+        $X$ is the box we first chose and $Y$ is the box that we first open. 
+        We have using Bayes Theorem, 
+        \begin{align*}
+            Pr(X|Y) &= \frac{Pr(Y|X)Pr(X)}{Pr(Y)}
+            \\
+            &= \frac{(1)(1/3)}{2/3} 
+            \\
+            &= \frac{1}{2}
+        \end{align*}
+        As we can see from this, since we are not guaranteed that the host
+        reveals an empty box, we no longer have an advantage from switching. 
+    \end{proof}
 
-\section{Finite Difference Equation?}
+\section{Finite Difference Equation}
+
+    \begin{enumerate}[label=\roman*)]
+        \item See Fig \ref{fig:p8pa}
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=\textwidth]{prob8_parta.png}
+                \caption{P8 Part a}
+                \label{fig:p8pa}
+            \end{figure}
+        \item See Fig \ref{fig:p8pb}
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=\textwidth]{prob8_partb.png}
+                \caption{P8 Part b}
+                \label{fig:p8pb}
+            \end{figure}
+        \item See Fig \ref{fig:p8pc}
+            \begin{figure}[ht]
+                \centering
+                \includegraphics[width=\textwidth]{prob8_partc.png}
+                \caption{P8 Part c}
+                \label{fig:p8pc}
+            \end{figure}
+
+    \end{enumerate}
+    
 
 \end{document}
