@@ -5,17 +5,75 @@ import fnmatch
 from netCDF4 import MFDataset
 from netCDF4 import Dataset
 
-Re600_Pe60=['B300Re600Pe60/','B180Re600Pe60/','B100Re600Pe60/','B30Re600Pe60/',\
-            'B10Re600Pe60/','B3Re600Pe60/','B1Re600Pe60/']
+Re600_Pe60=['horizontal-shear/Re600_Pe60_B100/',\
+            'horizontal-shear/Re600_Pe60_B0.1/',\
+            'horizontal-shear/Re600_Pe60_B1/',\
+            'horizontal-shear/Re600_Pe60_B10/',\
+            'horizontal-shear/Re600_Pe60_B100/',\
+            'horizontal-shear/Re600_Pe60_B1000/',\
+            'horizontal-shear/Re600_Pe60_B30/',\
+            'horizontal-shear/Re600_Pe60_B3000/',\
+            'horizontal-shear/Re600_Pe60_B400/',\
+            'horizontal-shear/Re600_Pe60_B6000/']
 
-Re1000_Pe100 = ['B100Re1000Pe100/', 'B10Re1000Pe100/']
+Re600_Pe60_bounds=[[150,300],[275,400],[180,320],\
+    [220,450],[150,300],[500,900],[375,560],[650,900],\
+    [225,460],[40,180]]
 
-simulations = [Re600_Pe60, Re1000_Pe100]
+Re600_Pe30=['horizontal-shear/Re600_Pe30_B10/',\
+            'horizontal-shear/Re600_Pe30_B100/',\
+            'horizontal-shear/Re600_Pe30_B30/']
 
+Re600_Pe30_bounds=[[260,300],[300,400],[400,480]]
+
+Re1000_Pe100 = ['horizontal-shear/Re1000_Pe100_B10/',\
+                'horizontal-shear/Re1000_Pe100_B100/',\
+                'horizontal-shear/Re1000_Pe100_B3/',\
+                'horizontal-shear/Re1000_Pe100_B30/',\
+                'horizontal-shear/Re1000_Pe100_B300/']
+
+Re1000_Pe100_bounds=[[35,65],[91,92],[85,86],[63,64],[91,92]]
+
+Re300_Pe30=['horizontal-shear/Re300_Pe30_B0.01/',\
+            'horizontal-shear/Re300_Pe30_B0.1/',\
+            'horizontal-shear/Re300_Pe30_B1/',\
+            'horizontal-shear/Re300_Pe30_B10/',\
+            'horizontal-shear/Re300_Pe30_B100/',\
+            'horizontal-shear/Re300_Pe30_B1000/',\
+            'horizontal-shear/Re300_Pe30_B10000/',\
+            'horizontal-shear/Re300_Pe30_B30/',\
+            'horizontal-shear/Re300_Pe30_B300/']
+
+Re300_Pe30_bounds = [[370,460],[260,460],[140,280],[60,160],\
+    [300,1200],[800,1300],[1050,1450],[50,300],[300,900]]
+
+Re1000_Pe10 = ['horizontal-shear/Re1000_Pe10_B10/',\
+               'horizontal-shear/Re1000_Pe10_B100/',\
+               'horizontal-shear/Re1000_Pe10_B1000/',\
+               'horizontal-shear/Re1000_Pe10_B3/']
+
+Re1000_Pe10_bounds = [[35,40],[35,70],[94,95],[62,63]]
+
+# cant do this directory as it is not accessible from dbuhl's account
+Re300_Pe01=['horizontal-shear/Re300_B1_Pe0.1/',\
+            'horizontal-shear/Re300_B100_Pe0.1/',\
+            'horizontal-shear/Re300_B1000_Pe0.1/',\
+            'horizontal-shear/Re300_B10000_Pe0.1/',\
+            'horizontal-shear/Re300_B3_Pe0.1/',\
+            'horizontal-shear/Re300_B3000_Pe0.1/',\
+            'horizontal-shear/Re300_B6000_Pe0.1/']
+
+simulations = [Re600_Pe60, Re600_Pe30, Re1000_Pe100, Re300_Pe30,\
+    Re1000_Pe10]
+
+bounds = [Re600_Pe60_bounds, Re600_Pe30_bounds, Re1000_Pe100_bounds,\
+    Re300_Pe30_bounds,Re1000_Pe10_bounds]
 
 # preparing output file
 header_string = "#" + "{:<s}    "*41
+tavg_header_string = "#" + "{:<s}    "*42
 fmt_str = "{:.4e}    "*41
+tavg_fmt_str = "{:.4e}    "*42
 # 20 columns
 header_string = header_string.format('Re','B','Pr', 'Pe', 'BPe', 't', 'avg_uh',\
     'tdisp', 'mdisp', 'eta (local)', 'eta (global)', \
@@ -32,9 +90,28 @@ header_string = header_string.format('Re','B','Pr', 'Pe', 'BPe', 't', 'avg_uh',\
     'vlam', 'vturb',\
     'vlam_Fr', 'vturb_Fr',\
     'vlam_Fr_vortz', 'vturb_Fr_vortz')
-io_file = open('safe_nonrotating_stoch_eta.dat','w')
+tavg_header_string = tavg_header_string.format('Re','B','Pr', 'Pe', 'BPe',\
+    'lb','ub','avg_uh','tdisp', 'mdisp', 'eta (local)', 'eta (global)', \
+    'lam tdisp', 'lam mdisp', 'lam eta (local)', 'lam eta (global)', \
+    'lam_Fr tdisp', 'lam_Fr mdisp',\
+    'lam_Fr eta (local)', 'lam_Fr eta (global)', \
+    'lam_Fr_vortz tdisp', 'lam_Fr_vortz mdisp',\
+    'lam_Fr_vortz eta (local)', 'lam_Fr_vortz eta (global)', \
+    'turb tdisp', 'turb mdisp', 'turb eta (local)', 'turb eta (global)', \
+    'turb_Fr tdisp', 'turb_Fr mdisp',\
+    'turb_Fr eta (local)', 'turb_Fr eta (global)', \
+    'turb_Fr_vortz tdisp', 'turb_Fr_vortz mdisp',\
+    'turb_Fr_vortz eta (local)', 'turb_Fr_vortz eta (global)', \
+    'vlam', 'vturb',\
+    'vlam_Fr', 'vturb_Fr',\
+    'vlam_Fr_vortz', 'vturb_Fr_vortz')
+
+io_file = open('safe_nonrotating_steady_eta.dat','w')
+tavg_file = open('steady_tavg_eta.dat','w')
 io_file.write(header_string)
+tavg_file.write(tavg_header_string)
 io_file.write('\n')
+tavg_file.write('\n')
 
 index_counter = 0
 
@@ -157,6 +234,9 @@ for m, sim_set in enumerate(simulations):
                 t_tot = np.append(t_tot, t[i])
                 avg_uh = np.append(avg_uh,uh[i,:,:,:].mean())
 
+                # eta = (thermal dissipation) / (total energy dissipation)
+                # eta = pf1*tdisp / (pf1*tdisp + pf2*mdisp)
+
                 # identifying turbulent and laminar regions
                 # raw metric
                 idx_lam = np.where(vortz[i,:,:,:]**2 <= 1./Fr)
@@ -167,6 +247,7 @@ for m, sim_set in enumerate(simulations):
                 idx_turb_Fr = np.where(vortz[i,:,:,:]**2>1./(Fr*avg_uh[-1]))
                 # with rescaling to the effective Froude and vortz
                 # effective vortz: vortz_eff = vortz/uh_rms
+                # vortz**2 <= uh/Fr
                 idx_lam_Fr_vortz = np.where(vortz[i,:,:,:]**2 <=\
                     avg_uh[-1]/Fr)
                 idx_turb_Fr_vortz = np.where(vortz[i,:,:,:]**2 >\
@@ -335,6 +416,70 @@ for m, sim_set in enumerate(simulations):
             vlam_Fr[i],vturb_Fr[i],\
             vlam_Fr_vortz[i],vturb_Fr_vortz[i]))
             io_file.write('\n')
+
+        # do temporal averages and write to file
+        lb, ub = bounds[m][n]
+        tidx = np.where((lb <= t) & (t <= ub))
+        avg_tdisp = avg_tdisp[tidx].mean()
+        avg_lam_tdisp = avg_lam_tdisp[tidx].mean()
+        avg_lam_Fr_tdisp = avg_lam_Fr_tdisp[tidx].mean()
+        avg_lam_Fr_vortz_tdisp = avg_lam_Fr_vortz_tdisp[tidx].mean()
+        avg_turb_tdisp = avg_turb_tdisp[tidx].mean()
+        avg_turb_Fr_tdisp = avg_turb_Fr_tdisp[tidx].mean()
+        avg_turb_Fr_vortz_tdisp = avg_turb_Fr_vortz_tdisp[tidx].mean()
+
+        avg_mdisp = avg_mdisp[tidx].mean()
+        avg_lam_mdisp = avg_lam_mdisp[tidx].mean()
+        avg_lam_Fr_mdisp = avg_lam_Fr_mdisp[tidx].mean()
+        avg_lam_Fr_vortz_mdisp = avg_lam_Fr_vortz_mdisp[tidx].mean()
+        avg_turb_mdisp = avg_turb_mdisp[tidx].mean()
+        avg_turb_Fr_mdisp = avg_turb_Fr_mdisp[tidx].mean()
+        avg_turb_Fr_vortz_mdisp = avg_turb_Fr_vortz_mdisp[tidx].mean()
+
+        avg_local_eta = avg_local_eta[tidx].mean()
+        avg_local_lam_eta = avg_local_lam_eta[tidx].mean()
+        avg_local_lam_Fr_eta = avg_local_lam_Fr_eta[tidx].mean()
+        avg_local_lam_Fr_vortz_eta = avg_local_lam_Fr_vortz_eta[tidx].mean()
+        avg_local_turb_eta = avg_local_turb_eta[tidx].mean()
+        avg_local_turb_Fr_eta = avg_local_turb_Fr_eta[tidx].mean()
+        avg_local_turb_Fr_vortz_eta = avg_local_turb_Fr_vortz_eta[tidx].mean()
+
+
+        avg_global_eta = avg_global_eta[tidx].mean()
+        avg_global_lam_eta = avg_global_lam_eta[tidx].mean()
+        avg_global_lam_Fr_eta = avg_global_lam_Fr_eta[tidx].mean()
+        avg_global_lam_Fr_vortz_eta = avg_global_lam_Fr_vortz_eta[tidx].mean()
+        avg_global_turb_eta = avg_global_turb_eta[tidx].mean()
+        avg_global_turb_Fr_eta = avg_global_turb_Fr_eta[tidx].mean()
+        avg_global_turb_Fr_vortz_eta = avg_global_turb_Fr_vortz_eta[tidx].mean()
+
+        vlam = vlam[tidx].mean()
+        vlam_Fr = vlam_Fr[tidx].mean()
+        vlam_Fr_vortz = vlam_Fr_vortz[tidx].mean()
+
+        vturb = vturb[tidx].mean()
+        vturb_Fr = vturb_Fr[tidx].mean()
+        vturb_Fr_vortz = vturb_Fr_vortz[tidx].mean()
+
+
+        tavg_file.write(fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,lb,ub,avg_uh,\
+            avg_tdisp,avg_mdisp,avg_local_eta,avg_global_eta,\
+            avg_lam_tdisp,avg_lam_mdisp,\
+            avg_local_lam_eta,avg_global_lam_eta,\
+            avg_turb_tdisp,avg_turb_mdisp,\
+            avg_local_turb_eta,avg_global_turb_eta,\
+            avg_lam_Fr_tdisp,avg_lam_Fr_mdisp,\
+            avg_local_lam_Fr_eta,avg_global_lam_Fr_eta,\
+            avg_turb_Fr_tdisp,avg_turb_Fr_mdisp,\
+            avg_local_turb_Fr_eta,avg_global_turb_Fr_eta,\
+            avg_lam_Fr_vortz_tdisp,avg_lam_Fr_vortz_tdisp,\
+            avg_local_lam_Fr_vortz_eta,avg_global_lam_Fr_vortz_eta,\
+            avg_turb_Fr_vortz_tdisp,avg_turb_Fr_vortz_mdisp,\
+            avg_local_turb_Fr_vortz_eta,avg_global_turb_Fr_vortz_eta,\
+            vlam,vturb,\
+            vlam_Fr,vturb_Fr,\
+            vlam_Fr_vortz,vturb_Fr_vortz))
+        tavg_file.write('\n')
         io_file.write('\n\n\n')
     io_file.write('\n\n\n')
         

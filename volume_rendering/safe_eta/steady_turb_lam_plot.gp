@@ -1,10 +1,11 @@
+reset
 set xlabel "t"
 set key center right
 
-lb = 46
-ub = 79
+lb = 0
+#ub = 300
 
-idx = 0
+idx = 7
 
 f(x) = a
 fit [lb:ub] f(x) "safe_nonrotating_steady_eta.dat"\
@@ -41,9 +42,9 @@ plot "safe_nonrotating_steady_eta.dat" \
 
 
 print "Mean of VLam: ", vlam
-print "Mean of VTurb: ", vturb
 print "Mean of VLam_Fr: ", vlam_Fr
-print "Mean of VTurb_Fr: ", vturb_Fr
 print "Mean of VLam_Fr_vortz: ", vlam_Fr_vortz
+print "Mean of VTurb: ", vturb
+print "Mean of VTurb_Fr: ", vturb_Fr
 print "Mean of VTurb_Fr_vortz: ", vturb_Fr_vortz
 print "Mean of Uh: ", uh

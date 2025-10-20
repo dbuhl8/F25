@@ -1,9 +1,12 @@
+reset
 set xlabel "t"
-set key center right
-lb = 46
-ub = 79
+set key top right
+set yrange [0:1]
+lb = 30
+ub = 80
+set xrange [lb:ub]
 
-idx = 6
+idx = 3
 
 f(x) = a
 fit [lb:ub] f(x) "safe_nonrotating_stoch_eta.dat"\
@@ -28,6 +31,10 @@ eta_lam_Fr_vortz = a
 fit [lb:ub] f(x) "safe_nonrotating_stoch_eta.dat"\
    i idx u 6:35 via a
 eta_turb_Fr_vortz = a
+fit [lb:ub] f(x) "safe_nonrotating_steady_eta.dat"\
+i idx u 6:7 via a
+uh = a
+
 
 plot "safe_nonrotating_stoch_eta.dat" \
    i idx u 6:11 pt 5 ps 2 lc rgb "green" title 'Eta',\
@@ -46,3 +53,4 @@ print "Mean of Eta Lam_Fr_vortz: ", eta_lam_Fr_vortz
 print "Mean of Eta Turb: ", eta_turb
 print "Mean of Eta Turb_Fr: ", eta_turb_Fr
 print "Mean of Eta Turb_Fr_vortz: ", eta_turb_Fr_vortz
+print "Mean of Uh: ", uh
