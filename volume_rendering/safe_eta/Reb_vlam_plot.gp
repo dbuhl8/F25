@@ -47,7 +47,7 @@ plot "steady_tavg_eta.dat" \
 set xlabel "Re_{b, eff}"
 set key top right
 #set ylabel "Eta" rotate by 0 
-set title "Using Effective Fr & {\Symbol w}_z"
+set title "Using Effective Fr & {/Symbol w}_z"
 
 plot "steady_tavg_eta.dat" \
  i idx u (($8**3)*$1/$2):41 pt 5 ps 2 lc rgb "blue" title 'Steady VLam',\

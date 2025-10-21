@@ -1,5 +1,5 @@
 reset
-set multiplot layout 1,3 columnsfirst 
+set multiplot layout 3,1 columnsfirst 
 
 idx = 0
 
@@ -12,6 +12,8 @@ set xlabel "Re_{b, eff}"
 set key top right
 set ylabel "Eta" rotate by 0 
 set title "Normal"
+set log x
+set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):12 pt 5 ps 2 lc rgb "green" title 'Steady Eta',\
@@ -31,6 +33,8 @@ set xlabel "Re_{b, eff}"
 set key top right
 set ylabel "Eta" rotate by 0 
 set title "Using Effective Fr"
+set log x
+set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):12 pt 5 ps 2 lc rgb "green" title 'Steady Eta',\
@@ -49,7 +53,9 @@ plot "steady_tavg_eta.dat" \
 set xlabel "Re_{b, eff}"
 set key top right
 set ylabel "Eta" rotate by 0 
-set title "Using Effective Fr & {\Symbol w}_z"
+set title "Using Effective Fr & {/Symbol w}_z"
+set log x
+set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):12 pt 5 ps 2 lc rgb "green" title 'Steady Eta',\
