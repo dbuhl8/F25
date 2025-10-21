@@ -1,13 +1,11 @@
 reset
 set xlabel "t"
 set key center right
-set log x
-set xrange [1e-2:1e6]
 
 lb = 46
 ub = 79
 
-idx = 3
+idx = 8
 
 f(x) = a
 fit [lb:ub] f(x) "safe_nonrotating_stoch_eta.dat"\
@@ -33,13 +31,13 @@ fit [lb:ub] f(x) "safe_nonrotating_stoch_eta.dat"\
 uh = a
 
 plot "safe_nonrotating_stoch_eta.dat" \
-   i idx u ($7**3*$1/$2):37 pt 5 ps 2 lc rgb "red" title 'VTurb',\
-"" i idx u ($7**3*$1/$2):39 pt 9 ps 2 lc rgb "red" title 'VTurb_{Fr}',\
-"" i idx u ($7**3*$1/$2):41 pt 7 ps 2 lc rgb "red" title 'VTurb_{Fr_vortz}',\
-#"" i idx u 6:36 pt 5 ps 2 lc rgb "blue" title 'VLam',\
-#"" i idx u 6:38 pt 9 ps 2 lc rgb "blue" title 'VLam_{Fr}',\
-#"" i idx u 6:40 pt 7 ps 2 lc rgb "blue" title 'VLam_{Fr,vortz}',\
-#"" i idx u 6:7 pt 5 ps 2 lc rgb "green" title 'U_h',\
+   i idx u 6:37 pt 5 ps 2 lc rgb "red" title 'VTurb',\
+"" i idx u 6:39 pt 9 ps 2 lc rgb "red" title 'VTurb_{Fr}',\
+"" i idx u 6:41 pt 7 ps 2 lc rgb "red" title 'VTurb_{Fr_vortz}',\
+"" i idx u 6:36 pt 5 ps 2 lc rgb "blue" title 'VLam',\
+"" i idx u 6:38 pt 9 ps 2 lc rgb "blue" title 'VLam_{Fr}',\
+"" i idx u 6:40 pt 7 ps 2 lc rgb "blue" title 'VLam_{Fr,vortz}',\
+"" i idx u 6:7 pt 5 ps 2 lc rgb "green" title 'U_h',\
 
 
 print "Mean of VLam: ", vlam

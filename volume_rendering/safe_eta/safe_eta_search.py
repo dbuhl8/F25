@@ -5,69 +5,19 @@ import fnmatch
 from netCDF4 import MFDataset
 from netCDF4 import Dataset
 
-Re600_Pe60=['horizontal-shear/Re600_Pe60_B100/',\
-            'horizontal-shear/Re600_Pe60_B0.1/',\
-            'horizontal-shear/Re600_Pe60_B1/',\
-            'horizontal-shear/Re600_Pe60_B10/',\
-            'horizontal-shear/Re600_Pe60_B100/',\
-            'horizontal-shear/Re600_Pe60_B1000/',\
-            'horizontal-shear/Re600_Pe60_B30/',\
-            'horizontal-shear/Re600_Pe60_B3000/',\
-            'horizontal-shear/Re600_Pe60_B400/',\
-            'horizontal-shear/Re600_Pe60_B6000/']
+Re600_Pe60=['B300Re600Pe60/','B180Re600Pe60/','B100Re600Pe60/','B30Re600Pe60/',\
+            'B10Re600Pe60/','B3Re600Pe60/','B1Re600Pe60/']
 
-Re600_Pe60_bounds=[[150,300],[275,400],[180,320],\
-    [220,450],[150,300],[500,900],[375,560],[650,900],\
-    [225,460],[40,180]]
+Re600_Pe60_bounds=[[40,80],[40,90],[45,160],\
+    [35,80],[50,250],[55,110],[45,125]]
 
-Re600_Pe30=['horizontal-shear/Re600_Pe30_B10/',\
-            'horizontal-shear/Re600_Pe30_B100/',\
-            'horizontal-shear/Re600_Pe30_B30/']
+Re1000_Pe100 = ['B100Re1000Pe100/', 'B10Re1000Pe100/']
 
-Re600_Pe30_bounds=[[260,300],[300,400],[400,480]]
+Re1000_Pe100_bounds=[[40,70],[70,110]]
 
-Re1000_Pe100 = ['horizontal-shear/Re1000_Pe100_B10/',\
-                'horizontal-shear/Re1000_Pe100_B100/',\
-                'horizontal-shear/Re1000_Pe100_B3/',\
-                'horizontal-shear/Re1000_Pe100_B30/',\
-                'horizontal-shear/Re1000_Pe100_B300/']
+simulations = [Re600_Pe60, Re1000_Pe100]
 
-Re1000_Pe100_bounds=[[35,65],[91,92],[85,86],[63,64],[91,92]]
-
-Re300_Pe30=['horizontal-shear/Re300_Pe30_B0.01/',\
-            'horizontal-shear/Re300_Pe30_B0.1/',\
-            'horizontal-shear/Re300_Pe30_B1/',\
-            'horizontal-shear/Re300_Pe30_B10/',\
-            'horizontal-shear/Re300_Pe30_B100/',\
-            'horizontal-shear/Re300_Pe30_B1000/',\
-            'horizontal-shear/Re300_Pe30_B10000/',\
-            'horizontal-shear/Re300_Pe30_B30/',\
-            'horizontal-shear/Re300_Pe30_B300/']
-
-Re300_Pe30_bounds = [[370,460],[260,460],[140,280],[60,160],\
-    [300,1200],[800,1300],[1050,1450],[50,300],[300,900]]
-
-Re1000_Pe10 = ['horizontal-shear/Re1000_Pe10_B10/',\
-               'horizontal-shear/Re1000_Pe10_B100/',\
-               'horizontal-shear/Re1000_Pe10_B1000/',\
-               'horizontal-shear/Re1000_Pe10_B3/']
-
-Re1000_Pe10_bounds = [[35,40],[35,70],[94,95],[62,63]]
-
-# cant do this directory as it is not accessible from dbuhl's account
-Re300_Pe01=['horizontal-shear/Re300_B1_Pe0.1/',\
-            'horizontal-shear/Re300_B100_Pe0.1/',\
-            'horizontal-shear/Re300_B1000_Pe0.1/',\
-            'horizontal-shear/Re300_B10000_Pe0.1/',\
-            'horizontal-shear/Re300_B3_Pe0.1/',\
-            'horizontal-shear/Re300_B3000_Pe0.1/',\
-            'horizontal-shear/Re300_B6000_Pe0.1/']
-
-simulations = [Re600_Pe60, Re600_Pe30, Re1000_Pe100, Re300_Pe30,\
-    Re1000_Pe10]
-
-bounds = [Re600_Pe60_bounds, Re600_Pe30_bounds, Re1000_Pe100_bounds,\
-    Re300_Pe30_bounds,Re1000_Pe10_bounds]
+bounds = [Re600_Pe60_bounds, Re1000_Pe100_bounds]
 
 # preparing output file
 header_string = "#" + "{:<s}    "*41
@@ -106,8 +56,8 @@ tavg_header_string = tavg_header_string.format('Re','B','Pr', 'Pe', 'BPe',\
     'vlam_Fr', 'vturb_Fr',\
     'vlam_Fr_vortz', 'vturb_Fr_vortz')
 
-io_file = open('safe_nonrotating_steady_eta.dat','w')
-tavg_file = open('steady_tavg_eta.dat','w')
+io_file = open('safe_nonrotating_stoch_eta.dat','w')
+tavg_file = open('stoch_tavg_eta.dat','w')
 io_file.write(header_string)
 tavg_file.write(tavg_header_string)
 io_file.write('\n')
@@ -408,7 +358,7 @@ for m, sim_set in enumerate(simulations):
             avg_local_lam_Fr_eta[i],avg_global_lam_Fr_eta[i],\
             avg_turb_Fr_tdisp[i],avg_turb_Fr_mdisp[i],\
             avg_local_turb_Fr_eta[i],avg_global_turb_Fr_eta[i],\
-            avg_lam_Fr_vortz_tdisp[i],avg_lam_Fr_vortz_tdisp[i],\
+            avg_lam_Fr_vortz_tdisp[i],avg_lam_Fr_vortz_mdisp[i],\
             avg_local_lam_Fr_vortz_eta[i],avg_global_lam_Fr_vortz_eta[i],\
             avg_turb_Fr_vortz_tdisp[i],avg_turb_Fr_vortz_mdisp[i],\
             avg_local_turb_Fr_vortz_eta[i],avg_global_turb_Fr_vortz_eta[i],\
@@ -419,8 +369,13 @@ for m, sim_set in enumerate(simulations):
 
         # do temporal averages and write to file
         lb, ub = bounds[m][n]
+        print('LB: ', lb, ', UB: ', ub)
         tidx = np.where((lb <= t) & (t <= ub))
+
+        avg_uh = avg_uh[tidx].mean()
+
         avg_tdisp = avg_tdisp[tidx].mean()
+        print('Shape/Value of avg_tdisp: ', avg_tdisp)
         avg_lam_tdisp = avg_lam_tdisp[tidx].mean()
         avg_lam_Fr_tdisp = avg_lam_Fr_tdisp[tidx].mean()
         avg_lam_Fr_vortz_tdisp = avg_lam_Fr_vortz_tdisp[tidx].mean()
@@ -462,7 +417,7 @@ for m, sim_set in enumerate(simulations):
         vturb_Fr_vortz = vturb_Fr_vortz[tidx].mean()
 
 
-        tavg_file.write(fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,lb,ub,avg_uh,\
+        tavg_file.write(tavg_fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,lb,ub,avg_uh,\
             avg_tdisp,avg_mdisp,avg_local_eta,avg_global_eta,\
             avg_lam_tdisp,avg_lam_mdisp,\
             avg_local_lam_eta,avg_global_lam_eta,\
@@ -472,7 +427,7 @@ for m, sim_set in enumerate(simulations):
             avg_local_lam_Fr_eta,avg_global_lam_Fr_eta,\
             avg_turb_Fr_tdisp,avg_turb_Fr_mdisp,\
             avg_local_turb_Fr_eta,avg_global_turb_Fr_eta,\
-            avg_lam_Fr_vortz_tdisp,avg_lam_Fr_vortz_tdisp,\
+            avg_lam_Fr_vortz_tdisp,avg_lam_Fr_vortz_mdisp,\
             avg_local_lam_Fr_vortz_eta,avg_global_lam_Fr_vortz_eta,\
             avg_turb_Fr_vortz_tdisp,avg_turb_Fr_vortz_mdisp,\
             avg_local_turb_Fr_vortz_eta,avg_global_turb_Fr_vortz_eta,\

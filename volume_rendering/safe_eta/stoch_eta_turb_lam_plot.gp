@@ -1,12 +1,11 @@
 reset
 set xlabel "t"
 set key top right
-set yrange [0:1]
+#set yrange [0:1]
 lb = 30
 ub = 80
-set xrange [lb:ub]
 
-idx = 3
+idx = 5
 
 f(x) = a
 fit [lb:ub] f(x) "safe_nonrotating_stoch_eta.dat"\
@@ -37,7 +36,7 @@ uh = a
 
 
 plot "safe_nonrotating_stoch_eta.dat" \
-   i idx u 6:11 pt 5 ps 2 lc rgb "green" title 'Eta',\
+   i idx u 6:7 pt 5 ps 2 lc rgb "green" title 'Eta',\
 "" i idx u 6:15 pt 5 ps 2 lc rgb "blue" title 'Eta Lam',\
 "" i idx u 6:19 pt 5 ps 2 lc rgb "red" title 'Eta Turb',\
 "" i idx u 6:23 pt 9 ps 2 lc rgb "blue" title 'Eta Lam_{Fr}',\
