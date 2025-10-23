@@ -63,11 +63,15 @@ Re300_Pe01=['horizontal-shear/Re300_B1_Pe0.1/',\
             'horizontal-shear/Re300_B3000_Pe0.1/',\
             'horizontal-shear/Re300_B6000_Pe0.1/']
 
-simulations = [Re600_Pe60, Re600_Pe30, Re1000_Pe100, Re300_Pe30,\
-    Re1000_Pe10]
+sims = ['B30Re600Pe60_stoch/']
+sim_bounds = [[35,80]]
 
-bounds = [Re600_Pe60_bounds, Re600_Pe30_bounds, Re1000_Pe100_bounds,\
-    Re300_Pe30_bounds,Re1000_Pe10_bounds]
+simulations = [sims]
+#simulations = [Re600_Pe60,Re600_Pe30, Re1000_Pe100, Re300_Pe30,\
+    #Re1000_Pe10]
+bounds = [sim_bounds]
+#bounds = [Re600_Pe60_bounds, Re600_Pe30_bounds, Re1000_Pe100_bounds,\
+    #Re300_Pe30_bounds,Re1000_Pe10_bounds]
 
 # preparing output file
 header_string = "#" + "{:<s}    "*52
@@ -75,7 +79,7 @@ tavg_header_string = "#" + "{:<s}    "*53
 fmt_str = "{:.4e}    "*52
 tavg_fmt_str = "{:.4e}    "*53
 # 20 columns
-header_string = header_string.format('Re','B','Pr', 'Pe', 'BPe', 't', 'avg_uh',\
+header_string = header_string.format('Re','B','Pr', 'Pe', 'BPe', 't', 'uh_rms',\
     'tdisp', 'mdisp', 'eta (local)', 'eta (global)', \
     'lam tdisp', 'lam mdisp', 'lam eta (local)', 'lam eta (global)', \
     'lam_Fr tdisp', 'lam_Fr mdisp',\
@@ -89,13 +93,13 @@ header_string = header_string.format('Re','B','Pr', 'Pe', 'BPe', 't', 'avg_uh',\
     'turb_Fr_vortz eta (local)', 'turb_Fr_vortz eta (global)', \
     'vlam', 'vturb',\
     'vlam_Fr', 'vturb_Fr',\
-    'vlam_Fr_vortz', 'vturb_Fr_vortz'\
+    'vlam_Fr_vortz', 'vturb_Fr_vortz',\
     'wrms', 'lam wrms', 'turb wrms', 'lam_Fr wrms', 'turb_Fr wrms',\
     'lam_Fr_vortz wrms', 'turb_Fr_vortz wrms',\
     'lam wrms wght', 'turb wrms wght',\
     'lam wrms eff wght', 'turb wrms eff wght')
 tavg_header_string = tavg_header_string.format('Re','B','Pr', 'Pe', 'BPe',\
-    'lb','ub','avg_uh','tdisp', 'mdisp', 'eta (local)', 'eta (global)', \
+    'lb','ub','uh_rms','tdisp', 'mdisp', 'eta (local)', 'eta (global)', \
     'lam tdisp', 'lam mdisp', 'lam eta (local)', 'lam eta (global)', \
     'lam_Fr tdisp', 'lam_Fr mdisp',\
     'lam_Fr eta (local)', 'lam_Fr eta (global)', \
@@ -108,7 +112,7 @@ tavg_header_string = tavg_header_string.format('Re','B','Pr', 'Pe', 'BPe',\
     'turb_Fr_vortz eta (local)', 'turb_Fr_vortz eta (global)', \
     'vlam', 'vturb',\
     'vlam_Fr', 'vturb_Fr',\
-    'vlam_Fr_vortz', 'vturb_Fr_vortz'\
+    'vlam_Fr_vortz', 'vturb_Fr_vortz',\
     'wrms', 'lam wrms', 'turb wrms', 'lam_Fr wrms', 'turb_Fr wrms',\
     'lam_Fr_vortz wrms', 'turb_Fr_vortz wrms',\
     'lam wrms wght', 'turb wrms wght',\
@@ -138,7 +142,7 @@ for m, sim_set in enumerate(simulations):
         Re = 0
         Pe = 0
         t_tot = np.array([])
-        avg_uh = np.array([])
+        uh_rms = np.array([])
 
 
 
@@ -200,6 +204,7 @@ for m, sim_set in enumerate(simulations):
 
         for j, fn in enumerate(simdat_files):
             # inject extraction routine here
+            print(f'Opening simdat file: {fn}')
             cdf_file = Dataset(fn,exclude='Chem')
 
             x = np.array(cdf_file.variables["x"])
@@ -254,11 +259,14 @@ for m, sim_set in enumerate(simulations):
             del uy
             del uz
 
+            def rms(field):
+                return np.sqrt((field**2).mean())
+
             for i in range(Nt):
 
                 # recording timestep and average uh
                 t_tot = np.append(t_tot, t[i])
-                avg_uh = np.append(avg_uh,uh[i,:,:,:].mean())
+                uh_rms = np.append(uh_rms,rms(uh[i,:,:,:]))
 
                 # eta = (thermal dissipation) / (total energy dissipation)
                 # eta = pf1*tdisp / (pf1*tdisp + pf2*mdisp)
@@ -269,96 +277,91 @@ for m, sim_set in enumerate(simulations):
                 idx_turb = np.where(vortz[i,:,:,:]**2 > 1./Fr)
                 # with rescaling to the effective Froude number
                 # effective Froude number: Fr_eff = Fr_input * uh_rms
-                idx_lam_Fr = np.where(vortz[i,:,:,:]**2<=1./(Fr*avg_uh[-1]))
-                idx_turb_Fr = np.where(vortz[i,:,:,:]**2>1./(Fr*avg_uh[-1]))
+                idx_lam_Fr = np.where(vortz[i,:,:,:]**2<=1./(Fr*uh_rms[-1]))
+                idx_turb_Fr = np.where(vortz[i,:,:,:]**2>1./(Fr*uh_rms[-1]))
                 # with rescaling to the effective Froude and vortz
                 # effective vortz: vortz_eff = vortz/uh_rms
                 # vortz**2 <= uh/Fr
                 idx_lam_Fr_vortz = np.where(vortz[i,:,:,:]**2 <=\
-                    avg_uh[-1]/Fr)
+                    uh_rms[-1]/Fr)
                 idx_turb_Fr_vortz = np.where(vortz[i,:,:,:]**2 >\
-                    avg_uh[-1]/Fr)
+                    uh_rms[-1]/Fr)
 
 
                 # computing local eta
-                avg_local_eta = np.append(avg_local_eta,eta[i,:,:,:].mean())
+                avg_local_eta = np.append(avg_local_eta,db.rms(eta[i,:,:,:]))
                 avg_local_lam_eta = np.append(avg_local_lam_eta,\
-                    eta[i,idx_lam[0],idx_lam[1],idx_lam[2]].mean())
+                    db.rms(eta[i,*idx_lam]))
                 avg_local_turb_eta = np.append(avg_local_turb_eta,\
-                    eta[i,idx_turb[0],idx_turb[1],idx_turb[2]].mean())
+                    db.rms(eta[i,*idx_turb]))
 
                 avg_local_lam_Fr_eta = np.append(avg_local_lam_Fr_eta,\
-                    eta[i,idx_lam_Fr[0],idx_lam_Fr[1],idx_lam_Fr[2]].mean())
+                    db.rms(eta[i,*idx_lam_Fr]))
                 avg_local_turb_Fr_eta = np.append(avg_local_turb_Fr_eta,\
-                    eta[i,idx_turb_Fr[0],idx_turb_Fr[1],idx_turb_Fr[2]].mean())
+                    db.rms(eta[i,*idx_turb_Fr]))
                 avg_local_lam_Fr_vortz_eta = np.append(avg_local_lam_Fr_vortz_eta,\
-                    eta[i,idx_lam_Fr_vortz[0],idx_lam_Fr_vortz[1],\
-                    idx_lam_Fr_vortz[2]].mean())
+                    db.rms(eta[i,*idx_lam_Fr_vortz]))
                 avg_local_turb_Fr_vortz_eta = np.append(avg_local_turb_Fr_vortz_eta,\
-                    eta[i,idx_turb_Fr_vortz[0],idx_turb_Fr_vortz[1],\
-                    idx_turb_Fr_vortz[2]].mean())
+                    db.rms(eta[i,*idx_turb_Fr_vortz]))
 
                 # computing wrms (and weighted version)
-                vortz_rms = np.sqrt(np.sum(vortz**2)/np_tot)
-                vortz_inv_rms = np.sqrt(np.sum(vortz**-2)/np_tot)
+                eps = 1e-8 # to protect against nans
+                vortz_rms = db.rms(vortz[i,:,:,:]**2)
+                vortz_inv_rms =\
+                    np.sqrt(np.sum(1./np.maximum(vortz[i,:,:,:]**2,eps))/np_tot)
 
-                avg_wrms = np.append(avg_wrms,wrms[i,:,:,:].mean())
+                avg_wrms = np.append(avg_wrms,db.rms(wrms[i,:,:,:]))
                 avg_lam_wrms = np.append(avg_lam_wrms,\
-                    wrms[i,idx_lam[0],idx_lam[1],idx_lam[2]].mean())
+                    db.rms(wrms[i,*idx_lam]))
                 avg_turb_wrms = np.append(avg_turb_wrms,\
-                    wrms[i,idx_turb[0],idx_turb[1],idx_turb[2]].mean())
+                    db.rms(wrms[i,*idx_turb]))
                 avg_lam_Fr_wrms = np.append(avg_lam_Fr_wrms,\
-                    wrms[i,idx_lam_Fr[0],idx_lam_Fr[1],idx_lam_Fr[2]].mean())
+                    db.rms(wrms[i,*idx_lam_Fr]))
                 avg_turb_Fr_wrms = np.append(avg_turb_Fr_wrms,\
-                    wrms[i,idx_turb_Fr[0],idx_turb_Fr[1],idx_turb_Fr[2]].mean())
+                    db.rms(wrms[i,*idx_turb_Fr]))
                 avg_lam_Fr_vortz_wrms = np.append(avg_lam_Fr_vortz_wrms,\
-                    wrms[i,idx_lam_Fr_vortz[0],idx_lam_Fr_vortz[1],\
-                    idx_lam_Fr_vortz[2]].mean())
+                    db.rms(wrms[i,*idx_lam_Fr_vortz]))
                 avg_turb_Fr_vortz_wrms = np.append(avg_turb_Fr_vortz_wrms,\
-                    wrms[i,idx_turb_Fr_vortz[0],idx_turb_Fr_vortz[1],\
-                    idx_turb_Fr_vortz[2]].mean())
+                    db.rms(wrms[i,*idx_turb_Fr_vortz]))
 
                 avg_lam_wrms_wght = np.append(avg_lam_wrms_wght,\
-                    np.sqrt(np.sum(wrms**2*vortz**-2)/np_tot)/vortz_inv_rms)
+                    np.sqrt(np.sum(wrms[i,:,:,:]**2/\
+                    np.maximum(vortz[i,:,:,:]**2,eps))/np_tot)/vortz_inv_rms)
                 avg_turb_wrms_wght = np.append(avg_turb_wrms_wght,\
-                    np.sqrt(np.sum(wrms**2*vortz**2)/np_tot)/vortz_rms)
+                    db.rms(wrms[i,:,:,:]*vortz[i,:,:,:])/vortz_rms)
                 avg_lam_wrms_eff_wght = np.append(avg_lam_wrms_eff_wght,\
-                    avg_lam_wrms_wght[-1]/avg_uh[-1])
+                    avg_lam_wrms_wght[-1]/uh_rms[-1])
                 avg_turb_wrms_eff_wght = np.append(avg_turb_wrms_eff_wght,\
-                    avg_turb_wrms_wght[-1]/avg_uh[-1])
+                    avg_turb_wrms_wght[-1]/uh_rms[-1])
 
                 # computing avg tdisp and mdisp
-                avg_tdisp = np.append(avg_tdisp,tdisp[i,:,:,:].mean())
+                avg_tdisp = np.append(avg_tdisp,db.rms(tdisp[i,:,:,:]))
                 avg_lam_tdisp = np.append(avg_lam_tdisp,\
-                    tdisp[i,idx_lam[0],idx_lam[1],idx_lam[2]].mean())
+                    db.rms(tdisp[i,*idx_lam]))
                 avg_turb_tdisp = np.append(avg_turb_tdisp,\
-                    tdisp[i,idx_turb[0],idx_turb[1],idx_turb[2]].mean())
+                    db.rms(tdisp[i,*idx_turb]))
                 avg_lam_Fr_tdisp = np.append(avg_lam_Fr_tdisp,\
-                    tdisp[i,idx_lam_Fr[0],idx_lam_Fr[1],idx_lam_Fr[2]].mean())
+                    db.rms(tdisp[i,*idx_lam_Fr]))
                 avg_turb_Fr_tdisp = np.append(avg_turb_Fr_tdisp,\
-                    tdisp[i,idx_turb_Fr[0],idx_turb_Fr[1],idx_turb_Fr[2]].mean())
+                    db.rms(tdisp[i,*idx_turb_Fr]))
                 avg_lam_Fr_vortz_tdisp = np.append(avg_lam_Fr_vortz_tdisp,\
-                    tdisp[i,idx_lam_Fr_vortz[0],idx_lam_Fr_vortz[1],\
-                    idx_lam_Fr_vortz[2]].mean())
+                    db.rms(tdisp[i,*idx_lam_Fr_vortz]))
                 avg_turb_Fr_vortz_tdisp = np.append(avg_turb_Fr_vortz_tdisp,\
-                    tdisp[i,idx_turb_Fr_vortz[0],idx_turb_Fr_vortz[1],\
-                    idx_turb_Fr_vortz[2]].mean())
+                    db.rms(tdisp[i,*idx_turb_Fr_vortz]))
 
-                avg_mdisp = np.append(avg_mdisp, mdisp[i,:,:,:].mean())
+                avg_mdisp = np.append(avg_mdisp,db.rms(mdisp[i,:,:,:]))
                 avg_lam_mdisp = np.append(avg_lam_mdisp,\
-                    mdisp[i,idx_lam[0],idx_lam[1],idx_lam[2]].mean())
+                    db.rms(mdisp[i,*idx_lam]))
                 avg_turb_mdisp = np.append(avg_turb_mdisp,\
-                    mdisp[i,idx_turb[0],idx_turb[1],idx_turb[2]].mean())
+                    db.rms(mdisp[i,*idx_turb]))
                 avg_lam_Fr_mdisp = np.append(avg_lam_Fr_mdisp,\
-                    mdisp[i,idx_lam_Fr[0],idx_lam_Fr[1],idx_lam_Fr[2]].mean())
+                    db.rms(mdisp[i,*idx_lam_Fr]))
                 avg_turb_Fr_mdisp = np.append(avg_turb_Fr_mdisp,\
-                    mdisp[i,idx_turb_Fr[0],idx_turb_Fr[1],idx_turb_Fr[2]].mean())
+                    db.rms(mdisp[i,*idx_turb_Fr]))
                 avg_lam_Fr_vortz_mdisp = np.append(avg_lam_Fr_vortz_mdisp,\
-                    mdisp[i,idx_lam_Fr_vortz[0],idx_lam_Fr_vortz[1],\
-                    idx_lam_Fr_vortz[2]].mean())
+                    db.rms(mdisp[i,*idx_lam_Fr_vortz]))
                 avg_turb_Fr_vortz_mdisp = np.append(avg_turb_Fr_vortz_mdisp,\
-                    mdisp[i,idx_turb_Fr_vortz[0],idx_turb_Fr_vortz[1],\
-                    idx_turb_Fr_vortz[2]].mean())
+                    db.rms(mdisp[i,*idx_turb_Fr_vortz]))
 
                 # computing global eta
                 avg_global_eta = np.append(avg_global_eta,\
@@ -404,7 +407,7 @@ for m, sim_set in enumerate(simulations):
         t, indices = np.unique(t_tot,return_index=True)
         del t_tot
 
-        avg_uh = avg_uh[indices]
+        uh_rms = uh_rms[indices]
 
         avg_wrms = avg_wrms[indices]
         avg_lam_wrms = avg_lam_wrms[indices]
@@ -470,7 +473,7 @@ for m, sim_set in enumerate(simulations):
         index_counter += 1
         # write to output file
         for i in range(Nt):
-            io_file.write(fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,t[i],avg_uh[i],\
+            io_file.write(fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,t[i],uh_rms[i],\
             avg_tdisp[i],avg_mdisp[i],avg_local_eta[i],avg_global_eta[i],\
             avg_lam_tdisp[i],avg_lam_mdisp[i],\
             avg_local_lam_eta[i],avg_global_lam_eta[i],\
@@ -498,7 +501,7 @@ for m, sim_set in enumerate(simulations):
         lb, ub = bounds[m][n]
         tidx = np.where((lb <= t) & (t <= ub))
 
-        avg_uh = avg_uh[tidx].mean()
+        uh_rms = uh_rms[tidx].mean()
 
         avg_wrms = avg_wrms[tidx].mean()
         avg_lam_wrms = avg_lam_wrms[tidx].mean()
@@ -554,7 +557,7 @@ for m, sim_set in enumerate(simulations):
         vturb_Fr_vortz = vturb_Fr_vortz[tidx].mean()
 
 
-        tavg_file.write(tavg_fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,lb,ub,avg_uh,\
+        tavg_file.write(tavg_fmt_str.format(Re,B,Pe/Re,Pe,B*Pe,lb,ub,uh_rms,\
             avg_tdisp,avg_mdisp,avg_local_eta,avg_global_eta,\
             avg_lam_tdisp,avg_lam_mdisp,\
             avg_local_lam_eta,avg_global_lam_eta,\
