@@ -110,13 +110,207 @@
 \setlength{\parindent}{0pt}
 
 \section{Fair Gambler's Ruin}
+    \begin{proof}
+        \begin{align*}
+            u(x,t) &= Pr(X(\tau) > 0, \tau \in [0,t] \& X(t) > c_0 | X(0) =
+            x)\\
+            &= E(Pr(A | X(dt) = x + dW) + d(dt)\\
+            &= E(u(x+dW, t-dt))\\
+            &= E\left[u(x,t) + u_x dW - u_t dt + u_{xx}dW^2/2 +
+            o(dt^{3/2})\right]\\
+            &= u(x,t) - u_tdt + u_{xx}dt/2\\
+            u_t &= \frac{1}{2}u_xx
+            \\
+            u(0,t) = 0, &\quad u(x,0) = \begin{cases}1 & x > c_0\\0 &
+            0<x<c_0\end{cases}
+        \end{align*}
+    \end{proof}
 
 \section{Solving the IBVP}
+    \begin{enumerate}[label=\roman*)]
+        \item We use the odd extension, 
+        \begin{align*}
+            u_t &= \frac{1}{2}u_xx
+            \\
+            u(0,t) = 0, &\quad u(x,0) = \begin{cases}1 & x > c_0\\0 &
+            -c_0<x<c_0\\ -1 & x < -c_0\end{cases}
+        \end{align*}
+        \item 
+        \begin{align*}
+            u(x,t) &= \frac{1}{\sqrt{2\pi t}} \int_{-\infty}{\infty}
+            e^{-\xi^2/2t} f(x-\xi)d\xi\\
+            &= \frac{1}{\sqrt{2\pi t}} \int_{-\infty}{x-c_0}
+            e^{-\xi^2/2t}d\xi - \int_{x + c_0}{\infty}
+            e^{-\xi^2/2t}d\xi
+        \end{align*}
+        \item 
+            By a goemetric argument we can state that $d = x+c_0$ and $b =
+            |x-c_0|$, $a = d-b$ (note that we are guaraneed $d > 0$). 
+            \begin{align*}
+                u(x,t) &= \frac{1}{\sqrt{2\pi t}} \int_0^a e^{\xi^2/2t}d\xi 
+                \\
+                &= \frac{1}{2}\erf\left(\frac{a}{\sqrt{2t}}\right)
+                \\
+                &= \frac{1}{2}\erf\left(\frac{x+c_0 - |x-c_0|}{\sqrt{2t}}\right)
+            \end{align*}
+    \end{enumerate}
 
 \section{Solve the BVP}
+    \begin{enumerate}[label=\roman*)]
+        \item We have, 
+        \begin{align*}
+            \frac{d}{dx}\left(T_x - 2mT\right) &= -2
+            \\
+            \left(T_x - 2mT\right) &= -2x + c
+            \\
+            e^{-2mx}\left(T_x - 2mT\right) &= (-2x + c)e^{-2mx}
+            \\
+            e^{-2mx}T &= \int (-2x+c)e^{-2mx}dx
+            \\
+            T(x) &= e^{2mx}\int (-2x+c)e^{-2mx}dx
+            \\
+            &= e^{2mx}\left(ce^{-2mx} + \frac{x}{m}e^{-2mx} +
+            \frac{1}{2m^2}e^{-2mx} + c_2\right)
+            \\
+            &= c + \frac{x}{m} + \frac{1}{2m^2} + c_2e^{2mx}
+            \\
+            &= \frac{x}{m} - \frac{C}{m}\left(\frac{e^{2mx} - 1}{e^{2mC} -
+            2}\right), \quad (\text{applying BC})
+        \end{align*}
+        where solving for the BC looks like
+        \begin{align*}
+            T(0) &= c_1 + 0 + \frac{1}{2m^2} + c_2 = 0\\
+            T(C) &= c_1 + \frac{C}{m} + \frac{1}{2m^2} + c_2e^{2mC} = 0\\
+            c_1 &= -c_2 - \frac{1}{2m^2}
+            \\
+            0 &= \frac{C}{m} + c_2\left(e^{2mC} - 1\right)
+            \\
+            c_2 &= -\frac{C}{m}\left(e^{2mC} - 1\right)^{-1}
+            \\
+            T(x) &= \frac{x}{m} - \frac{C}{m}\frac{e^{2mx} - 1}{e^{2mC} - 1}
+        \end{align*}
+    \end{enumerate}
 
 \section{Confirming Ito's Lemma}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+        \begin{align*}
+            E(X_j^4) &=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{\infty} x^4e^{-x^2/2}dx
+            \\
+            &= \sqrt{\frac{2}{\pi}} \int_{0}^{\infty}
+            x^3\left(xe^{-x^2/2}\right)dx\\
+            &=  \sqrt{\frac{2}{\pi}} 3\int_{0}^{\infty}
+            x\left(xe^{-x^2/2}\right)dx\\
+            &= \sqrt{\frac{2}{\pi}} 3\int_{0}^{\infty}
+            e^{-x^2/2}dx\\
+            &= 3
+            \\
+            E(dW_j^4) &= E((\sqrt{dt})^4X_j) = 3dt^2
+        \end{align*}
+        \item Since each $dW_j$ is iid we have,
+        \begin{align*}
+            E(Q_n) &= \sum_{j=0}^{n-1} E(2t_jdW_j^2)\\
+            &= \sum_{j=0}^{n-1} 2t_jE(dW_j^2) 
+            \\
+            &= \sum_{j=0}^{n-1} 2t_jdt
+            \\
+            \Var(Q_n) &=\sum_{j=0}^{n-1} \Var(2t_jdW_j^2) \\
+            &=   \sum_{j=0}^{n-1} 4t_j^2\Var(dW_j^2)
+            \\
+            &=   \sum_{j=0}^{n-1} 4t_j^2dt^2\Var(X_j^2)
+            \\
+            &=   \sum_{j=0}^{n-1} 8t_j^2dt^2
+            \\
+            \lim_{n\to\infty}\sum_{j=0}^{n-1} 2t_jdt &=
+            \lim_{n\to\infty}\frac{2t_f^2}{n^2}\sum_{j=0}^{n-1} j
+            \\
+            &= \lim_{n\to\infty}\frac{2t_f^2}{n^2}(n-1)(n-2)/2
+            \\
+            &= t_f^2 = \int_0^{t_f} 2tdt
+            \\
+            \lim_{n\to\infty}\Var(Q_n) &=  \frac{8t_f^4}{n^4}\sum_{j=0}^{n-1} j^2 
+            \\
+            &= \frac{8t_f^4}{n^4}O(n^3) = 0 
+        \end{align*}
+    \end{enumerate}
 
-\section{}
+\section{Showing brownian motion is iid}
+    \begin{enumerate}[label=\roman*)]
+        \item We begin by writing $X1 = W_3 - W_2$, $X2 = W_2 - W_1$ and $Y =
+        W1$. 
+        We attempt to show that $P(X1|X2,Y) = P(X_1)$. 
+        \begin{align*}
+            P(X1|X2,Y) &= \frac{P(X1,X2 \& Y)}{P(X2 \& Y}
+            \\
+            &= \frac{P(X1)P(X2)P(Y)}{P(X2)P(Y)} = P(X1)
+        \end{align*}
+        where this simplification requires that we know that $X1$ and $X2$ are
+        iid by the definition of brownian motion and that neither $X1$ and $X2$
+        depend on $Y$ (since they are distributed as $N(0,dt)$). 
+        This shows that $X1$ is independent of $X2$ and $Y$ and more
+        specifically, 
+        $W_3 \sim W_2 + \sqrt{dt}N(0,1) = N(W_2,dt)$
+        Therefore we can make the statement, 
+        \[(W(t_3)|W(t_2) = w_2, W(t_1) = w_1) \sim (W(t_3)|W(t_2) = w_2)\]
+        \item The same argument holds for 
+        \[(W(t_2)|W(t_3) = w_3, W(t_4) = w_4) \sim (W(t_2)|W(t_3) = w_3)\]
+        except here we define $X1 = W_2 - W_3$, $X2 = W_3 - W_4$, and $Y = W4$.
+        The same exact argument holds and there is no sign change because the
+        brownian increment is symmetrically distributed about zero (i.e. $dW_{32}
+        \sim dW_{23}$)
+    \end{enumerate}
+
+\section{Stationary Process}
+    \begin{align*}
+        R(\tau) &= E(Z(s+\tau)Z(s))
+        \\
+        &= \frac{1}{\Delta t^2}E\left[
+        (W(s + \tau + \Delta t)-W(s + \tau))(W(s + \Delta t)-W(s))\right]
+        \\
+        &= \frac{1}{\Delta t^2}E\left[
+        (a - b)(b - c)\right],\quad a = W(s + \tau + \Delta t)-W(s + \Delta t)
+        \\
+        b = W(s + \Delta t) - W(s + \tau) & \quad c = W(s + \tau) - W(s)
+        \\
+        &= \frac{1}{\Delta t^2}E\left[ab + ac + bb + bc\right]
+        \\
+        &= \frac{1}{\Delta t^2}E\left[bb\right] = \frac{\Delta t - \tau}{\Delta
+        t^2}
+    \end{align*}
+    This is, of course, for the case where $\Delta t > \tau$ and so the
+    differences $dW$ are not independent, i.e. there is some overlap in the two
+    differences in time. In the case where $\tau > \Delta t$ there is no overlap
+    and the two differences are independent and identically distributied as
+    $N(0,dt)$. That is, $R(\tau) = 0$ when $\tau > \Delta t$. 
+
+\section{Numerical Itos Lemma}
+    \begin{enumerate}[label=\roman*)]
+        \item See Figure \ref{fig:p7pb}
+        \item See Figure \ref{fig:p7pb}
+        \item See Figure \ref{fig:p7pc}
+    \end{enumerate}
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=\textwidth]{prob7_pb.png}
+    \caption{Numerical Results for problem 7 part b}
+    \label{fig:p7pb}
+\end{figure}
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=\textwidth]{prob7_pc.png}
+    \caption{Numerical Results for problem 7 part c}
+    \label{fig:p7pc}
+\end{figure}
+
+\section{Refined Sampling for Wiener Process}
+See Figure \ref{fig:p8}
+
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=\textwidth]{prob8.png}
+    \caption{Numerical Results for problem 8}
+    \label{fig:p8}
+\end{figure}
 
 \end{document}
