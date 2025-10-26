@@ -109,4 +109,142 @@
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
 
+\section{Time Reversability of Brownian Bridge}
+
+\section{Convergence in Probability}
+    We have, 
+    \begin{align*}
+        \lim_{n\to\infty}\Var(Q_n(w)) &= 0
+        \\
+        &= \lim_{n\to\infty}\left(E(Q_n^2) - E^2(Q_n)\right)
+        \\
+        \lim_{n\to\infty} E(Q_n^2) &= q^2
+        \\
+        \lim_{n\to\infty}E(|Q_n - q|^2) &\ge
+        \varepsilon^2\lim_{n\to\infty}Pr(|Q_n - q| \ge \varepsilon)
+        \\
+        \lim_{n\to\infty}Pr(|Q_n - q| \ge \varepsilon) \le 0
+    \end{align*}
+    thus we can state that $\{Q_n\}$ converges to $q$ in probability as $n \to
+    \infty$. 
+
+\section{Gaussians}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                I_2 &= \int_0^T\cos\left(n\pi\frac{t}{T}\right)dW(t)
+                \\
+                &= \int_0^T\cos\left(n\pi\frac{t}{T}\right)\sqrt{dt}N(0,1)
+                \\
+                &= N\left(0, \int_0^T\cos^2\left(n\pi\frac{t}{T}\right)dt\right)
+                \\
+                &= N\left(0, \frac{1}{2}\int_0^T1 + \cos\left(2n\pi\frac{t}{T}\right)dt\right)
+                \\
+                &= N\left(0,
+                \frac{T}{2}+\frac{T}{2n\pi}\sin\left(2n\pi\frac{t}{T}\right)\Big|_0^T\right)
+                \\
+                &= N\left(0, \frac{T}{2}\right)
+            \end{align*}
+            Thus we have, $E(I_2) = 0$ and $\Var(I_2) = T/2$
+        \item 
+    \end{enumerate}
+
+\section{Variance of the sums of products of functions of independent
+variables lol}
+
+\section{Ito's Lemma, again}
+    \begin{proof}
+        We begin by determining the independence of $W_j$ and $\Delta W_j$. We
+        have, 
+        \begin{align*}
+            W_j &= W_0 + \sum_{i=0}^{j-1} \Delta W_i, \quad W_i \sim N(0,dt)
+        \end{align*}
+        And so $\Delta W_j$ is completely independent of $W_j$ as it is not
+        contained inside the sum which comprises $W_j$. 
+        We have next to look at $E(Q_k - f_k)$. 
+        \begin{align*}
+            E(Q_k - f_k) &= E\left(\sum_{j=0}^{k-1} W_j^2\left(\Delta W_j^2 - \Delta
+            t\right)\right)
+            \\
+            &= \sum_{j=0}^{k-1} E\left(W_j^2\left(\Delta W_j^2 - \Delta
+            t\right)\right)
+            \\
+            &= \sum_{j=0}^{k-1} E(W_j^2)E\left(\Delta W_j^2 - \Delta
+            t\right)
+            \\
+            &= \sum_{j=0}^{k-1} E(W_j^2)\left[\Delta t - \Delta t\right]
+            \\
+            &= 0
+        \end{align*}
+        Where the expectation of the products in line 3 is seperabla as we have
+        shown independence. Next we look at the variance, we have
+        \begin{align*}
+            \Var(Q_k - f_k) &= E\left(Q_k-f_k)\right)^2 - E^2(Q_k-f_k)
+            \\
+            &= E\left(Q_k-f_k)\right)^2
+            \\
+            &= E\left(\sum_{j=0}^{k-1}W_j^4(\Delta W_j^2 - \Delta t)^2 -
+            2\sum_{i=0,i\ne j}^{k-1}W_j^2W_i^2(\Delta W_j^2 - \Delta t)(\Delta
+            W_i^2 - \Delta t)\right)
+            \\
+            &= \sum_{j=0}^{k-1}E\left(W_j^4(\Delta W_j^2 - \Delta t)^2\right) -
+            2\sum_{j=0}^{k-1}\sum_{i=0,i\ne j}^{k-1}E\left(W_j^2W_i^2(\Delta W_j^2 - \Delta t)(\Delta
+            W_i^2 - \Delta t)\right)
+            \\
+            &= \left(1\right) + \left(2\right)
+        \end{align*}
+        Here, we split this calculation into two parts, $(1)$ and $(2)$. Let us
+        first look at $(2)$. Notice that while $T_j = W_j^2(\Delta W_j^2 - \Delta t)$
+        is comprised of independently distributed products, we do not have that
+        $T_i$ is independent of $T_j$. That is, if $j > i$ we have that $W_j$ is
+        conditionally dependent on $W_i$ and that $\Delta W_i$ is in the sum
+        which comprises $W_j$. We do still have, however, that $\Delta W_j^2$ is
+        independent of $W_j$ and $T_i$. Thus, we can write, 
+        \begin{align*}
+            (2) &= -2\sum_{j=0}^{k-1}\sum_{i=0,i\ne j}^{k-1} E\left((\Delta W_j^2
+            - \Delta t)W_j^2 T_i\right)
+            \\
+            &= -2\sum_{j=0}^{k-1}\sum_{i=0,i\ne j}^{k-1} E(\Delta W_j^2
+            - \Delta t)E(W_j^2 T_i)
+            \\
+            &= 0
+        \end{align*}
+        This also holds for the case where $i > j$ and so this is true for all
+        terms in the sum. Finally, we look at $(1)$. We have, 
+        \begin{align*}
+            (1) &= \sum_{j=0}^{k-1} E(W_j^4)E(\Delta W_j^2 - \Delta t)^2
+            \\
+            &= \sum_{j=0}^{k-1} t_j^2E(X_j^4)E(\Delta W_j^4 + \Delta t^2 -
+            2\Delta t\Delta W_j^2)
+            \\
+            &= \sum_{j=0}^{k-1} t_j^2(3)\left(3\Delta t^2 + \Delta t^2 - 2\Delta
+            t^2\right)
+            \\
+            &= \sum_{j=0}^{k-1} 6t_j^2\Delta t^2
+        \end{align*}
+    \end{proof}
+\section{PSD of Ornstein-Uhlenbeck process}
+    \begin{align*}
+        F\left[e^{-\beta|t|}\right] &\equiv \int_{-\infty}^{\infty} e^{-2\pi\xi
+        t}e^{-\beta|t|}dt 
+        \\
+        &= \int_{-\infty}^{\infty} e^{-2\pi\xi
+        t -\beta|t|}dt 
+        \\
+        &= \int_{-\infty}^{0} e^{(-2\pi\xi + \beta 
+        )t }dt + \int_{0}^{\infty} e^{-(2\pi\xi +
+        \beta) t}dt
+        \\
+        &= \frac{1}{-2\pi\xi + \beta}e^{(-2\pi\xi + \beta)t}\Big|_{-\infty}^0 - 
+        \frac{1}{2\pi\xi + \beta}e^{-(2\pi\xi + \beta)t}\Big|_0^{\infty}
+        \\
+        &= \frac{1}{-2\pi\xi + \beta} + \frac{1}{2\pi\xi + \beta}
+        \\
+        &= \frac{2\beta}{\beta^2 + 4\pi^2\xi^2}
+    \end{align*}
+
+\section{Optional: Paley Wiener represation of Wiener process}
+
+\section{Optional: Paley Wiener represation of Wiener process Continued}
+
 \end{document}
