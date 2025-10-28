@@ -362,4 +362,7 @@ def FD6Y_xyslice(field,ny,dy):
     return -dy_field
 
 def rms(field):
-    return np.sqrt((field**2).mean())
+    if (len(field) == 0):
+        return 0
+    else: 
+        return np.sqrt((field**2).mean())

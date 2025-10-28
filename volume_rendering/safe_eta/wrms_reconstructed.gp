@@ -31,52 +31,36 @@ idx = 0
 
 # -------------------------------------------------------------
 
-# First Plot
+# First Plot - set perform_block_1 to 1 to run this block
 
-set xlabel "Fr^{-1}"
+perform_block_1 = 1
+
+if (perform_block_1) {
+
+set xlabel "Fr_{eff}^{-1}"
 set key top right
-#set ylabel "Eta" rotate by 0 
-set title "Normal"
+set ylabel "w_{rms, eff}" rotate by 0 
+set title "w_{rms, eff} reconstruction"
 set log xy
 
+
 plot "steady_tavg_eta.dat" \
+   i 0:2:2 u (($2**0.5)/$8):($43/$8) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
+"" i 0:2:2 u (($2**0.5)/$8):($52*$41 + $53*$42) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
+"stoch_tavg_eta.dat" \
+   i 0:1 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
+"" i 0:1 u (($2**0.5)/$8):($52*$41 + $53*$42) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
+[1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
 
+#Steady: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
 
-#   i idx u (($2**0.5)/$8):($42*(($2**0.5)/$8)**-0.5 + 1.9*$41*(($2**0.5)/$8)**-1) pt 5 ps 2 lc rgb "red" title 'Steady Wrms (reconstructed)',\
-#"stoch_tavg_eta.dat" \
-#   i idx u (($2**0.5)/$8):($42*(($2**0.5)/$8)**-0.5 + 1.9*$41*(($2**0.5)/$8)**-1) pt 7 ps 2 lc rgb "blue" title 'Stoch. Wrms (reconstructed)'
+#Stoch: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 
-#"" i idx u (($2**0.5)/$8):43 pt 5 ps 2 lc rgb "black" title 'Steady Wrms',\
-#"" i idx u (($2**0.5)/$8):43 pt 5 ps 2 lc rgb "black" title 'Steady Wrms',\
-
-
-# -------------------------------------------------------------
-
-# Second Plot
-
-#set xlabel "Fr_{eff}^{-1}"
-#set key top right
-#set ylabel "Eta" rotate by 0 
-#set title "Using Effective Fr"
-#set log x
-
-#plot "steady_tavg_eta.dat" \
-#   i idx u (($2**0.5)/$8):($38*x**-0.5 + 1.9*$37*x**-1) pt 5 ps 2 lc rgb "green" title 'Steady Wrms (reconstructed)',\
-#"" i idx u (($2**0.5)/$8):43 pt 5 ps 2 lc rgb "black" title 'Steady Wrms',\
-#"stoch_tavg_eta.dat" \
-#   i idx u (($2**0.5)/$8):($38*x**-0.5 + 1.9*$37*x**-1) pt 5 ps 2 lc rgb "green" title 'Steady Wrms (reconstructed)',\
-#"" i idx u (($2**0.5)/$8):43 pt 5 ps 2 lc rgb "black" title 'Steady Wrms',\
-
-
-# -------------------------------------------------------------
-
-# Third Plot
-
-#set xlabel "Fr_{eff}^{-1}"
-#set key top right
-#set ylabel "Eta" rotate by 0 
-#set title "Using Effective Fr & w"
-#set log x
+} # end of block 1
 
 
 
