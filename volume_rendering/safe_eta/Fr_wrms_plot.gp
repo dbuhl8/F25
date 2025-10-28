@@ -100,18 +100,22 @@ set key top right
 set ylabel "w_{rms, eff}" rotate by 0 
 set title "Re600 Pe60 and Re1000 Pe100"
 set log xy
+#set yrange [1e-3:10]
+set xrange [.1:100]
 
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u (($2**0.5)/$8):($43/$8) pt 5 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
-"" i 0:2:2 u (($2**0.5)/$8):52 pt 5 ps 2 lc rgb "red" title '       Wlam',\
-"" i 0:2:2 u (($2**0.5)/$8):53 pt 5 ps 2 lc rgb "blue" title '       Wturb',\
+   i 0 u (($2**0.5)/$8):($43/$8) pt 5 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
+"" i 0 u (($2**0.5)/$8):($50/$8) pt 5 ps 2 lc rgb "red" title '       Wlam',\
+"" i 0 u (($2**0.5)/$8):($51/$8) pt 5 ps 2 lc rgb "blue" title '       Wturb',\
+"" i 0 u (($2**0.5)/$8):8 pt 5 ps 2 lc rgb "green" title '       uh_{rms}',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch: Wrms',\
-"" i 0:1 u (($2**0.5)/$8):52 pt 9 ps 2 lc rgb "red" title '       Wlam',\
-"" i 0:1 u (($2**0.5)/$8):53 pt 9 ps 2 lc rgb "blue" title '       Wturb',\
-[1:7.5] 0.45*x**(-0.5) dt 2 lw 1 lc rgb "blue" title '0.45 Fr_{eff}^{-1/2}',\
-[1:7.5] 0.35*x**(-1) dt 2 lw 1 lc rgb "red" title '0.35 Fr_{eff}^{-1}'
+   i 0 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch: Wrms',\
+"" i 0 u (($2**0.5)/$8):($50/$8) pt 9 ps 2 lc rgb "red" title '       Wlam',\
+"" i 0 u (($2**0.5)/$8):($51/$8) pt 9 ps 2 lc rgb "blue" title '       wturb',\
+"" i 0 u (($2**0.5)/$8):8 pt 9 ps 2 lc rgb "green" title '       uh_{rms}',\
+[1:7.5] 0.4*x**(-0.5) dt 2 lw 1 lc rgb "blue" title '0.45 Fr_{eff}^{-1/2}',\
+[1:7.5] 0.25*x**(-1) dt 2 lw 1 lc rgb "red" title '0.35 Fr_{eff}^{-1}'
 
 
 # steady 
