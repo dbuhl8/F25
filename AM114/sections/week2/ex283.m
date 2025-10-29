@@ -3,14 +3,14 @@ close all;
 clc; 
 
 % Define Initial Condition
-x0 = 1; %x(0) = 1
-tstop = 1;
+x0 = [5,0]; %x(0) = 1
+tstop = 50;
 tstart = 0;
 
 % dt = 1 approximation
 % when dt = 1, what is x(1) according to eulers method
 % x(1) = x(0) + dt * f(x(0))
-x1 = x0 + ode283(0,x0)
+%x1 = x0 + ode283(0,x0);
 % x(1) = 0, when using dt = 1 in eulers method
 
 % opening a figure
@@ -19,44 +19,31 @@ f1 = figure;
 % an array containing time values t = [0, 1]
 tspan = tstart:0.1:tstop;
 % analytical solution x(t) = e^-t
-x_act = exp(-tspan);
+%x_act = exp(-tspan);
 
 % plotting actual solution
-plot(tspan, x_act, '-red');
-hold on;
+%plot(tspan, x_act, '-red');
+%hold on;
 
 % plot the 1st order euler method with different dt
 % repeating for dt = 10^(-n)
-error = zeros(1,4);
-dt_array = zeros(1,4);
-for i = 1:4
-    dt = 10^(-i); % dt = 0.1, dt = 0.01, dt = 0.001, dt = 0.0001
-    dt_array(i) = dt;
-    nt = tstop/dt; % figuring out how many timesteps are needed
-    tt = zeros(1,nt); % initializing an array full of zeros
-    xt = zeros(1,nt);
-    tt(1) = tstart; % putting in the IC for time
-    xt(1) = x0; % putting in IC for x
-    % this is where the eulers method is implemented 
-    for j = 2:nt
-        % incrementing time
-        tt(j) = tt(j-1) + dt;
-        % x_n+1 = x_n + dt*(f(x_n))
-        xt(j) = xt(j-1) + dt*ode283(tt(j-1),xt(j-1));
-        %xt = [x0, x1, x2, x3, x4, x5, ..., x_nt]
-        %tt = [t0, t1, t2, t3, t4, t5, ..., t_nt]
-    end
+%error = zeros(1,4);
+
+    [t,y] = ode45(@ode283,[0,1],x0);
+    %tt(1) = tstart; % putting in the IC for time
+    %xt(:,1) = x0; % putting in IC for x
+    
     % tt and xt are full of timeseries data 
-    error(i) = abs(1/exp(1) - xt(end));
-    plot(tt,xt, '--') ;
-end
-
-legend('Actual', 'n = 1', 'n = 2', 'n = 3', 'n = 4')
-
-f2 = figure;
+    %error(i) = abs(1/exp(1) - xt(end));
+    plot(y(1,:),y(2,:), '--') ;
 
 
-loglog(1./dt_array, error,'x');
+%legend('Actual', 'n = 1', 'n = 2', 'n = 3', 'n = 4')
+
+%f2 = figure;
+
+
+%loglog(1./dt_array, error,'x');
 
 
 

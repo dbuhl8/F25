@@ -110,6 +110,100 @@
 \setlength{\parindent}{0pt}
 
 \section{Time Reversability of Brownian Bridge}
+    \begin{proof}
+        We begin by defining $W_j$. We have, 
+        \begin{gather*}
+            W_j = S_j = \sum_{k=0}^{j-1} \Delta W_k, \quad \Delta W_k \sim
+            \sqrt{\Delta t}X_k, \quad X_k \sim N(0,1)
+        \end{gather*}
+        Thus we begin, 
+        \begin{align*}
+            E(W_j | W_n = 0) &= E(B_j)
+            \\
+            &= E\left(W_j - \frac{t_j}{T}W_n\right)
+            \\ 
+            &= \sum_{k=0}^{j-1} E(\Delta W_k) -
+            \frac{t_j}{T}\sum_{k=0}{n-1}E(\Delta W_k)
+            \\
+            &= 0
+        \end{align*}
+        Next we look at the covariance between the two sets, 
+        \begin{align*}
+            \Cov(W_i, W_j | W_n = 0) &= \Cov(B_i, B_j) 
+            \\
+            &= E(B_iB_j) - E(B_i)E(B_j)
+            \\
+            &= E\left[\left(S_i - \frac{t_i}{T}S_n\right)\left(S_j -
+            \frac{t_j}{T}S_n\right)\right]
+            \\
+            &= E(S_iS_j) - \frac{t_i}{T}E(S_jS_n) - \frac{t_j}{T}E(S_iS_n) +
+            \frac{t_it_j}{T^2}E(S_n^2)
+        \end{align*}
+        We now look more specifically at the components of the sums $S_i, S_j,
+        \text{ and } S_n$.  Take for example, $j > i$, we have then, 
+        \begin{gather*}
+            S_i = a, \quad S_j = a + b, \quad S_n = a + b + c
+            \\
+            a = \sum_{k=0}^{i-1} \Delta W_k, \quad b = \sum_{k=i}^{j-1} \Delta
+            W_k, \quad c = \sum_{k=j}^{n-1}\Delta W_k
+        \end{gather*}
+        Notice that each component $a,b,c$ is independent of each other,
+        $E(a) = E(b) = E(c) = 0$, and $E(a^2) = t_i$, $E((a+b)^2) = t_j$, and
+        $E((a+b+c)^2) = T$. Thus, 
+        \begin{align*}
+            \Cov(W_i, W_j | W_n = 0) &= E(a^2 + ab) - \frac{t_i}{T}E\left((a + b)^2
+            + (a + b)c\right) - \frac{t_j}{T}E(a^2 + a(b+c)) +
+            \frac{t_it_j}{T^2}E\left((a+b+c)^2\right)
+            \\
+            &= E(a^2) - \frac{t_i}{T}E\left((a + b)^2\right) - 
+            \frac{t_j}{T}E(a^2) +
+            \frac{t_it_j}{T^2}E\left((a+b+c)^2\right)
+            \\
+            &= t_i - 2\frac{t_it_j}{T} + \frac{t_it_j}{T}
+            \\
+            &= t_i\left(1 - \frac{t_j}{T}\right)
+        \end{align*}
+        Now, in order to show time reversability we demonstrate that $E(W_{n-j}
+        | W_n = 0) = E(W_{j} | W_n = 0)$ and $\Cov(W_i,W_j|W_n = 0) =
+        \Cov(W_{n-i},W_{n-j},W_n=0)$. The case for the expectation is trivial as
+        the expectation is zero. For the covariance, we have,
+        \begin{align*}
+           \Cov(W_{n-i},W_{n-j}|W_n=0) &= \Cov(B_{n-i},B_{n-j}) 
+           \\
+           &= E(S_{n-i}S_{n-j}) - \frac{T-t_i}{T}E(S_{n-j}S_n) 
+           \\
+           &-
+           \frac{T - t_j}{T}E(S_{n-i}S_n) +
+            \frac{(T-t_i)(T-t_j)}{T^2}E(S_n^2)
+        \end{align*}
+        Since we had previously that $j > i$, we now have $n-i > n-j$. Thus, we 
+        have 
+        \begin{gather*}
+            S_{n-j} = d, \quad S_{n-i} = d + e, \quad S_n = d + e + f
+            \\
+            d = \sum_{k=0}^{n-j-1} \Delta W_k, \quad b = \sum_{k=n-j}^{n-i-1}   
+            \Delta W_k, \quad c = \sum_{k=n-i}^{n-1}\Delta W_k
+            \\
+            E(d) = E(e) = E(f) = 0, \quad E(d^2) = T - t_j, \quad E((d+e)^2) = T
+            - t_i, \quad E((d + e + f)^2) = T
+        \end{gather*}
+        Therefore, we now can show,
+        \begin{align*}
+            \Cov(W_{n-i},W_{n-j}|W_n=0) &= (T-t_j) -
+            \frac{(T-t_i)(T-t_j)}{T} -
+           \frac{(T - t_j)(T-t_i)}{T} +
+            \frac{(T-t_i)(T-t_j)}{T}
+            \\
+            &= (T-t_j)\frac{(1 - T + t_i)}{T}
+            \\
+            &= t_i\left(1 - \frac{t_j}{T}\right) = \Cov(W_i, W_j | W_n = 0)
+        \end{align*}
+        This concludes the proof that the brownian bridge is reversable in time,
+        i.e. that moving backwards is distributed identically to moving
+        forwards. This is attributable to the fact that there is no correlation
+        between the direction of movement $\Delta W$ to the direction of time
+        $\Delta t$. Only the amplitudes of the adjustments are correlated. 
+    \end{proof}
 
 \section{Convergence in Probability}
     We have, 
@@ -147,17 +241,85 @@
             \end{align*}
             Thus we have, $E(I_2) = 0$ and $\Var(I_2) = T/2$
         \item 
+            \begin{align*}
+                F_n &=
+                \frac{2}{T}\int_0^T\sin\left(n\pi\frac{t}{T}\right)\left(W(t) -
+                \frac{t}{T}W(T)\right)dt
+                \\
+                &=
+                \frac{2}{T}\left(\frac{T}{n\pi}\cos\left(n\pi\frac{t}{T}\right)
+                \left(W(t) - \frac{t}{T}W(T)\right)\Big|_0^T - 
+                \frac{T}{n\pi}\int_0^T\cos\left(n\pi\frac{t}{T}\right)
+                \left(dW(T) - \frac{dt}{T}W(T)\right)\right)
+                \\
+                &= \frac{2}{n\pi}\int_0^T\cos\left(n\pi\frac{t}{T}\right)
+                \left(dW(T) - \frac{dt}{T}W(T)\right)
+                \frac{2}{n\pi}\int_0^T
+                \\
+                &= \frac{2}{n\pi}\int_0^T\left(\cos\left(n\pi\frac{t}{T}\right)
+                - \frac{1}{T}\int_0^T\cos\left(n\pi\frac{s}{T}\right)ds\right)dW
+                \\
+                &= \frac{2}{n\pi}\int_0^T\cos\left(n\pi\frac{t}{T}\right)dW
+                \\
+                &\sim
+                N\left(0,\frac{4}{n^2\pi^2}\int_0^T
+                \cos^2\left(n\pi\frac{t}{T}\right)dt\right)
+                \\
+                &\sim N\left(0,\frac{2T}{n^2\pi^2}\right)
+            \end{align*} 
+            Thus we have, $E(F_n) = 0$ and $\Var(F_n) = 2T/(n^2\pi^2)$
     \end{enumerate}
 
 \section{Variance of the sums of products of functions of independent
 variables lol}
+    \begin{proof}
+        We begin by examining $\Var(\cdot)$. We have, 
+        \begin{align*}
+            \Var\left(\sum_{j=0}^{n-1} g(Y_j)f(X_j)\right) &= E(\star^2) -
+            E^2(\star), \quad \star = \sum_{j=0}^{n-1} g(Y_j)f(X_j)
+            \\
+            E(\star) &= \sum_{j=0}^{n-1}E\left(g(Y_j)f(X_j)\right)
+            \\
+            &= \sum_{j=0}^{n-1}E(g(Y_j))E(f(X_j)) = 0
+            \\
+            \star^2 &= \sum_{j=0}^{n-1} g^2(Y_j)f^2(X_j) - 2\sum_{i=0,i\ne
+            j}^{n-1} g(Y_j)f(X_j)g(Y_i)f(X_i)
+            \\
+            E(\star^2) &= \sum_{j=0}^{n-1} E\left(g^2(Y_j)f^2(X_j)\right) -
+            2\sum_{j=0}^{n-1}\sum_{i=0,i\ne j}^{n-1}
+            E\left(g(Y_j)f(X_j)g(Y_i)f(X_i)\right)
+            \\
+            &= \sum\left(\triangleleft_j\right) -2 \sum\sum\left(\triangleright_{i,j}\right)
+        \end{align*}
+        Now consider the case for $\triangleright_{i,j}$ where $j>i$. We have that
+        $X_j$ is independent of $X_i$, $Y_j$ and $Y_i$ as givens for this
+        problem. Thus we have, 
+        \begin{align*}
+            \triangleright_{i,j} &= E\left(g(Y_j)f(X_j)g(Y_i)f(X_i)\right)
+            \\
+            &= E(f(X_j))E\left(g(Y_j)g(Y_i)f(X_i)\right) = 0 
+            \\
+            \triangleleft_j &= E\left(g^2(Y_j)f^2(X_j)\right)
+            \\
+            &= E\left(g^2(Y_j)\right)E\left(f^2(X_j)\right)
+            \\
+            \Var(\star) &= \sum_{j=0}^{n-1} \triangleleft_j
+            \\
+            \Var\left(\sum_{j=0}^{n-1} g(Y_j)f(X_j)\right) &=
+            \sum_{j=0}^{n-1} E\left(g^2(Y_j)\right)E\left(f^2(X_j)\right)
+        \end{align*}
+        The same result holds for $i > j$, as instead of $X_j$ being independent
+        of $X_i, Y_i, Y_j$ it is instead $X_i$ which is independent of $X_j,
+        Y_i, Y_j$ and the same arguement holds. 
+    \end{proof}
+
 
 \section{Ito's Lemma, again}
     \begin{proof}
         We begin by determining the independence of $W_j$ and $\Delta W_j$. We
         have, 
         \begin{align*}
-            W_j &= W_0 + \sum_{i=0}^{j-1} \Delta W_i, \quad W_i \sim N(0,dt)
+            W_j &= W_0 + \sum_{i=0}^{j-1} \Delta W_i, \quad W_i \sim N(0,\Delta t)
         \end{align*}
         And so $\Delta W_j$ is completely independent of $W_j$ as it is not
         contained inside the sum which comprises $W_j$. 
