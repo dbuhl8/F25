@@ -76,12 +76,12 @@ set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):12 pt 5 ps 2 lc rgb "green" title 'Steady Eta',\
-"" i idx u (($8**3)*$1/$2):24 pt 5 ps 2 lc rgb "blue" title 'Steady Eta Lam',\
-"" i idx u (($8**3)*$1/$2):28 pt 5 ps 2 lc rgb "red" title 'Steady Eta Turb',\
+#"" i idx u (($8**3)*$1/$2):24 pt 5 ps 2 lc rgb "blue" title 'Steady Eta Lam',\
+#"" i idx u (($8**3)*$1/$2):28 pt 5 ps 2 lc rgb "red" title 'Steady Eta Turb',\
 "stoch_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):12 pt 7 ps 2 lc rgb "green" title 'Stoch. Eta',\
-"" i idx u (($8**3)*$1/$2):24 pt 7 ps 2 lc rgb "blue" title 'Stoch. Eta Lam',\
-"" i idx u (($8**3)*$1/$2):28 pt 7 ps 2 lc rgb "red" title 'Stoch. Eta Turb',\
+#"" i idx u (($8**3)*$1/$2):24 pt 7 ps 2 lc rgb "blue" title 'Stoch. Eta Lam',\
+#"" i idx u (($8**3)*$1/$2):28 pt 7 ps 2 lc rgb "red" title 'Stoch. Eta Turb',\
 
 } # end of block 2
 
@@ -89,27 +89,51 @@ plot "steady_tavg_eta.dat" \
 
 # Third Plot
 
-perform_block_3 = 1
+perform_block_3 = 0
 
 if (perform_block_3) {
 
 set xlabel "Re_{b, eff}" font "Roman,20"
 set key top right
-set ylabel "Eta" rotate by 0 font "Roman,20"
-set title "Using Effective Fr & {/Symbol w}_z"
+set ylabel "TDisp" rotate by 0 font "Roman,20"
+#set title "Using Effective Fr & {/Symbol w}_z"
 set log x
-set yrange [0:1]
+#set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
-   i idx u (($8**3)*$1/$2):12 pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
-"" i idx u (($8**3)*$1/$2):32 pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Lam}',\
-"" i idx u (($8**3)*$1/$2):36 pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Turb}',\
+   u (($8**3)*$1/$2):($10/($8**2)) pt 4 ps 2 lc rgb "dark-violet" title 'Steady MDisp',\
 "stoch_tavg_eta.dat" \
-   i idx u (($8**3)*$1/$2):12 pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Eta',\
-"" i idx u (($8**3)*$1/$2):32 pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Lam}',\
-"" i idx u (($8**3)*$1/$2):36 pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Turb}',\
+   u (($8**3)*$1/$2):($10/($8**2)) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. MDisp',\
+#"" i idx u (($8**3)*$1/$2):32 pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Lam}',\
+#"" i idx u (($8**3)*$1/$2):36 pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Turb}',\
+#"" i idx u (($8**3)*$1/$2):32 pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Lam}',\
+#"" i idx u (($8**3)*$1/$2):36 pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Turb}',\
 
 } # end of block 3
 
+# -------------------------------------------------------------
 
+# Fourth Plot
+
+perform_block_4 = 1
+
+if (perform_block_4) {
+
+set xlabel "Re_{b, eff}" font "Roman,20"
+set key top right
+set ylabel "TDisp" rotate by 0 font "Roman,20"
+#set title "Using Effective Fr & {/Symbol w}_z"
+set log xy
+#set yrange [0:1]
+
+plot "steady_tavg_eta.dat" \
+  i 0:2:2 u (($8**3)*$1/$2):($9/($4*$8)) pt 4 ps 2 lc rgb "dark-violet" title 'Steady TDisp',\
+"stoch_tavg_eta.dat" \
+  i 0:1 u (($8**3)*$1/$2):($9/($4*$8)) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. TDisp',\
+#"" i idx u (($8**3)*$1/$2):32 pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Lam}',\
+#"" i idx u (($8**3)*$1/$2):36 pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Turb}',\
+#"" i idx u (($8**3)*$1/$2):32 pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Lam}',\
+#"" i idx u (($8**3)*$1/$2):36 pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Turb}',\
+
+} # end of block 3
 

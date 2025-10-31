@@ -33,7 +33,7 @@ idx = 0
 
 # First Plot - set perform_block_1 to 1 to run this block
 
-perform_block_1 = 1
+perform_block_1 = 0
 
 if (perform_block_1) {
 
@@ -43,13 +43,17 @@ set ylabel "w_{rms, eff}" rotate by 0
 set title "w_{rms, eff} reconstruction"
 set log xy
 
+# (($2**0.5)/$8) = (B**(0.5)/uh_rms)
+# 41 = VLam
+# 42 = Vturb
+#
 
 plot "steady_tavg_eta.dat" \
    i 0:2:2 u (($2**0.5)/$8):($43/$8) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
-"" i 0:2:2 u (($2**0.5)/$8):($52*$41 + $53*$42) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
+"" i 0:2:2 u (($2**0.5)/$8):((1.9*(($2**0.5)/$8)**(-1)*$41 + (($2**0.5)/$8)**(-0.5)*$42)/$8) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
 "stoch_tavg_eta.dat" \
    i 0:1 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
-"" i 0:1 u (($2**0.5)/$8):($52*$41 + $53*$42) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
+"" i 0:1 u (($2**0.5)/$8):((1.9*(($2**0.5)/$8)**(-1)*$41 + (($2**0.5)/$8)**(-0.5)*$42)/$8) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
 [1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
 
 #Steady: 
@@ -62,5 +66,117 @@ plot "steady_tavg_eta.dat" \
 
 } # end of block 1
 
+# -------------------------------------------------------------
+
+# Second Plot - set perform_block_2 to 1 to run this block
+
+perform_block_2 = 0
+
+if (perform_block_2) {
+
+set xlabel "Fr_{eff}^{-1}"
+set key top right
+set ylabel "w_{rms, eff}" rotate by 0 
+set title "w_{rms, eff} reconstruction"
+set log xy
+
+# (($2**0.5)/$8) = (B**(0.5)/uh_rms)
+# 41 = VLam
+# 42 = Vturb
+#
+
+plot "steady_tavg_eta.dat" \
+   i 0:2:2 u (($2**0.5)/$8):($43) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
+"" i 0:2:2 u (($2**0.5)/$8):((((1.8*(($2**0.5))**(-1))**2)*$37 + ((1.5*(($2**0.5))**(-0.5))**2)*$38)) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
+"stoch_tavg_eta.dat" \
+   i 0:1 u (($2**0.5)):($43**2) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
+"" i 0:1 u (($2**0.5)):((((1.8*(($2**0.5))**(-1))**2)*$37 + ((1.5*(($2**0.5))**(-0.5))**2)*$38)) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
+#[1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
+
+#Steady: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+
+#Stoch: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+
+} # end of block 1
+
+# -------------------------------------------------------------
+
+# Third Plot - set perform_block_3 to 1 to run this block
+
+perform_block_3 = 0
+
+if (perform_block_3) {
+
+set xlabel "Fr^{-1}"
+set key top right
+set ylabel "w" rotate by 0 
+set title "Normalization Without reconstruction"
+set log xy
+
+# (($2**0.5)/$8) = (B**(0.5)/uh_rms)
+# 37 - Vlam
+# 38 - Vturb
+# 41 = VLam_eff
+# 42 = Vturb_eff
+#
+
+plot "steady_tavg_eta.dat" \
+   i 0:2:2 u (($2**0.5)):($43) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
+"" i 0:2:2 u (($2**0.5)):((1.8*(($2**0.5))**(-1))*$37 + (1.5*(($2**0.5))**(-0.5))*$38) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
+"stoch_tavg_eta.dat" \
+   i 0:1 u (($2**0.5)):($43) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
+"" i 0:1 u   (($2**0.5)):((1.8*(($2**0.5))**(-1))*$37 + (1.5*(($2**0.5))**(-0.5))*$38) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
+#[1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
+
+#Steady: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+
+#Stoch: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+
+} # end of block 3
+
+# -------------------------------------------------------------
+
+# Fourth Plot - set perform_block_3 to 1 to run this block
+
+perform_block_4 = 1
+
+if (perform_block_4) {
+
+set xlabel "Fr_{eff}^{-1}"
+set key top right
+set ylabel "w_{rms, eff}" rotate by 0 
+set title "w_{rms, eff} reconstruction"
+set log xy
+
+# (($2**0.5)/$8) = (B**(0.5)/uh_rms)
+# 41 = VLam
+# 42 = Vturb
+#
+
+plot "steady_tavg_eta.dat" \
+   i 0:2:2 u (($2**0.5)/$8):($43/$8) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
+"" i 0:2:2 u (($2**0.5)/$8):(((1.9*(($2**0.5)/$8)**(-1))*$41 + (1*(($2**0.5)/$8)**(-0.5))*$42)/$8) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
+"stoch_tavg_eta.dat" \
+   i 0:1 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
+"" i 0:1 u   (($2**0.5)/$8):(((1.9*(($2**0.5)/$8)**(-1))*$41 + (1*(($2**0.5)/$8)**(-0.5))*$42)/$8) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
+#[1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
+
+#Steady: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
+
+#Stoch: 
+#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
+
+} # end of block 4
 
 

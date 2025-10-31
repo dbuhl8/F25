@@ -152,15 +152,19 @@ set xrange [.1:100]
 
 
 plot "steady_tavg_eta.dat" \
-   i 0 u (($2**0.5)):43 pt 4 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
-"" i 0 u (($2**0.5)):50 pt 4 ps 2 lc rgb "red" title '       Wlam',\
-"" i 0 u (($2**0.5)):51 pt 4 ps 2 lc rgb "blue" title '       Wturb',\
+  i 0 u (($2**0.5)/$8):8 pt 5 ps 2 lc rgb "green" title '       uh_{rms}',\
 "stoch_tavg_eta.dat" \
-   i 0 u (($2**0.5)):43 pt 9 ps 2 lc rgb "dark-violet" title 'Stoch: Wrms',\
-"" i 0 u (($2**0.5)):50 pt 9 ps 2 lc rgb "red" title '       Wlam',\
-"" i 0 u (($2**0.5)):51 pt 9 ps 2 lc rgb "blue" title '       wturb',\
-[3:20] 1.6*x**(-0.5) dt 2 lw 1 lc rgb "blue" title '1.6 Fr^{-1/2}',\
-[3:20] 2*x**(-1) dt 2 lw 1 lc rgb "red" title '2 Fr^{-1}'
+   i 0 u (($2**0.5)/$8):8 pt 9 ps 2 lc rgb "green" title '       uh_{rms}',\
+   #i 0 u (($2**0.5)):43 pt 9 ps 2 lc rgb "dark-violet" title 'Stoch: Wrms',\
+#"" i 0 u (($2**0.5)):50 pt 9 ps 2 lc rgb "red" title '       Wlam',\
+#"" i 0 u (($2**0.5)):51 pt 9 ps 2 lc rgb "blue" title '       wturb',\
+#[3:20] 1.6*x**(-0.5) dt 2 lw 1 lc rgb "blue" title '1.6 Fr^{-1/2}',\
+#[3:20] 2*x**(-1) dt 2 lw 1 lc rgb "red" title '2 Fr^{-1}'
+
+
+   #i 0 u (($2**0.5)):43 pt 4 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
+#"" i 0 u (($2**0.5)):50 pt 4 ps 2 lc rgb "red" title '       Wlam',\
+#"" i 0 u (($2**0.5)):51 pt 4 ps 2 lc rgb "blue" title '       Wturb',\
 
 
 
