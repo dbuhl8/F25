@@ -5,6 +5,9 @@ idx = 0
 set tics font "Roman,15"
 set title font "Roman,25"
 set key font "Roman,15"
+set xlabel font "Roman,20"
+set ylabel font "Roman,20"
+set size ratio 0.8
 
 # file key: 
 # steady_tavg_eta.dat: 
@@ -21,7 +24,8 @@ set key font "Roman,15"
 # in each file:
 # 43 - wrms
 # 44 - wlam
-# 45 - wturb # 46 - wlam_Fr
+# 45 - wturb 
+# 46 - wlam_Fr
 # 47 - wturb_Fr
 # 48 - wlam_Fr_vortz
 # 49 - wturb_Fr_vortz
@@ -35,14 +39,14 @@ set key font "Roman,15"
 
 # First Plot
 
-perform_block_1 = 1
+perform_block_1 = 0
 
 if (perform_block_1) {
 
 set xlabel "Re_{b}" font "Roman,20"
 set key top right
 set ylabel "Eta" rotate by 0 font "Roman,20"
-set title "{/Symbol n} v Re_b"
+set title "{/Symbol h} v Re_b"
 set log x
 set yrange [0:1]
 
@@ -85,25 +89,25 @@ plot "steady_tavg_eta.dat" \
 
 # Third Plot
 
-perform_block_3 = 0
+perform_block_3 = 1
 
 if (perform_block_3) {
 
-set xlabel "Re_{b, eff}"
+set xlabel "Re_{b, eff}" font "Roman,20"
 set key top right
-set ylabel "Eta" rotate by 0 
+set ylabel "Eta" rotate by 0 font "Roman,20"
 set title "Using Effective Fr & {/Symbol w}_z"
 set log x
 set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
-   i idx u (($8**3)*$1/$2):12 pt 5 ps 2 lc rgb "green" title 'Steady Eta',\
-"" i idx u (($8**3)*$1/$2):32 pt 5 ps 2 lc rgb "blue" title 'Steady Eta Lam',\
-"" i idx u (($8**3)*$1/$2):36 pt 5 ps 2 lc rgb "red" title 'Steady Eta Turb',\
+   i idx u (($8**3)*$1/$2):12 pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+"" i idx u (($8**3)*$1/$2):32 pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Lam}',\
+"" i idx u (($8**3)*$1/$2):36 pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Turb}',\
 "stoch_tavg_eta.dat" \
-   i idx u (($8**3)*$1/$2):12 pt 7 ps 2 lc rgb "green" title 'Stoch. Eta',\
-"" i idx u (($8**3)*$1/$2):32 pt 7 ps 2 lc rgb "blue" title 'Stoch. Eta Lam',\
-"" i idx u (($8**3)*$1/$2):36 pt 7 ps 2 lc rgb "red" title 'Stoch. Eta Turb',\
+   i idx u (($8**3)*$1/$2):12 pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Eta',\
+"" i idx u (($8**3)*$1/$2):32 pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Lam}',\
+"" i idx u (($8**3)*$1/$2):36 pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Turb}',\
 
 } # end of block 3
 
