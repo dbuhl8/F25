@@ -1,6 +1,13 @@
 reset
 #set multiplot layout 3,1 columnsfirst 
 
+set title font "Roman, 25"
+set key font "Roman, 20"
+set tics font "Roman, 15"
+set xlabel font "Roman, 20"
+set ylabel font "Roman, 20"
+set size ratio 0.8
+
 idx = 0
 
 # file key: 
@@ -37,19 +44,15 @@ perform_block_1 = 1
 
 if (perform_block_1) {
 
-set xlabel "Fr_{eff}^{-1}"
+set xlabel "Re_b"
 set key top right
-set ylabel "w_{rms, eff}" rotate by 0 
-set title "w_{rms, eff} reconstruction"
-set log xy
+set ylabel "u_{h, rms}" rotate by 0 
+set log x
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u (($2**0.5)/$8):($43/$8) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
-"" i 0:2:2 u (($2**0.5)/$8):((1.9*(($2**0.5)/$8)**(-1)*$41 + (($2**0.5)/$8)**(-0.5)*$42)/$8) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
+   i 0:2:2 u ($1/$2):8 pt 4 ps 4 lc rgb "dark-violet" title 'Steady',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
-"" i 0:1 u (($2**0.5)/$8):((1.9*(($2**0.5)/$8)**(-1)*$41 + (($2**0.5)/$8)**(-0.5)*$42)/$8) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
-[1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
+   i 0:1 u ($1/$2):8 pt 9 ps 4 lc rgb "dark-violet" title 'Stochastic',\
 
 #Steady: 
 #"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
@@ -141,7 +144,7 @@ plot "steady_tavg_eta.dat" \
 
 # Fourth Plot - set perform_block_3 to 1 to run this block
 
-perform_block_4 = 1
+perform_block_4 = 0
 
 if (perform_block_4) {
 
