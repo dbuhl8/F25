@@ -1,9 +1,11 @@
 reset
-#set multiplot layout 3,1 columnsfirst 
+set multiplot layout 2,1 columnsfirst 
 
 set tics font "Roman,15"
 set title font "Roman,25"
 set key font "Roman,15"
+set xlabel font "Roman,20"
+set ylabel font "Roman,20"
 
 # file key: 
 # steady_tavg_eta.dat: 
@@ -40,7 +42,6 @@ if (perform_block_1) {
 
 set xlabel "Fr^{-1}" font "Roman,20"
 set key top right
-#set ylabel "Eta" rotate by 0 
 set title "Normal"
 set log xy
 set yrange [1e-3:2]
@@ -94,7 +95,7 @@ plot "steady_tavg_eta.dat" \
 
 # Third Plot - set perform_block_3 to 1 to run this block
 
-perform_block_3 = 0
+perform_block_3 = 1
 
 if (perform_block_3) {
 
@@ -115,8 +116,8 @@ plot "steady_tavg_eta.dat" \
    i 0 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch: Wrms',\
 "" i 0 u (($2**0.5)/$8):($50/$8) pt 9 ps 2 lc rgb "red" title '       Wlam',\
 "" i 0 u (($2**0.5)/$8):($51/$8) pt 9 ps 2 lc rgb "blue" title '       wturb',\
-[1:7.5] 0.4*x**(-0.5) dt 2 lw 1 lc rgb "blue" title '0.45 Fr_{eff}^{-1/2}',\
-[1:7.5] 0.25*x**(-1) dt 2 lw 1 lc rgb "red" title '0.35 Fr_{eff}^{-1}'
+[1:7.5] 0.35**(-0.5) dt 2 lw 1 lc rgb "blue" title '0.35 Fr_{eff}^{-1/2}',\
+[1:7.5] 0.25**(-1) dt 2 lw 1 lc rgb "red" title '0.25 Fr_{eff}^{-1}'
 
 
 
@@ -141,9 +142,9 @@ perform_block_4 = 1
 
 if (perform_block_4) {
 
-set xlabel "Fr^{-1}" font "Roman,20"
+set xlabel "Fr^{-1}"
 set key top right
-set ylabel "w_{rms}" rotate by 0 font "Roman,20"
+set ylabel "w_{rms}" rotate by 0
 set title "Re600 Pe60 and Re1000 Pe100"
 set log xy
 set size ratio .8
@@ -152,9 +153,14 @@ set xrange [.1:100]
 
 
 plot "steady_tavg_eta.dat" \
-  i 0 u (($2**0.5)/$8):8 pt 5 ps 2 lc rgb "green" title '       uh_{rms}',\
+   i 0 u (($2**0.5)/$8):($43/$8) pt 5 ps 2 lc rgb "dark-violet" title "Steady: w_{rms}",\
+"" i 0 u (($2**0.5)):(0.25*(($2**0.5)**(-1))*$41 + 0.35*(($2**0.5)**(-0.5))*$42) pt 9 ps 2 lc rgb "green" title "Steady: w_{recon}",\
 "stoch_tavg_eta.dat" \
-   i 0 u (($2**0.5)/$8):8 pt 9 ps 2 lc rgb "green" title '       uh_{rms}',\
+   i 0 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title "Stoch: w_{rms}",\
+"" i 0 u (($2**0.5)):(0.25*(($2**0.5)**(-1))*$41 + 0.35*(($2**0.5)**(-0.5))*$42) pt 9 ps 2 lc rgb "green" title "Stoch: w_{recon}",\
+
+
+
    #i 0 u (($2**0.5)):43 pt 9 ps 2 lc rgb "dark-violet" title 'Stoch: Wrms',\
 #"" i 0 u (($2**0.5)):50 pt 9 ps 2 lc rgb "red" title '       Wlam',\
 #"" i 0 u (($2**0.5)):51 pt 9 ps 2 lc rgb "blue" title '       wturb',\
@@ -167,7 +173,6 @@ plot "steady_tavg_eta.dat" \
 #"" i 0 u (($2**0.5)):51 pt 4 ps 2 lc rgb "blue" title '       Wturb',\
 
 
-
 # steady 
 #"" i 0:2:2 u (($2**0.5)/$8):48 pt 5 ps 2 lc rgb "blue" title '       Wlam',\
 #"" i 0:2:2 u (($2**0.5)/$8):49 pt 5 ps 2 lc rgb "blue" title '       Wturb',\
@@ -178,5 +183,5 @@ plot "steady_tavg_eta.dat" \
 #"" i 0:1 u (($2**0.5)/$8):49 pt 7 ps 2 lc rgb "blue" title '       Wturb',\
 #"" i 0 u (($2**0.5)/$8):8 pt 9 ps 2 lc rgb "green" title '       uh_{rms}',\
 
-} # end of block 3
+} # end of block 4
 
