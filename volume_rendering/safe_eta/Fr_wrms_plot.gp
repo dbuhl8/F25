@@ -1,5 +1,7 @@
 reset
-set multiplot layout 2,1 columnsfirst 
+set terminal pdfcairo enh col
+#set multiplot layout 2,1 columnsfirst 
+set output "gnuplot.pdf"
 
 set tics font "Roman,15"
 set title font "Roman,25"
@@ -36,7 +38,7 @@ set ylabel font "Roman,20"
 
 # First Plot - set perform_block_1 to 1 to run this block
 
-perform_block_1 = 0
+perform_block_1 = 1
 
 if (perform_block_1) {
 
@@ -95,7 +97,7 @@ plot "steady_tavg_eta.dat" \
 
 # Third Plot - set perform_block_3 to 1 to run this block
 
-perform_block_3 = 1
+perform_block_3 = 0
 
 if (perform_block_3) {
 
@@ -138,7 +140,7 @@ plot "steady_tavg_eta.dat" \
 
 # Fourth Plot - set perform_block_3 to 1 to run this block
 
-perform_block_4 = 1
+perform_block_4 = 0
 
 if (perform_block_4) {
 
