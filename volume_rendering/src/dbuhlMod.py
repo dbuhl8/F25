@@ -22,14 +22,6 @@ def FD6X(field,nx,dx):
     # with respect to x_comp
     dx_field = np.zeros_like(field)
     # foward / backwards finite difference formula (boundary)
-    #dx_field[:,:,:,0] = (field[:,:,:,1]-field[:,:,:,0])/dx
-    #dx_field[:,:,:,1] = (field[:,:,:,2]-field[:,:,:,0])/(2*dx)
-    #dx_field[:,:,:,2] = (-field[:,:,:,4]+8*field[:,:,:,3] \
-                        #-8*field[:,:,:,1]+field[:,:,:,0])/(12*dx)
-    #dx_field[:,:,:,nx-3] = (-field[:,:,:,nx-1]+8*field[:,:,:,nx-2]\
-                            #-8*field[:,:,:,nx-5]+field[:,:,:,nx-6])/(12*dx)
-    #dx_field[:,:,:,nx-2] = (field[:,:,:,nx-1]-field[:,:,:,nx-3])/(2*dx)
-    #dx_field[:,:,:,nx-1] = (field[:,:,:,nx-1]-field[:,:,:,nx-2])/dx
     dx_field[:,:,:,nx-1] = (1/(60*dx))*(-field[:,:,:,2]+9*field[:,:,:,1]\
                            -45*field[:,:,:,0]\
                            +45*field[:,:,:,nx-2]-9*field[:,:,:,nx-3]\
@@ -68,14 +60,6 @@ def FD6Y(field,ny,dy):
     # returns dataset (numpy) of same shape but computing the 1st derivative
     # with respect to x_comp
     dy_field = np.zeros_like(field)
-    #dy_field[:,:,0,:] = (field[:,:,1,:]-field[:,:,0,:])/dy
-    #dy_field[:,:,1,:] = (field[:,:,2,:]-field[:,:,0,:])/(2*dy)
-    #dy_field[:,:,2,:] = (-field[:,:,4,:]+8*field[:,:,3,:] \
-                        #-8*field[:,:,1,:]+field[:,:,0,:])/(12*dy)
-    #dy_field[:,:,ny-3,:] = (-field[:,:,ny-1,:]+8*field[:,:,ny-2,:]\
-                            #-8*field[:,:,ny-5,:]+field[:,:,ny-6,:])/(12*dy)
-    #dy_field[:,:,ny-2,:] = (field[:,:,ny-1,:]-field[:,:,ny-3,:])/(2*dy)
-    #dy_field[:,:,ny-1,:] = (field[:,:,ny-1,:]-field[:,:,ny-2,:])/dy
     dy_field[:,:,ny-1,:] = (1/(60*dy))*(-field[:,:,2,:]+9*field[:,:,1,:]\
                            -45*field[:,:,0,:]\
                            +45*field[:,:,ny-2,:]-9*field[:,:,ny-3,:]\
@@ -84,8 +68,8 @@ def FD6Y(field,ny,dy):
                            -45*field[:,:,ny-1,:]\
                            +45*field[:,:,ny-3,:]-9*field[:,:,ny-4,:]\
                            +field[:,:,ny-5,:])
-    dy_field[:,:,ny-2,:] = (1/(60*dy))*(-field[:,:,0,:]+9*field[:,:,ny-1,:]\
-                           -45*field[:,:,ny-3,:]\
+    dy_field[:,:,ny-3,:] = (1/(60*dy))*(-field[:,:,0,:]+9*field[:,:,ny-1,:]\
+                           -45*field[:,:,ny-2,:]\
                            +45*field[:,:,ny-4,:]-9*field[:,:,ny-5,:]\
                            +field[:,:,ny-6,:])
     dy_field[:,:,2,:] = (1/(60*dy))*(-field[:,:,5,:]+9*field[:,:,4,:]\
@@ -144,7 +128,7 @@ def FD6Z(field,nz,dz):
                                            -45*field[:,i+4,:,:]\
                                            +45*field[:,i+2,:,:]-9*field[:,i+1,:,:]\
                                            +field[:,i,:,:])
-    return dz_field
+    return -dz_field
 
 def iFD6Z(field,nz,dz):
     # takes in a field dataset with 4 dimensions (3 spatial)
@@ -363,6 +347,34 @@ def FD6Y_xyslice(field,ny,dy):
 
 def rms(field):
     if (len(field) == 0):
+        # this handles the edge case that an empty array has been passed this
+        # mean function, a case where np.mean will return NAN
         return 0
     else: 
         return np.sqrt((field**2).mean())
+
+def mean(field):
+    # assumes that field on input is a numpy array
+    if (len(field) == 0):
+        # this handles the edge case that an empty array has been passed this
+        # mean function, a case where np.mean will return NAN
+        return 0
+    else: 
+        return field.mean()
+
+def tavg(field,tidx):
+    return [field_in_region[tidx].mean(),\
+            field_in_region[tidx].std()]
+
+def discounted_tavg(field_in_region,vfrac_region,tidx):
+    # takes in a field averaged over a specific region, takes the volume
+    # fraction of the domain whic that region occupies, and the relevant
+    # temporal indices relevant for t_lb < t < t_ub 
+    # returns mean of field where vfrac_region != 0 within tidx
+    new_tidx = np.where(vfrac_region[tidx] > 0)
+    if (len(new_tidx) == 0):
+        return [0,0]
+    else:
+        return [field_in_region[tidx][new_tidx].mean(),\
+            field_in_region[tidx][new_tidx].std()]
+
