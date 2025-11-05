@@ -363,8 +363,8 @@ def mean(field):
         return field.mean()
 
 def tavg(field,tidx):
-    return [field_in_region[tidx].mean(),\
-            field_in_region[tidx].std()]
+    return [field[tidx].mean(),\
+            field[tidx].std()]
 
 def discounted_tavg(field_in_region,vfrac_region,tidx):
     # takes in a field averaged over a specific region, takes the volume

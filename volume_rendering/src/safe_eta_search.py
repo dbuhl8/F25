@@ -10,8 +10,8 @@ testing = True
 
 if testing:
     # only run this code on a single simulation set to ensure accuracy of code
-    Re600_Pe60=['B100Re600Pe60/']
-    Re600_Pe60_bounds=[[45,160]]
+    Re600_Pe60=['nonrotating/B300Re600Pe60/']
+    Re600_Pe60_bounds=[[40,80]]
 
     simulations = [Re600_Pe60]
     bounds = [Re600_Pe60_bounds]
@@ -59,9 +59,9 @@ tavg_header_string = tavg_header_string.format('Re','B','Pr', 'Pe', 'BPe',\
     'lam wrms', 'lam wrms err',\
     'lam tdisp','lam tdisp err', 'lam mdisp','lam mdisp err',\
     'lam eta (local)', 'lam eta (local) err',\
-    'lam eta (global)','lam eta (global) err' \
+    'lam eta (global)','lam eta (global) err',\
     'turb wrms', 'turb wrms err',\
-    'turb tdisp','turb tdisp err', 'turb mdisp', 'turb mdisp err',\ 
+    'turb tdisp','turb tdisp err', 'turb mdisp', 'turb mdisp err',\
     'turb eta (local)', 'turb eta (local) err', \
     'turb eta (global)', 'turb eta (global) err', \
     'lam_Fr wrms', 'lam_Fr wrms err',\
@@ -481,8 +481,8 @@ for m, sim_set in enumerate(simulations):
         lb, ub = bounds[m][n]
         tidx = np.where((lb <= t) & (t <= ub))
 
-        uh_rms, uh_err = db.tavg(uh_rms, tavg)
-        vortz_rms, vortz_err = db.tavg(vortz_rms, tavg)
+        uh_rms, uh_err = db.tavg(uh_rms, tidx)
+        vortz_rms, vortz_err = db.tavg(vortz_rms, tidx)
 
         avg_wrms, err_wrms = db.tavg(avg_wrms, tidx)
         avg_lam_wrms, err_lam_wrms = db.discounted_tavg(avg_lam_wrms,\
@@ -523,7 +523,7 @@ for m, sim_set in enumerate(simulations):
             avg_turb_Fr_vortz_tdisp, vturb_Fr_vortz, tidx)
 
         # MDISP
-        avg_mdisp, mdisp_err = db.tavg(avg_mdisp, tidx)
+        avg_mdisp, err_mdisp = db.tavg(avg_mdisp, tidx)
         avg_lam_mdisp, err_lam_mdisp = db.discounted_tavg(avg_lam_mdisp,\
             vlam, tidx)
         avg_lam_Fr_mdisp, err_lam_Fr_mdisp = db.discounted_tavg(avg_lam_Fr_mdisp,\
@@ -538,7 +538,7 @@ for m, sim_set in enumerate(simulations):
             avg_turb_Fr_vortz_mdisp, vturb_Fr_vortz, tidx)
 
         # Locally computed ETA
-        avg_local_eta, local_eta_err = db.tavg(avg_local_eta, tidx)
+        avg_local_eta, err_local_eta = db.tavg(avg_local_eta, tidx)
         avg_local_lam_eta, err_local_lam_eta = db.discounted_tavg(avg_local_lam_eta,\
             vlam, tidx)
         avg_local_lam_Fr_eta, err_local_lam_Fr_eta = db.discounted_tavg(avg_local_lam_Fr_eta,\
@@ -553,7 +553,7 @@ for m, sim_set in enumerate(simulations):
             avg_local_turb_Fr_vortz_eta, vturb_Fr_vortz, tidx)
 
         # Globally Computed ETA
-        avg_global_eta, global_eta_err = db.tavg(avg_global_eta, tidx)
+        avg_global_eta, err_global_eta = db.tavg(avg_global_eta, tidx)
         avg_global_lam_eta, err_global_lam_eta = db.discounted_tavg(avg_global_lam_eta,\
             vlam, tidx)
         avg_global_lam_Fr_eta, err_global_lam_Fr_eta = db.discounted_tavg(avg_global_lam_Fr_eta,\
@@ -621,26 +621,5 @@ for m, sim_set in enumerate(simulations):
     io_file.write('\n\n\n')
     tavg_file.write('\n\n\n')
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 
 
