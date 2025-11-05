@@ -109,4 +109,39 @@
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
 
+\section{Time inversion property of the Wiener process}
+
+\section{Integrating the Wiener process}
+
+\section{Reflection principle of the Wiener process}
+    \begin{enumerate}[label=\roman*)]
+        \item Show that $\Pr(M_T \ge a) = 2 \Pr(W(T) \ge a)$.
+            \begin{proof}
+                The core point in this proof is showing that the conditional
+                probability for $\Pr(W(T) \ge a | W(\tau) = a, \tau \in [0,T])
+                = 0.5$. This follows because the rest of the series $t \in
+                [\tau, T]$ is
+                distributed symmatrically about $W(\tau) = a$. Notice that if $W(\tau) = a$ and we have $M_T \ge
+                a$. Thus we have by bayes theorem,
+                \begin{align*}
+                    \Pr(W(T) \ge a | M(T) \ge a) &= 0.5 = \frac{\Pr(M(T) \ge a |
+                    W(T) \ge a)\Pr(W(T) \ge a)}{\Pr(M_T \ge a)}
+                    \\
+                    \Pr(M_T \ge a) &= 2\Pr(W(T) \ge a)
+                \end{align*}
+            \end{proof}
+        \item Find the PDF of $M_T$. 
+            \begin{proof}
+                \begin{align*}
+                    stuff &= not stuff 
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
+
+\section{Lambda-chain rule for stochastic integrals}
+
+\section{SDE for American Stocks}
+
+\section{Another SDE for American Stocks}
+
 \end{document}
