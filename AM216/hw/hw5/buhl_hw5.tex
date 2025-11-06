@@ -112,6 +112,39 @@
 \section{Time inversion property of the Wiener process}
 
 \section{Integrating the Wiener process}
+    \begin{enumerate}[label=\roman*)]
+        \item We have $W(t) = \int_0^t dW(s)$
+            \begin{proof}
+                We begin, 
+                \begin{align*}
+                    \int_0^T\int_0^s dW(s)dt &= \int_0^T\int_s^T dtdW(s)
+                    \\
+                    &= \int_0^T (T - s)dW(s)
+                    \\
+                    &\sim N\left(0, \int_0^T (T-s)^2dt\right)
+                    \\
+                    &\sim N\left(0, T^3 - T^3 + \frac{T^3}{3}\right)
+                    \\
+                    &\sim N\left(0, \frac{T^3}{3}\right)
+                \end{align*}
+            \end{proof}
+        \item We repeat but with a new integrand
+            \begin{proof}
+                \begin{align*}
+                    \int_0^T\int_0^s tdW(s)dt &= \int_0^T\int_s^T tdtdW(s)
+                    \\
+                    &= \frac{1}{2}\int_0^T (T^2 - s^2)dW(s)
+                    \\
+                    &\sim N\left(0, \frac{1}{4}\int_0^T (T^2-s^2)^2dt\right)
+                    \\
+                    &\sim N\left(0, \frac{1}{4}\left(T^5 - \frac{2}{3}T^5 +
+                    \frac{1}{5}T^5\right)\right)
+                    \\
+                    &\sim N\left(0, \frac{2T^5}{15}\right)
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
+    
 
 \section{Reflection principle of the Wiener process}
     \begin{enumerate}[label=\roman*)]
@@ -132,16 +165,42 @@
             \end{proof}
         \item Find the PDF of $M_T$. 
             \begin{proof}
+                We have that the two PDFs are related by
+                $\rho_{M_T \ge a} = \rho_{W(T) \ge a}(x/2)$
                 \begin{align*}
-                    stuff &= not stuff 
+                    \rho_{W(T) \ge a} &= \frac{1}{2} -
+                    \frac{1}{2}\erf\left(\frac{a}{\sqrt{2T}}\right)
+                    \\
+                    \rho_{M_T \ge a} &= \frac{1}{2} -
+                    \frac{1}{2}\erf\left(\frac{a}{2\sqrt{2T}}\right)
                 \end{align*}
             \end{proof}
     \end{enumerate}
 
 \section{Lambda-chain rule for stochastic integrals}
+    \begin{enumerate}[label=\roman*)]
+        \item Stratonovich interpretation
+            \begin{proof}
+                \begin{align*}
+                    \int_0^T \cos(W(t))dW(t) &= \sin\left(W(t)\right)\Big|_0^T -
+                    \int_0^T 0 dt
+                    \\
+                    &= \sin(W(T))
+                \end{align*}
+            \end{proof}
+        \item Ito Interpretation
+            \begin{proof}
+                \begin{align*}
+                    \int_0^T e^t\sin(W(t))dW(t) &= -e^t\cos(W(t))\Big|_0^T -
+                    \int_0^T -e^t\cos(W(t)) + \frac{1}{2}e^t\cos(W(t))dt
+                    \\
+                    &= -e^T\cos(W(T)) + 1 + \frac{1}{2}\int_0^Te^t\cos(W(t))dt
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
 
 \section{SDE for American Stocks}
 
-\section{Another SDE for American Stocks}
+\section{SDE for European Stocks}
 
 \end{document}
