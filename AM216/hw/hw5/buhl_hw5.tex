@@ -110,6 +110,39 @@
 \setlength{\parindent}{0pt}
 
 \section{Time inversion property of the Wiener process}
+    
+    \begin{proof}   
+        We begin by looking at the covariance of the two sets. We have, 
+        \begin{align*}
+            \Cov(W_i, W_j) &= E(W_iW_j) - E(W_i)E(W_j), \quad j > i, \quad W_j =
+            a + b, \quad W_i = a
+            \\
+            &= E(a^2 + ab)
+            \\
+            &= E(a^2)
+            \\
+            &= E(W_i^2)
+            \\
+            &= t_i
+        \end{align*}
+        This holds for $j > i$ and if $i > j$ then we have $\Cov(W_i, W_j) =
+        t_j$. Thus we have, $\Cov(W_i, W_j) = \min(t_i, t_j)$. Next we look at
+        \begin{align*}
+            \Cov(B_i, B_j) &= t_it_j\left(E(W_{1/i}W_{1/j}) -
+            E(W_{1/i})E(W_{1/j})\right)
+            \\
+            &= t_it_jE(W_{1/\max(t_i,t_j)}^2)
+            \\
+            &= t_it_j\frac{1}{\max(t_i,t_j)}
+            \\
+            &= \min(t_i,t_j)
+        \end{align*}
+        As the problem hint states, each of these RV is clearly gaussian, and
+        since they have the same covariance, we have that they are iid. That is, 
+        \begin{align*}
+            \{B_i\} \sim \{W_i\}
+        \end{align*}
+    \end{proof}
 
 \section{Integrating the Wiener process}
     \begin{enumerate}[label=\roman*)]
@@ -154,7 +187,8 @@
                 probability for $\Pr(W(T) \ge a | W(\tau) = a, \tau \in [0,T])
                 = 0.5$. This follows because the rest of the series $t \in
                 [\tau, T]$ is
-                distributed symmatrically about $W(\tau) = a$. Notice that if $W(\tau) = a$ and we have $M_T \ge
+                distributed symmatrically about $W(\tau) = a$. Notice that if
+                $W(\tau) = a$, we must have $M_T \ge
                 a$. Thus we have by bayes theorem,
                 \begin{align*}
                     \Pr(W(T) \ge a | M(T) \ge a) &= 0.5 = \frac{\Pr(M(T) \ge a |
@@ -165,14 +199,26 @@
             \end{proof}
         \item Find the PDF of $M_T$. 
             \begin{proof}
-                We have that the two PDFs are related by
-                $\rho_{M_T \ge a} = \rho_{W(T) \ge a}(x/2)$
+                We look at the related probabilities in order to determine the
+                pdf of $M_T$. We have, 
                 \begin{align*}
-                    \rho_{W(T) \ge a} &= \frac{1}{2} -
-                    \frac{1}{2}\erf\left(\frac{a}{\sqrt{2T}}\right)
+                    \Pr(M_T \ge a) &= 2\Pr(W(T) \ge a)
                     \\
-                    \rho_{M_T \ge a} &= \frac{1}{2} -
-                    \frac{1}{2}\erf\left(\frac{a}{2\sqrt{2T}}\right)
+                    \int_a^{\infty} \rho_{M_T}(x)dx &= 2\int_a^{\infty}
+                    \rho_{W(T)}(x)dx
+                    \\
+                    \int_{a + dx}^{\infty} \rho_{M_T}(x)dx - \int_a^{\infty}
+                    \rho_{M_T}(x)dx &=2\int_{a + dx}^{\infty} \rho_{W(T)}(x)dx
+                    -2\int_a^{\infty} \rho_{W(T)}(x)dx
+                    \\
+                    \int_a^{a + dx} \rho_{M_T}(x)dx &= 2\int_a^{a + dx} \rho_{W(T)}(x)dx
+                    \\
+                    \lim_{dx \to 0} \int_a^{a + dx} \rho_{M_T}(x)dx &= \lim_{dx
+                    \to 0}2\int_a^{a + dx} \rho_{W(T)}(x)dx
+                    \\
+                    \rho_{M_T}(x) &= 2\rho_{W(T)}(x), \quad x\in[0,\infty)
+                    \\
+                    &= \sqrt{\frac{2}{\pi T}}e^{-x^2/2T}, \quad x \ge 0
                 \end{align*}
             \end{proof}
     \end{enumerate}
@@ -200,7 +246,61 @@
     \end{enumerate}
 
 \section{SDE for American Stocks}
-
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                w &= E(w + w_z dW + w_s ds + w_{zz}/2 dW^2 + O(ds^2))
+                \\
+                &= w + w_s ds + w_{zz}/2 ds + O(ds^2)
+                \\
+                w_s &= -\frac{1}{2}w_{zz}
+            \end{align*}
+        \item 
+            \begin{align*}
+                w_s &= -\frac{1}{2}w_{zz}
+                \\
+                w(0,s) &= 0
+                \\
+                w(x_c, s) &= 1
+                \\
+                w(z, T) &= \begin{cases} 0 & z < x_c\\ 1 & z \ge
+                x_c\end{cases}
+            \end{align*}
+        \item 
+            \begin{align*}
+                w_{\tau} &= \frac{1}{2}w_{zz}
+                \\ 
+                w(0,\tau) &= 0
+                \\
+                w(x_c, \tau) &= 1
+                \\
+                w(z, 0) &= \begin{cases} 0 & z < x_c\\ 1 & z \ge
+                x_c\end{cases}
+            \end{align*}
+    \end{enumerate}
 \section{SDE for European Stocks}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                w &= E(w + w_z(b ds + \sqrt{a}dW) + w_s ds + w_{zz}(b^2ds^2+
+                adW^2)/2 + O(ds^2))
+                \\
+                &= w + w_s ds + b w_z ds + w_{zz}ds/2 + O(ds^2)
+                \\
+                w_s &= -bw_z -\frac{a}{2}w_{zz}
+            \end{align*}
+        \item 
+            \begin{align*}
+                w_s &= -bw_z -\frac{a}{2}w_{zz}
+                \\
+                w(0,s) &= 0
+                \\
+                w(z, T) &= \begin{cases} 0 & z < x_c\\ 1 & z \ge
+                x_c\end{cases}
+            \end{align*}
+        \item No, since the probability is dependent on $X$ at time $T$ we have
+        no boundary condition at $z = x_c$. That is, since $X(t)$ can cross back
+        over $x_c$ even if it reaches $x_c$ before $t = T$. 
+    \end{enumerate}
 
 \end{document}
