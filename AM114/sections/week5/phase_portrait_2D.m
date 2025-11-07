@@ -2,14 +2,14 @@ close all;
 clear;
 clc;
 
-xmin = -3;
-xmax = 3;
+xmin = -.1;
+xmax = .1;
 
-ymin = -3;
-ymax = 3;
+ymin = -.1;
+ymax = .1;
 
 tstart = 0;
-tstop = 10;
+tstop = 10000;
 
 resolution = 20;
 
@@ -28,11 +28,16 @@ v1y = [x1+4/l1,y1-4/l1];
 v2x = [x1-1,y1+1];
 v2y = [x1+4/l2,y1-4/l2];
 
-plot(v1x,v1y,'r')
+%plot(v1x,v1y,'r')
 hold on
-plot(v2x,v2y,'r')
+%plot(v2x,v2y,'r')
 xlim([xmin,xmax]);
 ylim([ymin,ymax]);
+
+plot(0,0,'xr');
+plot(0.5,0,'xb');
+plot(1,-1,'xy');
+plot(1,1,'xm');
 
 
 
@@ -43,7 +48,7 @@ for i = 1:resolution
 
         [t,y] = ode45(@ode_2D,tstart:0.1:tstop,[x0;y0]);
 
-        plot(y(:,1),y(:,2),'--g3');
+        plot(y(:,1),y(:,2),'--g');
     end
 end
 
