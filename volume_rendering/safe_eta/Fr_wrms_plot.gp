@@ -1,7 +1,12 @@
 reset
-set terminal png enh col
 #set multiplot layout 2,1 columnsfirst 
-set output "plot_Fr_wrms.png"
+
+png_output = 0
+
+if (png_output){
+    set terminal png enh col
+    set output "plot_Fr_wrms.png"
+}
 
 set tics font "Roman,15"
 set title font "Roman,25"
