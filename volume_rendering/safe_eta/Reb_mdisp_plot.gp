@@ -1,8 +1,8 @@
 reset
-#set multiplot layout 3,1 columnsfirst 
+set multiplot layout 3,1 columnsfirst 
 
 idx = 0
-pwr = 1
+pwr = 3
 set tics font "Roman,15"
 set title font "Roman,25"
 set key font "Roman,15"
@@ -81,7 +81,7 @@ set ylabel font "Roman,20"
 
 # -------------------------------------------------------------
 
-perform_block_1 = 0
+perform_block_1 = 1
 
 # {{{ First Plot
 
@@ -91,7 +91,7 @@ set xlabel "Re_{B, eff}"
 set key top right
 set ylabel "MDisp"
 set title "Effective MDisp v Re_{B}"
-set log xy
+set log x
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):($16/($1*$8**pwr)):($17/($1*$8**pwr)) w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady MDisp',\
@@ -102,7 +102,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_2 = 0
+perform_block_2 = 1
 
 # {{{ Second Plot
 
@@ -112,7 +112,8 @@ set xlabel "Re_{B, eff}"
 set key top right
 set ylabel "MDisp_{Lam}"
 set title "Effective MDisp v Re_{B}"
-set log xy
+set log x
+
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):($66/($1*$8**pwr)):($67/($1*$8**pwr)) w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady MDisp_{Lam}',\
@@ -123,7 +124,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_3 = 0
+perform_block_3 = 1
 
 # {{{ Third Plot
 
@@ -134,7 +135,8 @@ set xlabel "Re_{B, eff}"
 set key top right
 set ylabel "MDisp_{Turb}"
 set title "Effective MDisp_{Turb} v Re_{B}"
-set log xy
+set log x
+
 
 plot "steady_tavg_eta.dat" \
    i idx u (($8**3)*$1/$2):($76/($1*$8**pwr)):($77/($1*$8**pwr)) w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady MDisp_{Turb}',\
@@ -145,7 +147,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_4 = 1
+perform_block_4 = 0
 
 # {{{ Third Plot
 

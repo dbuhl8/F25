@@ -96,13 +96,13 @@ set log x
 set yrange [0:1]
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
-"" i 0:2:2 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
-"" i 0:2:2 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
+   i 0 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+"" i 0 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
+"" i 0 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
-"" i 0:1 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
-"" i 0:1 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
+   i 0 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+"" i 0 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
+"" i 0 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
 
 } # end of block 1 }}}
 
@@ -119,12 +119,15 @@ set key top right
 set ylabel "{/Symbol h}"
 set title "Effective Re_{B} v {/Symbol h}"
 set log x
-set yrange [0:ub]
+#set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+   i 0 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+"" i 2 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta',\
+"" i 2 u ($8**3*$1/$2):2 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+   i 0 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Eta',\
+"" i 1 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta',\
 
 } # end of block 2 }}} 
 
@@ -144,9 +147,11 @@ set log x
 set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
+   i 0 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
+"" i 2 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta_{Lam}',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
+   i 0 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Lam}',\
+"" i 1 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta_{Lam}',\
 
 } # end of block 3 }}} 
 
@@ -166,9 +171,11 @@ set log x
 set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
+   i 0 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
+"" i 2 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta_{Turb}',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
+   i 0 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Turb}',\
+"" i 1 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta_{Turb}',\
 
 } # end of block 3 }}} 
 
