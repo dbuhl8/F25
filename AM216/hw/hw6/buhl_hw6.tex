@@ -1,4 +1,4 @@
-%\documentclass{article}
+\documentclass{article}
 
 \usepackage{graphicx} % Required for inserting images
 \usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry} \usepackage{amsmath}
@@ -110,16 +110,158 @@
 \setlength{\parindent}{0pt}
 
 \section{Adjoint of a differential operator}
+    \begin{proof}
+        \begin{align*}
+            \int u L^*[v]dx &= \int L[u]vdx
+            \\
+            &= \int \left(b(x) u_x + \frac{1}{2} a u_{xx} \right) v dx
+            \\
+            &= \int vbu_x + \frac{1}{2} avu_{xx} dx
+            \\
+            &= \left(bvu + \frac{1}{2}avu_x\right)\Big|_{D} - \int \left(u(bv)_x
+            + \frac{1}{2}u_x(av)_x \right) dx
+            \\
+            &= \frac{1}{2} u(av)_x\Big|_D- \int \left(u(bv)_x
+            -  \frac{1}{2}u(av)_{xx} \right) dx
+            \\
+            L_z^*[\star] &= -\left(b\star\right)_z + \frac{1}{2}\left(a\star\right)_{zz}
+        \end{align*}
+    \end{proof}
 
 \section{Backward Equation with Ito's interpretation}
-
+    \begin{enumerate}[label=\roman*)]
+    \item
+        \begin{align*}
+            u(x,t) &= E(u + dXu_x - dtu_t + dX^2u_{xx}/2)
+            \\
+            &= u + b(x)dtu_x - u_tdt (a(x)/2)u_{xx}
+            \\
+            u_t &= b(x)u_x + \frac{a(x)}{2}u_{xx}
+        \end{align*}
+    \item We have the following boundary conditions which represent the exist
+    condition and the initial condition which represents whether the exit
+    condition is satisfied at $t = 0$
+        \begin{align*}
+            u(0,t) &= 1
+            \\
+            u(L,t) &= 1
+            \\
+            u(x,0) &= \begin{cases} 0 & 0 < x < L \\ 1 & x \in \{0,
+            1\}\end{cases}
+        \end{align*}
+    \item We begin with the definition of expectation
+        \begin{align*}
+            E(T) &= \int_0^{\infty} x \Pr(T = x) dx
+            \\
+            &= \int_0^{\infty} x (\lim_{dt \to 0} \Pr(T < x) - \Pr(T < x -
+            dt)) dx
+            \\
+            &= \lim_{dt \to 0} \int_0^{\infty} x (u(x,t) - u(x, t - dt)) dx
+            \\
+            & \approx
+            \int_0^{\infty} xu_t(x,t)dx
+        \end{align*}
+    \end{enumerate}
 \section{Solve the BVP}
+    We begin with the method of integrating factor
+    \begin{align*}
+        m(x) &= e^{2bx}
+        \\
+        mT_{xx} + 2bmT_x &= -2m
+        \\
+        T_x &=\frac{1}{m} \int -2m dx
+        \\
+        T_x &= -\frac{1}{b} + c_1m^{-1}
+        \\
+        T_x(L_1) = 0 &\implies c_1 = \frac{m(L_1)}{b}
+        \\
+        T(x) &= -\frac{x}{b} - \frac{1}{2b^2}e^{2b(L_1 - x)} + c_2
+        \\
+        T(L_2) = 0 &\implies c_2 = \frac{L_2}{b} + \frac{1}{2b^2}e^{2b(L_1 -
+        L_2)}
+        \\
+        T(x) &= \frac{1}{b}\left( L_2 - x\right) + \frac{1 - e^{2b(L_2 - x)}}{2b^2 e^{2b(L_2 -
+        L_1)}}
+    \end{align*}
 
 \section{Solving the backward equation with TPD}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                u(x,t) &= E(A)
+                \\
+                &= E(E(A|X(T - t + dt) = z + dX))
+                \\
+                &= E(u(z + dX, t - dt))
+                \\
+                &= E(u + dXu_z - dtu_t + \frac{1}{2}u_{zz}dX^2)
+                \\
+                &= u - zu_zdt - u_tdt + \frac{1}{2}dtu_{zz}
+                \\
+                u_t &= -zu_z + \frac{1}{2}u_{zz}
+            \end{align*}
+        \item we can find an analytical expression for $u$ since we know exactly
+            how $X(T)$ is distributed given $X(T - t) = z$. We have, 
+            \begin{align*}
+                (X(T) | X(T - t) = z) &\sim  N\left(e^{-t}z, \frac{1}{2}(1 -
+                e^{-2t})\right)
+                \\
+                u(x,t;c_0) &= \frac{1}{\sqrt{\pi(1 - e^{-2t})}}\int_{-\infty}^{\infty} H(x - c)e^{-\frac{\left(x -
+                e^{-t}z\right)^2}{1 - e^{-2t}}} dx
+                \\
+                &= \frac{1}{\sqrt{\pi(1 - e^{-2t})}}\int_{c_0}^{\infty} e^{-\frac{\left(x -
+                e^{-t}z\right)^2}{1 - e^{-2t}}} dx
+                \\
+                &= \frac{1}{2} - \frac{1}{2}\erf\left(\frac{x - e^{-t}z}{\sqrt{1
+                - e^{-2t}}}\right)
+            \end{align*}
+    \end{enumerate}
 
 \section{Linear scalings in an SDE}
+    \begin{enumerate}[label=\roman*)]
+        \item We begin with the necessary substitutions
+            \begin{align*}
+                 \frac{1}{a}d\tilde{X}(\tilde{t}) &= dX(t)
+                 \\
+                 &= -\frac{\mu}{ab}\tilde{X}d\tilde{t} +
+                 \sqrt{\frac{\sigma^2}{b}}dW(\tilde{t})
+                 \\
+                 d\tilde{X}(\tilde{t}) &= -\frac{\mu}{b}\tilde{X}d\tilde{t} +
+                 \sqrt{\frac{a^2\sigma^2}{b}}dW(\tilde{t})
+                 \\
+                 b = \mu \quad & \quad a = \sqrt{\frac{\mu}{\sigma^2}}
+            \end{align*}
+        \item
+            \begin{align*}
+                u(x,t;c_0) &=
+                \frac{1}{a}u^{(s)}(\tilde{x},\tilde{t};\tilde{c_0})
+                \\
+                &= \sqrt{\frac{\sigma^2}{\mu}} u^{(s)}(\tilde{x},\tilde{t};\tilde{c_0})
+            \end{align*}
+      \end{enumerate}
 
 \section{More linear scalings in an SDE}
+    \begin{enumerate}[label=\roman*)]
+        \item We begin with the necessary substitutions
+            \begin{align*}
+                 \frac{1}{a}d\tilde{X}(\tilde{t}) &= dX(t)
+                 \\
+                 &= -\frac{\mu}{a^3b}\tilde{X}^3d\tilde{t} +
+                 \sqrt{\frac{\sigma^2}{b}}dW(\tilde{t})
+                 \\
+                 d\tilde{X}(\tilde{t}) &= -\frac{\mu}{a^2b}\tilde{X}d\tilde{t} +
+                 \sqrt{\frac{a^2\sigma^2}{b}}dW(\tilde{t})
+                 \\
+                 b = \sqrt{\mu}\sigma \quad & \quad a^2 = \frac{\sqrt{\mu}}{\sigma}
+            \end{align*}
+        \item
+            \begin{align*}
+                u(x,t;c_0) &=
+                \frac{\alpha_0}{a^2}u^{(s)}(\tilde{x},\tilde{t};\tilde{c_0})
+                \\
+                &= \frac{\alpha_0\sigma}{\sqrt{\mu}} u^{(s)}(\tilde{x},\tilde{t};\tilde{c_0})
+            \end{align*}
+      \end{enumerate}
 
 \section{Periodic Steady State solution of the forward equation}
 
