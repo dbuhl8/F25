@@ -2,14 +2,14 @@ close all;
 clear;
 clc;
 
-xmin = -.1;
-xmax = .1;
+xmin = 0;
+xmax = 3;
 
-ymin = -.1;
-ymax = .1;
+ymin = 0;
+ymax = 3;
 
 tstart = 0;
-tstop = 10000;
+tstop = 5;
 
 resolution = 20;
 
@@ -34,10 +34,10 @@ hold on
 xlim([xmin,xmax]);
 ylim([ymin,ymax]);
 
-plot(0,0,'xr');
-plot(0.5,0,'xb');
-plot(1,-1,'xy');
-plot(1,1,'xm');
+%plot(0,0,'xr');
+%plot(0.5,0,'xb');
+%plot(1,-1,'xy');
+%plot(1,1,'xm');
 
 
 

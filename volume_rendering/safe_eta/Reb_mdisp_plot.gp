@@ -1,14 +1,30 @@
 reset
-set multiplot layout 3,1 columnsfirst 
 
 idx = 0
-pwr = 3
+
+# {{{ Plot Settings 
+png_output = 1
+eps_output = 0
+multiplot_mode = 0
+
+if (png_output){
+    set terminal png size 800,600
+    set output "plot_mdisp.png"
+} else if (eps_output) {
+    set terminal postscript enh col size 9in,16in
+    set output "plot_mdisp.eps"
+}
 set tics font "Roman,15"
 set title font "Roman,25"
 set key font "Roman,15"
 set xlabel font "Roman,20"
 set ylabel font "Roman,20"
 
+if (multiplot_mode) {
+set multiplot layout 3,1 columnsfirst 
+}
+
+# }}}
 # {{{file key: 
 # steady_tavg_eta.dat: 
 # idx 0: Re600_Pe60
@@ -81,7 +97,7 @@ set ylabel font "Roman,20"
 
 # -------------------------------------------------------------
 
-perform_block_1 = 1
+perform_block_1 = 0
 
 # {{{ First Plot
 
@@ -102,7 +118,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_2 = 1
+perform_block_2 = 0
 
 # {{{ Second Plot
 
@@ -124,7 +140,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_3 = 1
+perform_block_3 = 0
 
 # {{{ Third Plot
 
@@ -172,4 +188,32 @@ plot "steady_tavg_eta.dat" \
 } # end of block 4 }}}
 
 # -------------------------------------------------------------
+
+perform_block_5 = 1
+
+# {{{ Fifth Plot
+
+if (perform_block_5) {
+
+
+set xlabel "Re_{B, eff}"
+set key top right
+set ylabel "Re_{B, emergent}"
+#set title "Effective MDisp_{Turb} v Re_{B}"
+set log xy
+
+plot "steady_tavg_eta.dat" \
+   i idx u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Pr = 0.1',\
+"" i 1 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 6 ps 2 lc rgb "dark-violet" title 'Steady Pr = 0.05',\
+"" i 4 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 12 ps 2 lc rgb "dark-violet" title 'Steady Pr = 0.01',\
+"stoch_tavg_eta.dat" \
+   i idx u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Pr = 0.1',\
+0.03*x title "0.03",\
+0.1*x title "0.1"
+
+
+} # end of block 5 }}}
+
+# -------------------------------------------------------------
+
 
