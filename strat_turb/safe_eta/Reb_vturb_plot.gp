@@ -153,7 +153,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_3 = 1
+perform_block_3 = 0
 
 # {{{ Third Plot
 
@@ -202,6 +202,35 @@ plot "steady_tavg_eta.dat" \
 }
 
 # }}} End of block 4
+
+# -------------------------------------------------------------
+
+perform_block_5 = 1
+
+# {{{ Fifth Plot
+
+if (perform_block_5) {
+
+set xlabel "Re_{B, emerg}"
+set key bottom right
+set ylabel "V_{Turb, eff}"
+set title "Effective Re_{B, emerg} v V_{Turb, eff}"
+set log x
+set yrange[0:1]
+
+plot "steady_tavg_eta.dat" \
+   i 0 u ($16/$2):92 pt 4 ps 2 lc rgb "red" title 'Steady Re=600,Pr=0.1',\
+"" i 1 u ($16/$2):92 pt 4 ps 2 lc rgb "forest-green" title 'Steady Re=600,Pr=0.05',\
+"" i 2 u ($16/$2):92 pt 4 ps 2 lc rgb "blue" title 'Steady Re=1000,Pr=0.1',\
+"" i 3 u ($16/$2):92 pt 4 ps 2 lc rgb "dark-violet" title 'Steady Re=300,Pr=0.1',\
+"" i 4 u ($16/$2):92 pt 4 ps 2 lc rgb "black" title 'Steady Re=1000,Pr=0.01',\
+"stoch_tavg_eta.dat" \
+   i 0 u ($16/$2):92 pt 9 ps 2 lc rgb "red" title 'Stoch. Re=600,Pr=0.1',\
+"" i 1 u ($16/$2):92 pt 9 ps 2 lc rgb "blue" title 'Stoch. Re=1000,Pr=0.1'
+
+}
+
+# }}}
 
 # -------------------------------------------------------------
 

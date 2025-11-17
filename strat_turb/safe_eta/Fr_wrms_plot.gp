@@ -136,22 +136,43 @@ perform_block_2 = 0
 
 if (perform_block_2){
 
-set xlabel "Re_{B, eff}"
+set xlabel "Fr_{eff}^{-1}"
 set key bottom right
 set ylabel "w_{rms}/u_{h,rms}"
-set title "Vortz Weighting: Effective Re_{B, eff} v w_{rms}"
+set title "Vortz Weighting: Effective Fr_{eff}^{-1} v w_{rms}"
 set log xy
 
+if (plot_Re1000) {
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($1/$2*$8**3):($12/$8):($13/$8)   w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
-"" i 0 u ($1/$2*$8**3):($94/$8):($95/$8)   w yerrorbars pt 4 ps 2 lc rgb "red" title '       Wlam',\
-"" i 0 u ($1/$2*$8**3):($96/$8):($97/$8) w yerrorbars pt 4 ps 2 lc rgb "blue" title '       Wturb',\
+   i 0 u ($2**0.5/$8):($12/$8):($13/$8)   w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
+"" i 0 u ($2**0.5/$8):($94/$8):($95/$8)   w yerrorbars pt 4 ps 2 lc rgb "red" title '       Wlam',\
+"" i 0 u ($2**0.5/$8):($96/$8):($97/$8)   w yerrorbars pt 4 ps 2 lc rgb "blue" title '       Wturb',\
+"" i 2 u ($2**0.5/$8):($12/$8):($13/$8)   w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady: Wrms',\
+"" i 2 u ($2**0.5/$8):($94/$8):($95/$8)   w yerrorbars pt 4 ps 2 lc rgb "black" title '       Wlam',\
+"" i 2 u ($2**0.5/$8):($96/$8):($97/$8)   w yerrorbars pt 4 ps 2 lc rgb "black" title '       Wturb',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($1/$2*$8**3):($12/$8):($13/$8)   w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch.: Wrms',\
-"" i 0 u ($1/$2*$8**3):($94/$8):($95/$8)   w yerrorbars pt 9 ps 2 lc rgb "red" title '       Wlam',\
-"" i 0 u ($1/$2*$8**3):($96/$8):($97/$8) w yerrorbars pt 9 ps 2 lc rgb "blue" title '       Wturb',\
+   i 0 u ($2**0.5/$8):($12/$8):($13/$8)   w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch.: Wrms',\
+"" i 0 u ($2**0.5/$8):($94/$8):($95/$8)   w yerrorbars pt 9 ps 2 lc rgb "red" title '       Wlam',\
+"" i 0 u ($2**0.5/$8):($96/$8):($97/$8)   w yerrorbars pt 9 ps 2 lc rgb "blue" title '       Wturb',\
+"" i 0 u ($2**0.5/$8):($12/$8):($13/$8)   w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch.: Wrms',\
+"" i 0 u ($2**0.5/$8):($94/$8):($95/$8)   w yerrorbars pt 9 ps 2 lc rgb "black" title '       Wlam',\
+"" i 0 u ($2**0.5/$8):($96/$8):($97/$8)   w yerrorbars pt 9 ps 2 lc rgb "black" title '       Wturb',\
 
+
+
+} else {
+
+plot "steady_tavg_eta.dat" \
+   i 0 u ($2**0.5/$8):($12/$8):($13/$8)   w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady: Wrms',\
+"" i 0 u ($2**0.5/$8):($94/$8):($95/$8)   w yerrorbars pt 4 ps 2 lc rgb "red" title '       Wlam',\
+"" i 0 u ($2**0.5/$8):($96/$8):($97/$8)   w yerrorbars pt 4 ps 2 lc rgb "blue" title '       Wturb',\
+"stoch_tavg_eta.dat" \
+   i 0 u ($2**0.5/$8):($12/$8):($13/$8)   w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch.: Wrms',\
+"" i 0 u ($2**0.5/$8):($94/$8):($95/$8)   w yerrorbars pt 9 ps 2 lc rgb "red" title '       Wlam',\
+"" i 0 u ($2**0.5/$8):($96/$8):($97/$8)   w yerrorbars pt 9 ps 2 lc rgb "blue" title '       Wturb',\
+
+}
 
 } # end block 2 }}}
 
@@ -288,7 +309,7 @@ plot "steady_tavg_eta.dat" \
 
 perform_block_6 = 0
 
-# {{{ Fifth Plot - set perform_block_5 to 1 to run this block
+# {{{ Sixth Plot - set perform_block_6 to 1 to run this block
 
 if (perform_block_6) {
 
@@ -335,7 +356,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_7 = 1
+perform_block_7 = 0
 
 # {{{ Seventh Plot - set perform_block_7 to 1 to run this block
 
@@ -343,7 +364,7 @@ perform_block_7 = 1
 if (perform_block_7) {
 
 set xlabel "w_{rms, targeted avg}"
-set key top right
+set key top left
 set ylabel "w_{rms, vortz weighted}"
 set title "Extraction Routine Comparsion"
 set log xy
