@@ -110,15 +110,185 @@
 \setlength{\parindent}{0pt}
 
 \section{Average Quadratic Variation of Brownian Bridge}
+    \begin{proof}
+        We begin this proof by writing the distribution of the brownian bridge.
+        We have, 
+        \begin{align*}
+            (B(t) | W(T) = w_T) &\sim \left(W(t) + \frac{t}{T}(w_T - W(T)\right)
+        \end{align*}
+        Thus we may begin, 
+        \begin{align*}
+            \lim_{N\to\infty} E\left(\sum_{j=0}^{N-1} (\Delta W_j)^2 | W(T) =
+            0 \right)
+            &= \lim_{N\to\infty} \sum_{j=0}^{N-1} E(\Delta W_j)^2 | W(T) = 0)
+            \\
+            &= \lim_{N\to\infty} \sum_{j=0}^{N-1} E\left(\Delta \tilde{W}_j^2 +
+            \frac{\Delta t_j^2}{T^2}\tilde{W}^2(T) - 2\frac{\Delta t_j\Delta
+            \tilde{W}_j \tilde{W}(T)}{T}\right)
+            \\
+            &= \lim_{N\to\infty} \sum_{j=0}^{N-1} \Delta t_j +
+            \frac{\Delta t_j^2}{T^2}T - 2\frac{\Delta t_j^2}{T}
+            \\
+            &= \lim_{N\to\infty} \sum_{j=0}^{N-1} \Delta t_j -
+            \frac{\Delta t_j^2}{T}
+            \\
+            &= \lim_{N\to\infty} T -
+            \frac{NT^2}{N^2T}
+            \\
+            &= T
+        \end{align*}
+    \end{proof}
 
 \section{Microscopic Behavior at Reflecting Boundary}
-
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{proof}
+                \begin{align*}
+                    E(\max(0,\alpha)) &=
+                    \int_{-\infty}^{\infty}\max(\alpha,z)\rho_Z(z)dz
+                    \\
+                    &= \int_{-\infty}^{\alpha} \alpha \rho_Z(z)dz +
+                    \int_{\alpha}^{\infty} z\rho_Z(z)dz
+                    \\
+                    &= \alpha F_Z(\alpha) - \rho_Z(z)\Big|_{\alpha}^{\infty}
+                    \\
+                    &= \alpha F_Z(\alpha) + \rho_Z(\alpha)
+                \end{align*}
+            \end{proof}
+        \item 
+            \begin{proof}
+                \begin{align*}
+                    E(\max(0,Y)) &= E\left(\max\left(0,
+                    \sigma Z+\mu\right)\right) 
+                    \\
+                    &= E\left(\max\left(-\frac{\mu}{\sigma}, Z\right)\sigma +
+                    \mu\right)
+                    \\
+                    &= \mu +
+                    \sigma\left(-\frac{\mu}{\sigma}
+                    F_Z\left(-\frac{\mu}{\sigma}\right)
+                    + \rho_Z\left(-\frac{\mu}{\sigma}\right)\right)
+                \end{align*}
+            \end{proof}
+        \item 
+            \begin{proof}
+                \begin{align*}
+                    E(dX(t) | X(t) = 0) &= E(\max(0, b(0)dt +
+                    \sqrt{a(0)}dW))
+                    \\
+                    &= E(\max(0, \mu +
+                    \sigma Z)), \quad \mu = b(0)dt, \quad \sigma = \sqrt{a(0)dt}
+                    \\
+                    &= b(0)dt +
+                    \sqrt{a(0)dt}\left(b(0)\sqrt{\frac{dt}{a(0)}}F_Z\left(b(0)\sqrt{\frac{dt}{a(0)}}\right)
+                    + \rho_Z\left(b(0)\sqrt{\frac{dt}{a(0)}}\right)\right)
+                    \\
+                    &=
+                    \sqrt{a(0)dt}\rho_Z\left(b(0)\sqrt{\frac{dt}{a(0)}}\right) +
+                    O(dt)
+                    \approx \sqrt{a(0)dt}\rho_Z(0)
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
 \section{The Issue of X(t) = 0: Part 1}
-
+    \begin{proof}
+        We begin with the method of integrating factor. We have, 
+        \begin{align*}
+            \mu(x) &= e^{\int \frac{1}{2x} dx} = \sqrt{x}
+            \\
+            \ppx{}\left(T_x\mu(x)\right) &= -\frac{\mu(x)}{2x}
+            \\
+            T_x &= -\frac{1}{\mu(x)}\int \frac{\mu(x)}{2x}dx
+            \\
+            &= -1 + \frac{C}{\sqrt{x}}
+            \\
+            T_x(1) = 0 &\implies C = 1
+            \\
+            T(x) &= -x + 2\sqrt{x} + C_2
+            \\
+            T(\varepsilon) = 0 &\implies C = \varepsilon - 2\sqrt{\varepsilon}
+            \\
+            T(x) &= -x + 2\sqrt{x} + \varepsilon - 2\sqrt{\varepsilon}
+        \end{align*}
+    \end{proof}
 \section{The Issue of X(t) = 0: Part 2}
+    \begin{enumerate}[label=\roman*)]
+        \item
+            \begin{proof}
+                \begin{align*}
+                    dU &= Y^2 + dY^2 + 2YdY - Y^2
+                    \\
+                    &= dt + \sqrt{4U}dU
+                \end{align*}
+                This is the exact SDE we were given for $X$ in the last problem. 
+            \end{proof}
+        \item
+            \begin{proof}
+                \begin{align*}
+                    T_{yy} &= -2
+                    \\
+                    T_y &= -2y + C
+                    \\
+                    T &= -y^2 + C_1y + C_2
+                    \\
+                    T'(1) = 0 \implies C_1 = 2, &\quad T(\sqrt{\varepsilon}) = 0
+                    \implies C_2 = \epsilon - 2\sqrt{\varepsilon}
+                    \\
+                    T(y) &= -y^2 + 2y + \varepsilon - 2\sqrt{\varepsilon}
+                \end{align*}
+                This is the exact same solution if we take $X = Y^2$. 
+            \end{proof}
+    \end{enumerate}
 
 \section{The Issue of X(t) = 0: Part 3}
-
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                T_{xx} - \frac{2}{x}T_x &= -\frac{2}{x^2}
+                \\
+                \ppx{}\left(T_x x^{-2}\right) &= -\frac{2}{x^4}
+                \\
+                T_x &= x^2\left(\frac{2}{3}x^{-3} + C\right)
+                \\
+                T_x &= \frac{2}{3x} + Cx^2
+                \\
+                T &= \frac{2}{3}\ln(x) + \frac{C_1}{3}x^3 + C_2
+                \\
+                T'(1) = 0 \implies C_1 = -\frac{2}{3}, &\quad T(\varepsilon) = 0
+                \implies C_2 = -\frac{2}{3}\ln(\varepsilon) +
+                \frac{2}{9}\varepsilon^3
+                \\
+                T(x) &= \frac{2}{9}(\varepsilon^3 - x^3) +
+                \frac{2}{3}\ln\left|\frac{x}{\varepsilon}\right|
+            \end{align*}
+        \item 
+            \begin{proof}
+                \begin{align*}
+                    \lim_{\varepsilon \to 0^+} T(x) &= -\frac{2}{3}x^3 +
+                    \frac{2}{3}\ln\left|\frac{x}{0^+}\right|
+                    \\
+                    &= \infty
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
 \section{Solution of dX = RHS}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                dX &= X(e^{\alpha dW + \beta dt} - 1)
+                \\
+                &= X\left(0 + \alpha dW (1) + \beta dt (1) + \frac{\alpha^2}{2}dW^2 (1)
+                + h.o.t.\right)
+                \\
+                &= \left(\beta + \frac{\alpha^2}{2}\right)Xdt + \alpha XdW
+            \end{align*}
+        \item
+            They are very similar and $dX$ can be recovered using: 
+            \begin{gather*}
+                \sigma = \alpha, \quad b = \beta + \frac{\sigma^2}{2}
+                \\
+                \alpha = \sigma, \quad \beta = b - \frac{\sigma^2}{2}
+            \end{gather*}
+    \end{enumerate}
 
 \end{document}
