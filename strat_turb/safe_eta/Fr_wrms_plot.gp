@@ -16,7 +16,7 @@ if (png_output){
 }
 set tics font "Roman,15"
 set title font "Roman,25"
-set key font "Roman,15"
+set key font "Roman,12"
 set xlabel font "Roman,20"
 set ylabel font "Roman,20"
 
@@ -388,7 +388,7 @@ x
 
 # -------------------------------------------------------------
 
-perform_block_8 = 0
+perform_block_8 = 1
 
 # {{{ Eighth Plot - set perform_block_8 to 1 to run this block
 
@@ -396,20 +396,67 @@ perform_block_8 = 0
 if (perform_block_8) {
 
 set xlabel "Fr_{eff}"
-set key top left
+set key bottom right
 set ylabel "Fr_{h, emergent}"
 set title "Fr_{eff} v.s. Fr_{h, emergent}"
 set log xy
 
 plot "steady_tavg_eta.dat" \
-   i 0 u (($2**-0.5)*$8):94 w yerrorbars pt 4 ps 2 lc rgb "red"         title '        Wlam',\
-"" i 0 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "blue"        title '        Wturb',\
+   i 0 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady (Re,Pr) = (600,0.1)',\
+"" i 1 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady (Re,Pr) = (600,0.05)',\
+"" i 2 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady (Re,Pr) = (1000,0.1)',\
+"" i 3 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady (Re,Pr) = (300,0.1)',\
+"" i 4 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 4 ps 2 lc rgb "green" title 'Steady (Re,Pr) = (1000,0.01)',\
 "stoch_tavg_eta.dat" \
-   i 0 u 62:94 w yerrorbars pt 9 ps 2 lc rgb "red"         title '        Wlam',\
-"" i 0 u 72:96 w yerrorbars pt 9 ps 2 lc rgb "blue"        title '        Wturb',\
-x
+   i 0 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stochastic (Re,Pr) = (600,0.1)',\
+"" i 1 u (($2**-0.5)*$8):(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2))) w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stochastic (Re,Pr) = (1000,0.1)',\
+0.06*x title '0.06x'
 
 } # end of block 8 }}}
+
+# -------------------------------------------------------------
+
+perform_block_9 = 0
+
+# {{{ Ninth Plot - set perform_block_9 to 1 to run this block
+
+
+if (perform_block_9) {
+
+set xlabel "Fr_{h, emergent}^{-1}"
+set ylabel "w_{rms}"
+set title "Fr_{h, emergent}^{-1} v.s. w_{rms}"
+set key bottom left
+set log xy
+
+plot "steady_tavg_eta.dat" \
+   i 0 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($12/$8):($13/$8)\
+   w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Re=600 w_{rms}',\
+"" i 0 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($94/$8):($95/$8)\
+   w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Re=600 w_{Lam}',\
+"" i 0 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($96/$8):($97/$8)\
+   w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Re=600 w_{Turb}',\
+"" i 2 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($12/$8):($13/$8)\
+   w yerrorbars pt 6 ps 2 lc rgb "dark-violet" title 'Steady Re=1000 w_{rms}',\
+"" i 2 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($94/$8):($95/$8)\
+   w yerrorbars pt 6 ps 2 lc rgb "red" title 'Steady Re=1000 w_{Lam}',\
+"" i 2 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($96/$8):($97/$8)\
+   w yerrorbars pt 6 ps 2 lc rgb "blue" title 'Steady Re=1000 w_{Turb}',\
+"stoch_tavg_eta.dat" \
+   i 0 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($12/$8):($13/$8)\
+   w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Re=600 w_{rms}',\
+"" i 0 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($94/$8):($95/$8)\
+   w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. Re=600 w_{Lam}',\
+"" i 0 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($96/$8):($97/$8)\
+   w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Stoch. Re=600 w_{Turb}',\
+"" i 1 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($12/$8):($13/$8)\
+   w yerrorbars pt 13 ps 2 lc rgb "dark-violet" title 'Stoch. Re=1000 w_{rms}',\
+"" i 1 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($94/$8):($95/$8)\
+   w yerrorbars pt 13 ps 2 lc rgb "red" title 'Stoch. Re=1000 w_{Lam}',\
+"" i 1 u (1./(($2**-0.5)*$16/($1*0.5*($8**2 + $12**2)))):($96/$8):($97/$8)\
+   w yerrorbars pt 13 ps 2 lc rgb "blue" title 'Stoch. Re=1000 w_{Turb}',\
+
+} # end of block 9 }}}
 
 # -------------------------------------------------------------
 

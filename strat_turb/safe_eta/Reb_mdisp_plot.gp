@@ -16,7 +16,7 @@ if (png_output){
 }
 set tics font "Roman,15"
 set title font "Roman,25"
-set key font "Roman,15"
+set key font "Roman,12"
 set xlabel font "Roman,20"
 set ylabel font "Roman,20"
 
@@ -197,19 +197,21 @@ if (perform_block_5) {
 
 
 set xlabel "Re_{B, eff}"
-set key top right
+set key bottom right
 set ylabel "Re_{B, emergent}"
 #set title "Effective MDisp_{Turb} v Re_{B}"
 set log xy
 
 plot "steady_tavg_eta.dat" \
-   i idx u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Pr = 0.1',\
-"" i 1 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 6 ps 2 lc rgb "dark-violet" title 'Steady Pr = 0.05',\
-"" i 4 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 12 ps 2 lc rgb "dark-violet" title 'Steady Pr = 0.01',\
+   i 0 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady (Re,Pr) = (600,0.1)',\
+"" i 1 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady (Re,Pr) = (600,0.05)',\
+"" i 2 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady (Re,Pr) = (1000,0.1)',\
+"" i 3 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady (Re,Pr) = (300,0.1)',\
+"" i 4 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 4 ps 2 lc rgb "green" title 'Steady (Re,Pr) = (1000,0.01)',\
 "stoch_tavg_eta.dat" \
-   i idx u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Pr = 0.1',\
-0.03*x title "0.03",\
-0.1*x title "0.1"
+   i 0 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. (Re,Pr) = (600,0.1)',\
+"" i 1 u (($8**3)*$1/$2):($16/$2):($17/$2) w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. (Re,Pr) = (1000,0.1)',\
+0.03*x title "0.03x"
 
 
 } # end of block 5 }}}

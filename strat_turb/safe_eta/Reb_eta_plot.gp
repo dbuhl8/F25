@@ -258,4 +258,32 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
+perform_block_7 = 0
+
+# {{{ Seventh Plot
+
+if (perform_block_7) {
+
+set xlabel "Re_{B, emergent}"
+set key top right
+set ylabel "n_{emergent}"
+set title "Re_{B, emergent} v n_{emergent}"
+set log x
+
+plot "steady_tavg_eta.dat" \
+   i 0 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Re=600, Pr=0.1',\
+"" i 2 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Re=1000, Pr=0.1',\
+"" i 1 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "forest-green" title 'Steady Re=600, Pr=0.05',\
+"" i 3 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Re=300, Pr=0.1',\
+"" i 4 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-red" title 'Steady Re=1000, Pr=0.01',\
+"stoch_tavg_eta.dat" \
+   i 0 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Re=600',\
+"" i 1 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Re=1000',\
+
+} # end of block 6 }}} 
+
+# -------------------------------------------------------------
+
+
+
 
