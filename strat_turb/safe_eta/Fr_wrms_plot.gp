@@ -388,4 +388,30 @@ x
 
 # -------------------------------------------------------------
 
+perform_block_8 = 0
+
+# {{{ Eighth Plot - set perform_block_8 to 1 to run this block
+
+
+if (perform_block_8) {
+
+set xlabel "Fr_{eff}"
+set key top left
+set ylabel "Fr_{h, emergent}"
+set title "Fr_{eff} v.s. Fr_{h, emergent}"
+set log xy
+
+plot "steady_tavg_eta.dat" \
+   i 0 u (($2**-0.5)*$8):94 w yerrorbars pt 4 ps 2 lc rgb "red"         title '        Wlam',\
+"" i 0 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "blue"        title '        Wturb',\
+"stoch_tavg_eta.dat" \
+   i 0 u 62:94 w yerrorbars pt 9 ps 2 lc rgb "red"         title '        Wlam',\
+"" i 0 u 72:96 w yerrorbars pt 9 ps 2 lc rgb "blue"        title '        Wturb',\
+x
+
+} # end of block 8 }}}
+
+# -------------------------------------------------------------
+
+
 
