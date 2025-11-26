@@ -109,4 +109,148 @@
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
 
+\section{Lambda-rule for stochastic derivatives}
+    \begin{proof}
+        We begin this section by first taking $X(t) = H(t,W(t))$. 
+        \begin{align*}
+             dX &= \left(X_t + \frac{1}{2}X_{WW}\right)dt + X_WdW
+             \\
+             &= \left(2tX + \frac{1}{2}X\right)dt + XdW
+        \end{align*}
+        We notice that if this were true we must have several conditions with
+        also follow with our original assumption. First and foremost, 
+        \begin{align*}
+            X = X_W &\implies X_{W} = X_{WW}
+            \\
+            X &\propto e^{W(t)}
+            \\
+            X_t = 2tX &\implies X \propto e^{t^2}
+            \\
+            X &= X_0e^{t^2 + W(t)}
+        \end{align*}
+        This all follows if we take the $\lambda$-chain rule and the original
+        SDE to be equivalent. What remains is to resolve the initial condition
+        and this simply implies that $X_0 = 2$. 
+        \begin{gather*}
+            H(t,W(t)) = X(t) = e^{t^2 + W(t)}
+        \end{gather*}
+    \end{proof}
+
+\section{Time Reversal of an SDE}
+    \begin{proof}
+        \begin{align*}
+            \rho_{\left(X(t)|X(t + dt) = x_1\right)} (x_0) &\propto
+            \exp\left(\frac{-1}{2\sigma^2dt}\left[(x_0-x_1)^2 + 2c_1dt(x_0 -
+            x_1) + c_2dt(x_0 - x_1)^2 + \ldots\right]\right)
+            \\
+            \hat{\sigma}^2 = \frac{\sigma^2dt}{1 + c_2dt}, &\quad \beta =
+            \frac{c_1dt}{1 + c_2dt}
+            \\
+            \rho_{\left(X(t)|X(t + dt) = x_1\right)} (x_0) &\propto
+            \exp\left(\frac{-1}{2\hat{\sigma}^2}\left[\Delta_x^2 + 2\beta\Delta_x
+            + \ldots\right]\right)
+            \\
+            &\propto \exp\left(\frac{-1}{2\hat{\sigma}^2}\left[\Delta_x^2 + 2\beta\Delta_x
+            + \beta^2\right]\right)
+            \\
+            &\propto \exp\left(\frac{-1}{2\hat{\sigma}^2}\left[\Delta_x +
+            \beta\right]^2\right)
+            \\
+            &\propto  \exp\left(-\frac{1 + c_2dt}{2\sigma^2dt}\left[x_0 - x_1 +
+            \frac{c_1dt}{1 + c_2dt}\right]^2\right)
+            \\
+            \left(X(t) | X(t+dt) = x_1\right) &\sim N\left(\frac{-c_1dt}{1 + c_2dt},
+            \frac{\sigma^2dt}{1 + c_2dt}\right)
+        \end{align*}
+    \end{proof}
+
+\section{Feynman-Kac Formula}
+    \begin{enumerate}[label=\roman*)]
+        \item Write out the FVP
+            \begin{align*}
+                0 &= u_t +\frac{1}{2}u_{xx} + xu
+                \\
+                u(x,T,T) = 1
+            \end{align*}
+        \item Verify the given solution
+            \begin{align*}
+                u(x,t,T) &= \exp\left(\frac{(T - t)^3}{6} + (T - t)x\right)
+                \\
+                u_t &= -\left(x + (T - t)^2/2\right)\exp\left(\frac{(T - t)^3}{6} + (T - t)x\right)
+                \\
+                u_xx &= (T - t)^2\exp\left(\frac{(T - t)^3}{6} + (T - t)x\right)
+                \\
+                0 &=  \exp\left(\frac{(T - t)^3}{6} + (T -
+                t)x\right)\left[-\left(x +
+                \frac{(T - t)^2}{2}\right) + \frac{(T - t)^2}{2} + x\right]
+                \\
+                &= 0
+                \\
+                u(x,T,T) &= \exp(0) = 1
+            \end{align*}
+            Thus this solution satisfies the FVP. 
+        \item This specific problem is easy enough to directly integrate so I
+        will do so. 
+            \begin{proof}
+                We begin by expanding $X(s)$ (Note that, $\int_t^T \hat{W}(s)ds \sim
+                N\left(0, \frac{(T - t)^3}{3}\right)$)
+                \begin{align*}
+                    u(x,t,T) &= E\left[\exp\left(\int_t^T x +
+                    \hat{W}(s)ds\right) \Big| \hat{W}(t) = 0\right]
+                    \\
+                    &= E\left[\exp((T - t)x) \exp\left(\int_t^T
+                    \hat{W}(s)ds\right) \Big| \hat{W}(t) = 0\right]
+                    \\
+                    &= C \exp((T - t)x) \int_{-\infty}^{\infty} e^x
+                    e^{-x^2/2\sigma^2}dx
+                    \\
+                    &= C \exp((T - t)x) \int_{-\infty}^{\infty}
+                    e^{-\left(x^2 - 2\sigma^2x\right)/2\sigma^2}dx
+                    \\
+                    &= C \exp((T - t)x) e^{\sigma^2/2} \int_{-\infty}^{\infty}
+                    e^{-\left(x - \sigma^2\right)^2/2\sigma^2}dx
+                    \\
+                    &= \exp((T - t)x) e^{\sigma^2/2}
+                    \\
+                    &= \exp\left(x(T-t) + \frac{(T - t)^3}{6}\right) 
+                \end{align*}
+            \end{proof}
+    \end{enumerate}
+
+\section{Integrating Factor to solve SDE}
+    \begin{enumerate}[label=\roman*)]
+        \item
+        \begin{align*}
+            dX - \frac{1}{1 + t}X dt &= dW
+            \\
+            d\left(\frac{X}{1 + t}\right) &= \frac{dW(s)}{1 + s}
+            \\
+            X(t) &= (1 + t)\left[c +  \int_0^t \frac{dW(s)}{1 + s}\right]
+            \\
+            X(0) = 1 &\implies c = 1
+        \end{align*}
+        \item 
+            \begin{align*}
+                E(X(t)) &= (1 + t)\left(1  + E\left(\int_0^t\frac{dW(s)}{1 +
+                s}\right)\right)
+                \\
+                &= 1 + t
+                \\
+                \Var(X(t)) &= (1 + t)^2\Var\left(\int_0^t\frac{dW(s)}{1 +
+                s}\right)
+                \\
+                &= (1 + t)^2\left(\int_t^T\frac{ds}{(1 + s)^2}\right)
+                \\
+                &= (1 + t)^2\left(-\frac{1}{1 + s}\right|_0^t
+                \\
+                &= (1 + t)^2\left(1 - \frac{1}{1 + t}\right)
+                \\
+                &= t + t^2
+            \end{align*}
+    \end{enumerate}
+
+\section{Simulating Feynman-Kac}
+
+\section{Nonlinear Function of an RV}
+
 \end{document}
