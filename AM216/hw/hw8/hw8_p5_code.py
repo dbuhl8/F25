@@ -6,35 +6,40 @@ import math
 # problem 6 diagnostics
 
 sigma = 1
-dt = 1e-2
-nt = int(1e2)
+dt = 2**(-10)
+nt = int(1./dt)
 
 
-X_0 = 1
+X_0 = 0.7
 
 t = np.zeros(nt)
 X_sde = np.zeros(nt)
-X_int = np.zeros(nt)
+weight = np.zeros(nt)
 
-trials = 20
+trials = 10**5
 
 fig, ax = plt.subplots()
+
+mu = 0 
+
+def phi(x,t):
+    return 0.5*((x-t)**2 + 2*(x-t) - 1)
+def BC(x,t):
+    return np.exp(-(x - t)**2/2)
 
 for j in range(trials):
     dW = np.random.normal(0,dt,size=nt-1)
 
     t[0] = 0 
     X_sde[0] = X_0
-    X_int[0] = X_0
+    weight[0] = 1
+    phi
 
     for i in range(nt-1):
         t[i+1] = t[i] + dt
-        X_sde[i+1] = X_sde[i] + sigma*X_sde[i]*dW[i]
-        X_int[i+1] = X_0*np.exp(sigma*np.sum(dW[:i+1]))
-    
-    ax.plot(t,X_sde,'--b')
-    ax.plot(t,X_int,'r')
-
-mu = X_0*np.exp((sigma**2*t)/2)
-ax.plot(t,mu,'g')
-plt.show()
+        X_sde[i+1] = X_sde[i] + dW[i]
+        weight[i+1] = weight[i]*np.exp(phi(X_sde[i],t[i]))*dt
+    mu += weight[-1]*BC(X_sde[-1],1)
+        
+mu /= trials
+print('Average Value: ', mu)

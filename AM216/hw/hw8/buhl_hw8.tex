@@ -178,7 +178,7 @@
                 \\
                 u_t &= -\left(x + (T - t)^2/2\right)\exp\left(\frac{(T - t)^3}{6} + (T - t)x\right)
                 \\
-                u_xx &= (T - t)^2\exp\left(\frac{(T - t)^3}{6} + (T - t)x\right)
+                u_{xx} &= (T - t)^2\exp\left(\frac{(T - t)^3}{6} + (T - t)x\right)
                 \\
                 0 &=  \exp\left(\frac{(T - t)^3}{6} + (T -
                 t)x\right)\left[-\left(x +
@@ -250,6 +250,25 @@
     \end{enumerate}
 
 \section{Simulating Feynman-Kac}
+    \begin{enumerate}[label=\roman*)]
+        \item We can verify this solution by simply plugging it into the
+        original PDE and initial condition. 
+            \begin{align*}
+                u(x,t,T) &= \exp\left(-\frac{(x - t)^2}{2}\right) 
+                \\
+                u_t &= (x - t)u
+                \\
+                u_{xx} &= \ppx{}\left(-(x-t)u\right)
+                \\
+                &= -u + (x-t)^2u
+                \\
+                0 &= u\left[(x - t) - \frac{1}{2} + \frac{(x-t)^2}{2} -
+                \phi\right]
+                \\
+                &= 0 
+            \end{align*}
+        \item 
+    \end{enumerate}
 
 \section{Nonlinear Function of an RV}
 
