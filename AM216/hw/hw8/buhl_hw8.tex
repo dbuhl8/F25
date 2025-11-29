@@ -267,9 +267,48 @@
                 \\
                 &= 0 
             \end{align*}
-        \item 
+        \item The computed numerical value was 
+        $\hat{u}(0.7,0,T) = 0.7833101185224285$ which is
+        relatively close to the exact value of $u(0.7,0,T) = 0.782704538242$. 
+            
     \end{enumerate}
 
 \section{Nonlinear Function of an RV}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                dY &= \ln\left[X(t) + \sigma X(t)dW(t)\right] - \ln[X(t)]
+                \\
+                &= \ln[1 + \sigma dW(t)]
+            \end{align*}
+        \item 
+            \begin{align*}
+                E(X(t + dt)) &= E(X(t) + dX)
+                \\
+                &= E(X(t)) + E(dX)
+                \\
+                &= E(X(t)) + \sigma E(X(t))E(dW(t))
+                \\
+                &= E(X(t))
+                \\
+                E(X(t + dt)) - E(X(t)) &= 0
+                \\
+                d(E(X(t)) &= 0
+            \end{align*}
+            \begin{align*}
+                E(Y(t + dt)) &= E(Y(t) + dY)
+                \\
+                &= E(Y(t)) + E(\ln(1 + \sigma dW(t)))
+                \\
+                dE(Y(t)) &= E(\ln(1 + \sigma dW(t)))
+                \\
+                &\approx E(\ln(1) + \sigma dW(t) + \sigma^2h.o.t.)
+                \\
+                &\approx \sigma E(dW(t))
+                \\
+                &\approx 0
+            \end{align*}
+        \item 
+    \end{enumerate}
 
 \end{document}
