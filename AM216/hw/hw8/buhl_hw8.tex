@@ -83,6 +83,7 @@
 \newcommand{\ex}{\bs{e}_x}
 \newcommand{\ey}{\bs{e}_y}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
+\newcommand{\ddt}[1]{\frac{d #1}{d t}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
 \newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
@@ -289,11 +290,11 @@
                 \\
                 &= E(X(t)) + \sigma E(X(t))E(dW(t))
                 \\
-                &= E(X(t))
+                E(X(t + dt)) - E(X(t)) &= \sigma E(X(t))E(dW(t))
                 \\
-                E(X(t + dt)) - E(X(t)) &= 0
+                d(E(X(t)) &= \sigma E(X(t))E(dW(t))
                 \\
-                d(E(X(t)) &= 0
+                &= 0
             \end{align*}
             \begin{align*}
                 E(Y(t + dt)) &= E(Y(t) + dY)
@@ -302,13 +303,32 @@
                 \\
                 dE(Y(t)) &= E(\ln(1 + \sigma dW(t)))
                 \\
-                &\approx E(\ln(1) + \sigma dW(t) + \sigma^2h.o.t.)
+                &\approx E\left(\ln(1) + \sigma dW(t) +
+                \frac{\sigma^2}{2}dW^2(t) + h.o.t.\right)
                 \\
-                &\approx \sigma E(dW(t))
+                &\approx \sigma E(dW(t)) - \frac{\sigma^2}{2}E(dW^2(t))
                 \\
-                &\approx 0
+                &\approx -\frac{\sigma^2}{2}dt
             \end{align*}
         \item 
+            \begin{align*}
+                \ddt{E_X} &= 0
+                \\
+                E_X &= c
+                \\
+                E_X(0) &= 1
+                \\
+                E_X(t) &= 1
+            \end{align*}
+            \begin{align*}
+                \ddt{E_Y} &= -\frac{\sigma^2}{2}
+                \\
+                E_Y(t) &= c - \frac{\sigma^2}{2}t
+                \\
+                E_Y(0) &= 0 
+                \\
+                E_Y(t) &= -\frac{\sigma^2}{2}t
+            \end{align*}
     \end{enumerate}
 
 \end{document}
