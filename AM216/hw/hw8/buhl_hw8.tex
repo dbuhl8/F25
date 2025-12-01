@@ -297,16 +297,6 @@
                 \\
                 &= 0
             \end{align*}
-            I would like to add a small bit of disccusion here. In the
-            derivation for the ODE for $E(Y(t))$, I notice that the ODE obtained
-            is directly determined by the order of the expansion for $\ln(1 +
-            \sigma dW)$, i.e. if we use a first order expansion we find $E(Y(t))
-            = Y(0)$ and if we use a second order expansion we find $E(Y(t)) =
-            Y(0) - \frac{\sigma^2}{2}t$. It seems appropriate to use only a
-            first order expansion as this only includes changes to $Y(t)$ which
-            vary with respect to $dW(t)$ as $X(t)$ does. Thus, we obtain the
-            same ODE for $E(Y(t))$ as we do for $E(X(t))$, albeit with different
-            initial conditions. 
             \begin{align*}
                 E(Y(t + dt)) &= E(Y(t) + dY)
                 \\
@@ -315,11 +305,11 @@
                 dE(Y(t)) &= E(\ln(1 + \sigma dW(t)))
                 \\
                 &\approx E\left(\ln(1) + \sigma dW(t) 
-                + h.o.t.\right)
+                - \frac{\sigma^2}{2}dW^2(t) + h.o.t.\right)
                 \\
-                &\approx \sigma E(dW(t))
+                &\approx \sigma E(dW(t)) - \frac{\sigma^2}{2}E(dW^2(t))
                 \\
-                &\approx 0
+                &\approx -\frac{\sigma^2}{2}
             \end{align*}
         \item 
             \begin{align*}
@@ -332,13 +322,13 @@
                 E_X(t) &= 1
             \end{align*}
             \begin{align*}
-                \ddt{E_Y} &= 0
+                \ddt{E_Y} &= -\frac{\sigma^2}{2}
                 \\
-                E_Y(t) &= c
+                E_Y(t) &= c - \frac{\sigma^2}{2}t 
                 \\
                 E_Y(0) &= 0 
                 \\
-                E_Y(t) &= 0
+                E_Y(t) &= -\frac{\sigma^2}{2}t
             \end{align*}
     \end{enumerate}
 
