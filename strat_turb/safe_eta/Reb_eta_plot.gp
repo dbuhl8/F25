@@ -137,19 +137,19 @@ perform_block_2 = 1
 
 if (perform_block_2) {
 
-set xlabel "Re_{B}"
+set xlabel "B_{eff}"
 set key top right
 set ylabel "n"
-set title "Effective Re_{B} v n"
-set log x
+#set title "Fr^{-1} v n"
+set log xy
 #set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
-"" i 2 u ($8**3*$1/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta',\
+   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
+"" i 2 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Eta',\
-"" i 1 u ($8**3*$1/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta',\
+   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Eta',\
+"" i 1 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta',\
 
 } # end of block 2 }}} 
 
@@ -161,19 +161,19 @@ perform_block_3 = 1
 
 if (perform_block_3) {
 
-set xlabel "Re_{B}"
+set xlabel "B_{eff}"
 set key top right
 set ylabel "n"
-set title "Effective Re_{B} v n_{Lam}"
-set log x
-set yrange [0:ub]
+#set title "Effective Re_{B} v n_{Lam}"
+set log xy
+##set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
-"" i 2 u ($8**3*$1/$2):70:71 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta_{Lam}',\
+   i 0 u ($2/($8**2)):70:71 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady Eta_{Lam}',\
+"" i 2 u ($2/($8**2)):70:71 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta_{Lam}',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Lam}',\
-"" i 1 u ($8**3*$1/$2):70:71 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta_{Lam}',\
+   i 0 u ($2/($8**2)):70:71 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. Eta_{Lam}',\
+"" i 1 u ($2/($8**2)):70:71 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta_{Lam}',\
 
 } # end of block 3 }}} 
 
@@ -185,19 +185,19 @@ perform_block_4 = 1
 
 if (perform_block_4) {
 
-set xlabel "Re_{B}"
+set xlabel "B_{eff}"
 set key top right
 set ylabel "n"
-set title "Effective Re_{B} v n_{Turb}"
-set log x
-set yrange [0:ub]
+#set title "Effective Re_{B} v n_{Turb}"
+set log xy
+#set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
-"" i 2 u ($8**3*$1/$2):80:81 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta_{Turb}',\
+   i 0 u ($2/($8**2)):80:81 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Eta_{Turb}',\
+"" i 2 u ($2/($8**2)):80:81 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta_{Turb}',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Turb}',\
-"" i 1 u ($8**3*$1/$2):80:81 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta_{Turb}',\
+   i 0 u ($2/($8**2)):80:81 w yerrorbars pt 9 ps 2 lc rgb "blue" title 'Stoch. Eta_{Turb}',\
+"" i 1 u ($2/($8**2)):80:81 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta_{Turb}',\
 
 } # end of block 3 }}} 
 
