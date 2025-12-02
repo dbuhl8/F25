@@ -1,16 +1,30 @@
 reset
 #set multiplot layout 3,1 columnsfirst 
 
-set title font "Roman, 25"
-set key font "Roman, 20"
-set tics font "Roman, 15"
-set xlabel font "Roman, 20"
-set ylabel font "Roman, 20"
-set size ratio 0.8
+# {{{ Plot Settings 
+png_output = 0
+eps_output = 1
+multiplot_mode = 0
 
-idx = 0
+if (png_output){
+    set terminal png size 800,600
+    set output "plot_mdisp.png"
+} else if (eps_output) {
+    set terminal postscript enh col
+    set output "uhrms_variability.eps"
+}
+set tics font "Roman,22"
+set title font "Roman,35"
+set key font "Roman,20"
+set xlabel font "Roman,25"
+set ylabel font "Roman,25"
 
-# file key: 
+if (multiplot_mode) {
+set multiplot layout 3,1 columnsfirst 
+}
+
+# }}}
+# {{{file key: 
 # steady_tavg_eta.dat: 
 # idx 0: Re600_Pe60
 # idx 1: Re600_Pe30
@@ -21,26 +35,70 @@ idx = 0
 # stoch_tavg_eta.dat:
 # idx 0: Re600_Pe60
 # idx 1: Re1000_Pe100
-
+# }}}
+# {{{ Columns 
 # in each file:
-# 43 - wrms
-# 44 - wlam
-# 45 - wturb
-# 46 - wlam_Fr
-# 47 - wturb_Fr
-# 48 - wlam_Fr_vortz
-# 49 - wturb_Fr_vortz
-# 50 - wlam_weighted
-# 51 - wturb_weighted
-# 52 - wlam_Fr_weighted
-# 53 - wturb_Fr_weighed
-
+# Re(1)
+# B(2) 
+# Pr(3)
+# Pe(4)
+# BPe(5)
+# lb(6)
+# ub(7)
+# uh_rms(8/9)
+# vortz_rms(10/11)   
+# wrms(12/13)
+# tdisp(14/15)
+# mdisp(16/17)
+# eta (local)(18/19)
+# eta (global)(20/21)   
+# lam_wrms(22/23)
+# lam tdisp(24/25)
+# lam mdisp(26/27)
+# lam eta (local)(28/29)
+# lam eta (global)(30/31)    
+# turb_wrms (32/33)
+# turb tdisp (34/35)
+# turb mdisp (36/37)
+# turb eta (local)(38/39)
+# turb eta (global)(40/41)
+# lam_Fr_wrms(42/43) 
+# lam_Fr tdisp(44/45)
+# lam_Fr mdisp (46/47)
+# lam_Fr eta (local) (48/49)
+# lam_Fr eta (global)(50/51)
+# turb_Fr_wrms(52/53) 
+# turb_Fr tdisp (54/55)
+# turb_Fr mdisp (56/57)
+# turb_Fr eta (local) (58/59)
+# turb_Fr eta (global)(60/61)
+# lam_Fr_wmrs(62/63)
+# lam_Fr_vortz tdisp(64/65)
+# lam_Fr_vortz mdisp(66/67)
+# lam_Fr_vortz eta (local)(68/69)
+# lam_Fr_vortz eta (global)(70/71)
+# turb_Fr_wrms(72/73)
+# turb_Fr_vortz tdisp (74/75)
+# turb_Fr_vortz mdisp(76/77)
+# turb_Fr_vortz eta(local)(78/79)
+# turb_Fr_vortz eta(glbal)(80/81) 
+# vlam(82/83)
+# vturb(84/85)
+# vlam_Fr(86/87)
+# vturb_Fr(88/89)
+# vlam_Fr_vortz (90/91)
+# vturb_Fr_vortz (92/93)
+# wlam_wght (94/95) 
+# wturb_wght (96/97)
+# wlam_eff_wght(98/99)
+# wturb_eff_wght (100/101) 
+# }}}
 
 # -------------------------------------------------------------
 
-# First Plot - set perform_block_1 to 1 to run this block
-
 perform_block_1 = 1
+
+# {{{ Block 1 - Reb v urms
 
 if (perform_block_1) {
 
@@ -50,25 +108,22 @@ set ylabel "u_{h, rms}" rotate by 0
 set log x
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u ($1/$2):8 pt 4 ps 4 lc rgb "dark-violet" title 'Steady',\
+   i 0 u ($1/$2):8 pt 4 ps 2 lc rgb "black"         title 'Steady (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($1/$2):8 pt 4 ps 2 lc rgb "blue"          title 'Steady (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($1/$2):8 pt 4 ps 2 lc rgb "red"           title 'Steady (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($1/$2):8 pt 4 ps 2 lc rgb "dark-violet"   title 'Steady (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($1/$2):8 pt 4 ps 2 lc rgb "green"         title 'Steady (Re, Pr) = (1000, 0.01)',\
 "stoch_tavg_eta.dat" \
-   i 0:1 u ($1/$2):8 pt 9 ps 4 lc rgb "dark-violet" title 'Stochastic',\
+   i 0 u ($1/$2):8 pt 9 ps 2 lc rgb "black"         title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($1/$2):8 pt 9 ps 2 lc rgb "red"           title 'Stoch. (Re, Pr) = (1000, 0.1)',\
 
-#Steady: 
-#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
-#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
-
-#Stoch: 
-#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
-#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
-
-} # end of block 1
+} # end of block 1 }}}
 
 # -------------------------------------------------------------
 
-# Second Plot - set perform_block_2 to 1 to run this block
-
 perform_block_2 = 0
+
+# {{{ Block 2
 
 if (perform_block_2) {
 
@@ -99,13 +154,13 @@ plot "steady_tavg_eta.dat" \
 #"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 #"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 
-} # end of block 1
+} # end of block 2 }}} 
 
 # -------------------------------------------------------------
 
-# Third Plot - set perform_block_3 to 1 to run this block
-
 perform_block_3 = 0
+
+# {{{ Block 3 
 
 if (perform_block_3) {
 
@@ -138,13 +193,13 @@ plot "steady_tavg_eta.dat" \
 #"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 #"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 
-} # end of block 3
+} # end of block 3 }}} 
 
 # -------------------------------------------------------------
 
-# Fourth Plot - set perform_block_3 to 1 to run this block
-
 perform_block_4 = 0
+
+# {{{ Block 4
 
 if (perform_block_4) {
 
@@ -175,6 +230,8 @@ plot "steady_tavg_eta.dat" \
 #"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 #"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
 
-} # end of block 4
+} # end of block 4 }}}
+
+# -------------------------------------------------------------
 
 
