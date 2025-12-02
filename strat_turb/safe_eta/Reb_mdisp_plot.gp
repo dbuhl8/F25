@@ -3,22 +3,22 @@ reset
 idx = 0
 
 # {{{ Plot Settings 
-png_output = 1
-eps_output = 0
+png_output = 0
+eps_output = 1
 multiplot_mode = 0
 
 if (png_output){
     set terminal png size 800,600
     set output "plot_mdisp.png"
 } else if (eps_output) {
-    set terminal postscript enh col size 9in,16in
-    set output "plot_mdisp.eps"
+    set terminal postscript enh col
+    set output "emergent_Reb_comp.eps"
 }
-set tics font "Roman,15"
-set title font "Roman,25"
-set key font "Roman,12"
-set xlabel font "Roman,20"
-set ylabel font "Roman,20"
+set tics font "Roman,22"
+set title font "Roman,35"
+set key font "Roman,20"
+set xlabel font "Roman,25"
+set ylabel font "Roman,25"
 
 if (multiplot_mode) {
 set multiplot layout 3,1 columnsfirst 
@@ -198,8 +198,10 @@ if (perform_block_5) {
 
 set xlabel "Re_{B, eff}"
 set key bottom right
-set ylabel "Re_{B, emergent}"
-#set title "Effective MDisp_{Turb} v Re_{B}"
+set ylabel "Re_{G}"
+#set title "Effective Re_{B} v Re_{G}"
+set format x "10^{%T}"
+set format y "10^{%T}"
 set log xy
 
 plot "steady_tavg_eta.dat" \

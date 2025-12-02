@@ -3,22 +3,22 @@ reset
 
 # {{{ Plot Settings
 
-png_output = 1
-eps_output = 0
+png_output = 0
+eps_output = 1
 multiplot_mode = 0
 
 if (png_output){
     set terminal png size 800,600
     set output "plot_Fr_wrms.png"
 } else if (eps_output) {
-    set terminal postscript enh col size 9in,16in
-    set output "plot_Fr_wrms.eps"
+    set terminal postscript enh col
+    set output "wrms_average_method_comp.eps"
 }
-set tics font "Roman,15"
-set title font "Roman,25"
-set key font "Roman,12"
-set xlabel font "Roman,20"
-set ylabel font "Roman,20"
+set tics font "Roman,22"
+set title font "Roman,35"
+set key font "Roman,20"
+set xlabel font "Roman,25"
+set ylabel font "Roman,25"
 
 if (multiplot_mode) {
 set multiplot layout 3,1 columnsfirst 
@@ -356,25 +356,28 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_7 = 0
+perform_block_7 = 1
 
 # {{{ Seventh Plot - set perform_block_7 to 1 to run this block
 
 
 if (perform_block_7) {
 
-set xlabel "w_{rms, targeted avg}"
+set xlabel "w_{Lam, Targeted Avg}"
 set key top left
-set ylabel "w_{rms, vortz weighted}"
-set title "Extraction Routine Comparsion"
+set ylabel "w_{No-Turb, Vortz Weighted}"
+#set title "Extraction Routine Comparsion"
 set log xy
 
 plot "steady_tavg_eta.dat" \
-   i 0 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "red"         title '        Wlam',\
-"" i 0 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "blue"        title '        Wturb',\
-"stoch_tavg_eta.dat" \
-   i 0 u 62:94 w yerrorbars pt 9 ps 2 lc rgb "red"         title '        Wlam',\
-"" i 0 u 72:96 w yerrorbars pt 9 ps 2 lc rgb "blue"        title '        Wturb',\
+   i 0 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "black"            title 'Steady (Re, Pr) = (600, 0.1)',\
+   i 1 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "blue"             title 'Steady (Re, Pr) = (600, 0.05)',\
+   i 2 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "red"              title 'Steady (Re, Pr) = (1000, 0.1)',\
+   i 3 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "dark-violet"      title 'Steady (Re, Pr) = (300 ,0.1)',\
+   i 4 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "green"            title 'Steady (Re, Pr) = (1000, 0.01)',\
+"stoch_tavg_eta.dat" \                                                                                  
+   i 0 u 62:94 w yerrorbars pt 9 ps 2 lc rgb "black"            title 'Stoch. (Re, Pr) = (600, 0.1)',\
+   i 1 u 62:94 w yerrorbars pt 4 ps 2 lc rgb "red"              title 'Stoch. (Re, Pr) = (1000, 0.1)',\
 x
 
 #plot "steady_tavg_eta.dat" \
@@ -388,7 +391,7 @@ x
 
 # -------------------------------------------------------------
 
-perform_block_8 = 1
+perform_block_8 = 0
 
 # {{{ Eighth Plot - set perform_block_8 to 1 to run this block
 
@@ -397,8 +400,10 @@ if (perform_block_8) {
 
 set xlabel "Fr_{eff}"
 set key bottom right
-set ylabel "Fr_{h, emergent}"
-set title "Fr_{eff} v.s. Fr_{h, emergent}"
+set ylabel "Fr_{h}"
+#set title "Fr_{eff} v.s. Fr_{h}"
+set format x "10^{%T}"
+set format y "10^{%T}"
 set log xy
 
 plot "steady_tavg_eta.dat" \
@@ -460,5 +465,39 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
+perform_block_10 = 0
+
+# {{{ tenth Plot - set perform_block_10 to 1 to run this block
+
+
+if (perform_block_10) {
+
+set xlabel "w_{Turb, Targetted Avg}"
+set key top left
+set ylabel "w_{Turb, Vortz Weighted}"
+#set title "Extraction Routine Comparsion"
+set log xy
+
+plot "steady_tavg_eta.dat" \
+   i 0 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "black"            title 'Steady (Re, Pr) = (600, 0.1)',\
+"" i 1 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "blue"             title 'Steady (Re, Pr) = (600, 0.05)',\
+"" i 2 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "red"              title 'Steady (Re, Pr) = (1000, 0.1)',\
+"" i 3 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "dark-violet"      title 'Steady (Re, Pr) = (300 ,0.1)',\
+"" i 4 u 72:96 w yerrorbars pt 4 ps 2 lc rgb "green"            title 'Steady (Re, Pr) = (1000, 0.01)',\
+"stoch_tavg_eta.dat" \
+   i 0 u 72:96 w yerrorbars pt 9 ps 2 lc rgb "black"            title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u 72:96 w yerrorbars pt 9 ps 2 lc rgb "red"              title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+x dt 2 lc rgb "black"
+
+#plot "steady_tavg_eta.dat" \
+   #i 0 u (($2**0.5)/$8):($43/$8) pt 5 ps 2 lc rgb "dark-violet" title "Steady: w_{rms}",\
+#"" i 0 u (($2**0.5)):(0.25*(($2**0.5)**(-1))*$41 + 0.35*(($2**0.5)**(-0.5))*$42) pt 9 ps 2 lc rgb "green" title "Steady: w_{recon}",\
+#"stoch_tavg_eta.dat" \
+   #i 0 u (($2**0.5)/$8):($43/$8) pt 9 ps 2 lc rgb "dark-violet" title "Stoch: w_{rms}",\
+#"" i 0 u (($2**0.5)):(0.25*(($2**0.5)**(-1))*$41 + 0.35*(($2**0.5)**(-0.5))*$42) pt 9 ps 2 lc rgb "green" title "Stoch: w_{recon}",\
+
+} # end of block 7 }}}
+
+# -------------------------------------------------------------
 
 

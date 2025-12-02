@@ -3,8 +3,8 @@ reset
 
 # {{{ Plot Settings
 
-png_output = 1
-eps_output = 0
+png_output = 0
+eps_output = 1
 multiplot_mode = 0
 
 if (png_output){
@@ -15,14 +15,14 @@ if (png_output){
     }
     set output "plot_vturb.png"
 } else if (eps_output) {
-    set terminal postscript enh col size 9in,16in
-    set output "plot_vturb.eps"
+    set terminal postscript enh col
+    set output "Reg_v_vturb.eps"
 }
-set tics font "Roman,15"
-set title font "Roman,25"
-set key font "Roman,15"
-set xlabel font "Roman,20"
-set ylabel font "Roman,20"
+set tics font "Roman,22"
+set title font "Roman,35"
+set key font "Roman,20"
+set xlabel font "Roman,25"
+set ylabel font "Roman,25"
 
 if (multiplot_mode) {
 set multiplot layout 3,1 columnsfirst 
@@ -211,22 +211,24 @@ perform_block_5 = 1
 
 if (perform_block_5) {
 
-set xlabel "Re_{B, emerg}"
+set xlabel "Re_{G}"
 set key bottom right
-set ylabel "V_{Turb, eff}"
-set title "Effective Re_{B, emerg} v V_{Turb, eff}"
+set ylabel "V_{Turb}"
+#set title "Re_{G} v V_{Turb, eff}"
+set format x "10^{%T}"
+#set format y "10^{%T}"
 set log x
 set yrange[0:1]
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($16/$2):92 pt 4 ps 2 lc rgb "red" title 'Steady Re=600,Pr=0.1',\
-"" i 1 u ($16/$2):92 pt 4 ps 2 lc rgb "forest-green" title 'Steady Re=600,Pr=0.05',\
-"" i 2 u ($16/$2):92 pt 4 ps 2 lc rgb "blue" title 'Steady Re=1000,Pr=0.1',\
-"" i 3 u ($16/$2):92 pt 4 ps 2 lc rgb "dark-violet" title 'Steady Re=300,Pr=0.1',\
-"" i 4 u ($16/$2):92 pt 4 ps 2 lc rgb "black" title 'Steady Re=1000,Pr=0.01',\
+   i 0 u ($16/$2):92 pt 4 ps 2 lc rgb "black" title 'Steady (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($16/$2):92 pt 4 ps 2 lc rgb "blue" title 'Steady (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($16/$2):92 pt 4 ps 2 lc rgb "red" title 'Steady (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($16/$2):92 pt 4 ps 2 lc rgb "dark-violet" title 'Steady (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($16/$2):92 pt 4 ps 2 lc rgb "green" title 'Steady (Re, Pr) = (1000, 0.01)',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($16/$2):92 pt 9 ps 2 lc rgb "red" title 'Stoch. Re=600,Pr=0.1',\
-"" i 1 u ($16/$2):92 pt 9 ps 2 lc rgb "blue" title 'Stoch. Re=1000,Pr=0.1'
+   i 0 u ($16/$2):92 pt 9 ps 2 lc rgb "black" title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($16/$2):92 pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)'
 
 }
 
