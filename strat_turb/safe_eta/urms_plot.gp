@@ -102,20 +102,20 @@ perform_block_1 = 1
 
 if (perform_block_1) {
 
-set xlabel "Re_b"
+set xlabel "Effective Re_b"
 set key top right
 set ylabel "u_{h, rms}" rotate by 0 
 set log x
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($1/$2):8 pt 4 ps 2 lc rgb "black"         title 'Steady (Re, Pr) = (600, 0.1)',\
-"" i 1 u ($1/$2):8 pt 4 ps 2 lc rgb "blue"          title 'Steady (Re, Pr) = (600, 0.05)',\
-"" i 2 u ($1/$2):8 pt 4 ps 2 lc rgb "red"           title 'Steady (Re, Pr) = (1000, 0.1)',\
-"" i 3 u ($1/$2):8 pt 4 ps 2 lc rgb "dark-violet"   title 'Steady (Re, Pr) = (300, 0.1)',\
-"" i 4 u ($1/$2):8 pt 4 ps 2 lc rgb "green"         title 'Steady (Re, Pr) = (1000, 0.01)',\
+   i 0 u ($8**3*$1/$2):8 pt 4 ps 2 lc rgb "black"         title 'Steady (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($8**3*$1/$2):8 pt 4 ps 2 lc rgb "blue"          title 'Steady (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($8**3*$1/$2):8 pt 4 ps 2 lc rgb "red"           title 'Steady (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($8**3*$1/$2):8 pt 4 ps 2 lc rgb "dark-violet"   title 'Steady (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($8**3*$1/$2):8 pt 4 ps 2 lc rgb "green"         title 'Steady (Re, Pr) = (1000, 0.01)',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($1/$2):8 pt 9 ps 2 lc rgb "black"         title 'Stoch. (Re, Pr) = (600, 0.1)',\
-"" i 1 u ($1/$2):8 pt 9 ps 2 lc rgb "red"           title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+   i 0 u ($8**3*$1/$2):8 pt 9 ps 2 lc rgb "black"         title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($8**3*$1/$2):8 pt 9 ps 2 lc rgb "red"           title 'Stoch. (Re, Pr) = (1000, 0.1)',\
 
 } # end of block 1 }}}
 
