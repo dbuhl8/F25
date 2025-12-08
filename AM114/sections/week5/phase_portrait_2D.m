@@ -2,14 +2,14 @@ close all;
 clear;
 clc;
 
-xmin = 0;
+xmin = -3;
 xmax = 3;
 
-ymin = 0;
+ymin = -3;
 ymax = 3;
 
 tstart = 0;
-tstop = 5;
+tstop = 1;
 
 resolution = 20;
 
@@ -38,6 +38,8 @@ ylim([ymin,ymax]);
 %plot(0.5,0,'xb');
 %plot(1,-1,'xy');
 %plot(1,1,'xm');
+VV = -XX.*YY - (XX.^2).*YY + (YY.^3)/3;
+contour(XX, YY, VV)
 
 
 
