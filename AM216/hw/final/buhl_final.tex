@@ -32,7 +32,7 @@
 
 \begin{document}
 
-\title{AM 216 - Stochastic Differential Equations: Assignment }
+\title{AM 216 - Stochastic Differential Equations: Final Exam}
 \author{Dante Buhl}
 
 
@@ -108,5 +108,148 @@
 \maketitle 
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
+
+\section{}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                Y &= \int_0^1\cos(\pi s)dW(s)
+                \\
+                &= \int_0^1\cos(\pi s)\sqrt{dt}X(s)
+                \\
+                &\sim \mathcal{N}\left(0, \int_0^1\cos^2(\pi s)dt\right)
+                \\
+                &\sim \mathcal{N}\left(0, \frac{1}{2}\int_0^11 + \cos(2\pi s)dt\right)
+                \\
+                &\sim \mathcal{N}\left(0,\frac{1}{2}\right)
+                \\
+                E(Y) &= 0
+                \\
+                \Var(Y) &= \frac{1}{2}
+            \end{align*}
+        \item
+            Since $Y$ is gaussian, its PDF can be rewritten simply
+            using,
+            \begin{align*}
+                \rho_Y(y) &=
+                \frac{1}{\sigma_Y\sqrt{2\pi}}\exp\left(-\frac{y^2}{2 
+                \sigma_Y^2}\right)
+                \\
+                &= \frac{1}{2\sqrt{\pi}}\exp\left(-y^2\right)
+            \end{align*}
+    \end{enumerate}
+\section{}
+    \begin{align*}
+        \frac{dX}{X} &= dt + 2dW
+        \\
+        \ln|X| &= \exp(t + 2W(t))
+        \\
+        X(t) &= X_0\exp(t + 2W(t))
+        \\
+        &= 3\exp(t + 2W(t))
+    \end{align*}
+\section{}
+    We begin by rephrasing this as a brownian bridge problem
+    \begin{align*}
+        I &= \int_0^TW^2(t)dt
+        \\
+        E(I|W(T) = w_1) &= \int_0^TE(W^2(t) | W(T) = w_1)dt
+        \\
+        &= \int_0^TE(B^2(t))dt
+        \\
+        &= \int_0^TE\left(W^2(t) + \frac{t_i^2}{T^2}\left(w_1 -
+        W(T)\right)^2 - \frac{2t_i}{T}W(t)\left(w_1 - W(T)\right)\right)dt
+        \\
+        &= \int_0^T t + \frac{t^2}{T^2}E\left(w_1^2 + W^2(T) -2
+        W(T)w_1\right) + \frac{2t}{T}E(W(t)W(T)) dt
+        \\
+        &= \int_0^T t + \frac{t^2}{T^2}\left(w_1^2 + T\right) 
+        + \frac{2t^2}{T} dt
+        \\
+        &= \frac{1}{2}T^2 + \frac{w_1^2T}{3} + \frac{T^2}{3} + \frac{2T^2}{3}
+        \\
+        &= \frac{3}{2}T^2 + \frac{w_1^2}{3}T
+    \end{align*}
+\section{}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            \begin{align*}
+                E(B(t)) &= t^{3/2}E(W(1/t^2)
+                \\
+                &= 0
+                \\
+                \Var(B(t)) &= t^3\Var(W(1/t^2))
+                \\
+                &= t^3\frac{1}{t^2}
+                \\
+                &= t
+            \end{align*}
+        \item 
+            In order to show that these are not the same stochastic process it
+            sufficies to show that their SDEs are not the same. We have for
+            example, 
+            \begin{align*}
+                dW(t) &= dW(t)
+                \\
+                dB(t) &= B(t + dt) - B(t)
+                \\
+                &= (t + dt)^{3/2}W\left(\frac{1}{(t + dt)^2}\right) -
+                t^{3/2}W(1/t^2)
+                \\
+                &= \left(t^{3/2} + \frac{3dt}{2}t^{1/2} +
+                h.o.t.\right)W\left(\frac{1}{(t + dt)^2}\right) - t^{3/2}W(1/t^2)
+                \\
+                dt' &= \frac{1}{t^2} - \frac{1}{(t + dt)^2}
+                \\
+                &= \frac{2dt}{t^2(t + dt)}
+                \\
+                dB(t) &= 
+                \left(t^{3/2} + \frac{3dt}{2}t^{1/2} +
+                h.o.t.\right)\left(W(1/t^2) + \sqrt{dt'}\mathcal{N}(0,1)\right) - t^{3/2}W(1/t^2)
+                \\
+                &= \frac{3dt}{2}t^{1/2}W(1/t^2) + t^{3/2}dW'
+                \\
+                &= \frac{3B(t)}{2t}dt + t^{3/2}dW'
+                \\
+                &\neq dW
+            \end{align*}
+    \end{enumerate}
+\section{}
+    \begin{enumerate}[label=\roman*)]
+        \item 
+            We have the given BVP for $T$ is given by the following form,
+            \begin{align*}
+                &\begin{cases}\frac{a(x)}{2}T_{xx} + b(x)T_x = -1
+                \\
+                T(\varepsilon) = 0 \quad T'(1) = 0\end{cases}
+                \\
+                &\begin{cases}\frac{9x^{4/3}}{2}T_{xx} + 3x^{1/3}T_x = -1
+                \\
+                T(\varepsilon) = 0 \quad T'(1) = 0\end{cases}
+            \end{align*}
+        \item
+            Solving this BVP is a matter of the method of integrating factor. 
+            \begin{align*}
+                T_{xx} + \frac{2}{3x}T_x &= -\frac{2}{9}x^{-4/3}
+                \\
+                \mu(x) &= x^{2/3}
+                \\
+                T_x &= -\frac{2}{9}x^{-2/3}\int x^{-2/3}dx
+                \\
+                &= -\frac{2}{9}x^{-2/3}(3x^{1/3} + C_1)
+                \\
+                &= -\frac{2}{3}x^{-1/3} + C_1x^{-2/3}
+                \\
+                T(x) &= -x^{2/3} + C_1x^{1/3} + C_2
+                \\
+                T'(1) &= -\frac{2}{3} + \frac{C_1}{3} = 0
+                \\
+                T(\varepsilon) &= -\varepsilon^{2/3} + 2\varepsilon^{1/3} + C_2=
+                0 
+                \\
+                T(x) &= -x^{2/3} + 2x^{1/3} + \varepsilon^{2/3} -
+                2\varepsilon^{1/3}
+            \end{align*}
+    \end{enumerate}
 
 \end{document}
