@@ -123,21 +123,21 @@ plot "steady_tavg_eta.dat" \
 
 perform_block_2 = 1
 
-# {{{ Block 2 B v Uh
+# {{{ Block 2 B v B
 
 if (perform_block_2) {
 
 set xlabel "Uh^3/B"
 set key top right
-set ylabel "u_{h, rms}" rotate by 0 
-set log x
-set yrange [2.2:2.3]
+set ylabel "B" rotate by 0 
+set log xy
+#set yrange [2.2:2.3]
 
 plot "steady_tavg_eta.dat" \
-   i 0 u 2:8 pt 4 ps 2 lc rgb "black" title "Steady Uh",\
+   i 0 u (($8**3)/$2):2 pt 4 ps 2 lc rgb "black" title "Steady B",\
 "stoch_tavg_eta.dat"\
-   i 0 u (($8**3)/$2):8 pt 9 ps 2 lc rgb "black" title "Stoch Uh",\
-2.2663
+   i 0 u (($8**3)/$2):2 pt 9 ps 2 lc rgb "black" title "Stoch B",\
+400
 } # end of block 2 }}} 
 
 # -------------------------------------------------------------
