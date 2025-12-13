@@ -3,8 +3,8 @@ reset
 idx = 0
 
 # {{{ Plot Settings 
-png_output = 0
-eps_output = 1
+png_output = 1
+eps_output = 0
 multiplot_mode = 0
 
 if (png_output){
@@ -189,7 +189,7 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_5 = 1
+perform_block_5 = 0
 
 # {{{ Fifth Plot
 
@@ -219,5 +219,33 @@ plot "steady_tavg_eta.dat" \
 } # end of block 5 }}}
 
 # -------------------------------------------------------------
+
+perform_block_6 = 1
+
+# {{{ Sixth Plot
+
+if (perform_block_6) {
+
+
+set xlabel "B"
+set key bottom right
+set ylabel "Mdisp"
+#set title "Effective Re_{B} v Re_{G}"
+#set format x "10^{%T}"
+#set format y "10^{%T}"
+set log x
+set yrange [61.7:61.8]
+
+plot "steady_tavg_eta.dat" \
+   i 0 u 2:16:17 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady (Re,Pr) = (600,0.1)',\
+"stoch_tavg_eta.dat" \
+   i 0 u 2:16:17 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. (Re,Pr) = (600,0.1)',\
+61.7521
+
+
+} # end of block 5 }}}
+
+# -------------------------------------------------------------
+
 
 

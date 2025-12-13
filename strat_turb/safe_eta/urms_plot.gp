@@ -2,13 +2,13 @@ reset
 #set multiplot layout 3,1 columnsfirst 
 
 # {{{ Plot Settings 
-png_output = 0
-eps_output = 1
+png_output = 1
+eps_output = 0
 multiplot_mode = 0
 
 if (png_output){
     set terminal png size 800,600
-    set output "plot_mdisp.png"
+    set output "plot_B_v_uh.png"
 } else if (eps_output) {
     set terminal postscript enh col
     set output "uhrms_variability.eps"
@@ -96,7 +96,7 @@ set multiplot layout 3,1 columnsfirst
 
 # -------------------------------------------------------------
 
-perform_block_1 = 1
+perform_block_1 = 0
 
 # {{{ Block 1 - Reb v urms
 
@@ -121,39 +121,23 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_2 = 0
+perform_block_2 = 1
 
-# {{{ Block 2
+# {{{ Block 2 B v Uh
 
 if (perform_block_2) {
 
-set xlabel "Fr_{eff}^{-1}"
+set xlabel "Uh^3/B"
 set key top right
-set ylabel "w_{rms, eff}" rotate by 0 
-set title "w_{rms, eff} reconstruction"
-set log xy
-
-# (($2**0.5)/$8) = (B**(0.5)/uh_rms)
-# 41 = VLam
-# 42 = Vturb
-#
+set ylabel "u_{h, rms}" rotate by 0 
+set log x
+set yrange [2.2:2.3]
 
 plot "steady_tavg_eta.dat" \
-   i 0:2:2 u (($2**0.5)/$8):($43) pt 5 ps 1 lc rgb "dark-violet" title 'Steady Actual',\
-"" i 0:2:2 u (($2**0.5)/$8):((((1.8*(($2**0.5))**(-1))**2)*$37 + ((1.5*(($2**0.5))**(-0.5))**2)*$38)) pt 5 ps 1 lc rgb "black" title 'Steady Reconstructed',\
-"stoch_tavg_eta.dat" \
-   i 0:1 u (($2**0.5)):($43**2) pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Actual',\
-"" i 0:1 u (($2**0.5)):((((1.8*(($2**0.5))**(-1))**2)*$37 + ((1.5*(($2**0.5))**(-0.5))**2)*$38)) pt 9 ps 2 lc rgb "black" title 'Stoch. Reconstructed',\
-#[1:10] 0.4*x**(-1) dt 2 lw 2 lc rgb "forest-green" title '0.4 Fr_{eff}^{-1}'
-
-#Steady: 
-#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
-#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 5 ps 2 lc rgb "black" title 'Reconstructed',\
-
-#Stoch: 
-#"" i 0:2:2 u (($2**0.5)/$8):($48*$41 + $49*$42) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
-#"" i 0:2:2 u (($2**0.5)/$8):($46*$39 + $47*$40) pt 9 ps 2 lc rgb "black" title 'Reconstructed',\
-
+   i 0 u 2:8 pt 4 ps 2 lc rgb "black" title "Steady Uh",\
+"stoch_tavg_eta.dat"\
+   i 0 u (($8**3)/$2):8 pt 9 ps 2 lc rgb "black" title "Stoch Uh",\
+2.2663
 } # end of block 2 }}} 
 
 # -------------------------------------------------------------
