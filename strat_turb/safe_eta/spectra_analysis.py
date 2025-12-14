@@ -1,5 +1,5 @@
-import numpy as np
 import dbuhlMod as db
+import numpy as np
 import os
 import fnmatch
 from netCDF4 import MFDataset
@@ -22,18 +22,23 @@ stoch_tavg_file = "stochastic/stoch_tavg_eta.dat"
 
 # getting steady data
 steady_data = open(steady_tavg_file, 'r')
+need_more_data = 0 
 for line in steady_data.readlines():
     if "#" in line:
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         continue
+    elif need_more_data == 2:
+        break
+    print("Testing: ", line, "len(line): ", len(line))
     data = [float(x) for x in line.split()]
+    print("Double Testing: ", data)
     Re = data[0]
     B = data[1]
     Pe = data[3]
     if  ((Re == 600 and Pe == 60) and (B == 30)):
         sim1b_Re = 600.
-        sim1b_Fr = 1./sqrt(30.)
+        sim1b_Fr = 1./np.sqrt(30.)
         sim1b_Pe = 60.
         sim1b_uhrms = data[7]
         sim1b_wrms = data[11]
@@ -41,7 +46,7 @@ for line in steady_data.readlines():
         need_more_data += 1
     elif  ((Re == 600 and Pe == 60) and (B == 400)):
         sim2b_Re = 600.
-        sim2b_Fr = 1./sqrt(400.)
+        sim2b_Fr = 1./np.sqrt(400.)
         sim2b_Pe = 60.
         sim2b_uhrms = data[7]
         sim2b_wrms = data[11]
@@ -50,18 +55,23 @@ for line in steady_data.readlines():
 steady_data.close()
 
 stoch_data = open(stoch_tavg_file, 'r')
+need_more_data = 0 
 for line in stoch_data.readlines():
     if "#" in line:
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         continue
-    data = [float(x) for x in stoch_data.readline()]
+    elif need_more_data == 2:
+        break
+    print("Testing: ", line, "len(line): ", len(line))
+    data = [float(x) for x in line.split()]
+    print("Double Testing: ", data)
     Re = data[0]
     B = data[1]
     Pe = data[3]
     if  ((Re == 600 and Pe == 60) and (B == 10)):
         sim1a_Re = 600.
-        sim1a_Fr = 1./sqrt(30.)
+        sim1a_Fr = 1./np.sqrt(30.)
         sim1a_Pe = 60.
         sim1a_uhrms = data[7]
         sim1a_wrms = data[11]
@@ -69,12 +79,13 @@ for line in stoch_data.readlines():
         need_more_data += 1
     elif  ((Re == 600 and Pe == 60) and (B == 180)):
         sim2a_Re = 600.
-        sim2a_Fr = 1./sqrt(400.)
+        sim2a_Fr = 1./np.sqrt(400.)
         sim2a_Pe = 60.
         sim2a_uhrms = data[7]
         sim2a_wrms = data[11]
         sim2a_mdisp = data[15]
         need_more_data += 1
+
 stoch_data.close()
 
 # open desired spectra files
@@ -87,14 +98,14 @@ sim2b_fn = 'steady_with_new_simdats/horizontal-shear/Re600_Pe60_B400/XY_SPEC16'
 counter = 0
 stoch_filler = 0 
 stoch_num_modes = 0 
-sim1a_kx = np.empty()
-sim1a_ky = np.empty()
+sim1a_kx = np.array([])
+sim1a_ky = np.array([])
 file = open(sim1a_fn,'r')
 for line in file.readlines():
     if "#" in line:
         stoch_filler += 1
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         counter += 1
         continue
     elif counter == 2:
@@ -145,7 +156,7 @@ for line in file.readlines():
     if "#" in line:
         steady_filler += 1
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         counter += 1
         continue
     elif counter == 2:
@@ -192,7 +203,7 @@ file = open(sim1a_fn,'r')
 for line in file.readlines():
     if "#" in line:
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         i += 1
         continue
     data = [float(x) for x in line.split()]
@@ -212,7 +223,7 @@ file = open(sim1b_fn,'r')
 for line in file.readlines():
     if "#" in line:
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         i += 1
         continue
     data = [float(x) for x in line.split()]
@@ -232,7 +243,7 @@ file = open(sim2a_fn,'r')
 for line in file.readlines():
     if "#" in line:
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         i += 1
         continue
     data = [float(x) for x in line.split()]
@@ -252,7 +263,7 @@ file = open(sim2b_fn,'r')
 for line in file.readlines():
     if "#" in line:
         continue
-    elif len(line) == 0:
+    elif len(line.split()) == 0:
         i += 1
         continue
     data = [float(x) for x in line.split()]
