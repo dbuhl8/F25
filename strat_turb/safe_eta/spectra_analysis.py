@@ -2,6 +2,7 @@ import dbuhlMod as db
 import numpy as np
 import os
 import fnmatch
+import collections
 from netCDF4 import MFDataset
 from netCDF4 import Dataset
 
@@ -16,10 +17,11 @@ stoch_tavg_file = "stochastic/stoch_tavg_eta.dat"
 #
 # and
 # 
-# Stoch (B, Re, Pe) = (100, 600, 60) ~ sim 2a
+# Stoch (B, Re, Pe) = (180, 600, 60) ~ sim 2a
 # vs 
 # Steady (B, Re, Pe) = (400, 600, 60) ~ sim 2b
 
+print("Begin gathering time averaged data")
 # getting steady data
 steady_data = open(steady_tavg_file, 'r')
 need_more_data = 0 
@@ -30,9 +32,7 @@ for line in steady_data.readlines():
         continue
     elif need_more_data == 2:
         break
-    print("Testing: ", line, "len(line): ", len(line))
     data = [float(x) for x in line.split()]
-    print("Double Testing: ", data)
     Re = data[0]
     B = data[1]
     Pe = data[3]
@@ -63,9 +63,7 @@ for line in stoch_data.readlines():
         continue
     elif need_more_data == 2:
         break
-    print("Testing: ", line, "len(line): ", len(line))
     data = [float(x) for x in line.split()]
-    print("Double Testing: ", data)
     Re = data[0]
     B = data[1]
     Pe = data[3]
@@ -88,6 +86,8 @@ for line in stoch_data.readlines():
 
 stoch_data.close()
 
+print("Finished gathering time averaged data")
+
 # open desired spectra files
 sim1a_fn = 'stochastic/nonrotating/B10Re600Pe60/XY_SPEC6'
 sim1b_fn = 'steady_with_new_simdats/horizontal-shear/Re600_Pe60_B30/XY_SPEC15'
@@ -95,6 +95,7 @@ sim2a_fn = 'stochastic/nonrotating/B180Re600Pe60/XY_SPEC6'
 sim2b_fn = 'steady_with_new_simdats/horizontal-shear/Re600_Pe60_B400/XY_SPEC16'
 
 # get number of modes and timesteps from spectra files 
+print("Begin gathering spectra info data")
 counter = 0
 stoch_filler = 0 
 stoch_num_modes = 0 
@@ -114,8 +115,9 @@ for line in file.readlines():
     data = [float(x) for x in line.split()]
     sim1a_kx = np.append(sim1a_kx,data[0])
     sim1a_ky = np.append(sim1a_ky,data[1])
-sim1a_nt = (len(file.readlines())-stoch_filler)/\
-        (stoch_num_modes+1)
+sim1a_nt = 5
+#sim1a_nt = (len(file.readlines())-stoch_filler)/\
+        #(stoch_num_modes+1)
 file.close()
 sim1a_kx = np.unique(sim1a_kx)
 sim1a_ky = np.unique(sim1a_ky)
@@ -147,7 +149,7 @@ sim2a_Ez = np.zeros_like(sim2a_Ex)
 sim2a_Et = np.zeros_like(sim2a_Ex)
 sim2a_E = np.zeros_like(sim2a_Ex)
 sim2a_Kh = np.zeros(sim2a_nkx,sim2a_nky)
-
+"""
 counter = 0
 steady_num_modes = 0
 steady_filler = 0 
@@ -195,30 +197,36 @@ sim2b_Ez = np.zeros_like(sim2b_Ex)
 sim2b_Et = np.zeros_like(sim2b_Ex)
 sim2b_E = np.zeros_like(sim2b_Ex)
 sim2b_Kh = np.zeros(sim2b_nkx,sim2b_nky)
+"""
 
 
 # read spectra
 i = -1
-file = open(sim1a_fn,'r')
-for line in file.readlines():
-    if "#" in line:
-        continue
-    elif len(line.split()) == 0:
-        i += 1
-        continue
-    data = [float(x) for x in line.split()]
-    kx = data[0]
-    ky = data[1]
-    indx = np.where(sim1a_kx == kx)[0]
-    indy = np.where(sim1a_ky == ky)[0]
-    sim1a_Ex[i,indx,indy] = data[2] 
-    sim1a_Ey[i,indx,indy] = data[3] 
-    sim1a_Ez[i,indx,indy] = data[4] 
-    sim1a_E[i,indx,indy] = data[5] 
-    sim1a_Et[i,indx,indy] = data[10] 
-    sim1a_Kh[indx,indy] = np.sqrt(kx**2 + ky**2)
-file.close()
-
+print("Starting sim1a")
+with open(sim1a_fn,'r') as file:
+    num_lines = (stoch_num_modes+1)*5
+    lines = collections.deque(num_lines,file)
+    for line in lines:
+        if "#" in line:
+            continue
+        elif len(line.split()) == 0:
+            i += 1
+            continue
+        data = [float(x) for x in line.split()]
+        kx = data[0]
+        ky = data[1]
+        indx = np.where(sim1a_kx == kx)[0]
+        indy = np.where(sim1a_ky == ky)[0]
+        sim1a_Ex[i,indx,indy] = data[2] 
+        sim1a_Ey[i,indx,indy] = data[3] 
+        sim1a_Ez[i,indx,indy] = data[4] 
+        sim1a_E[i,indx,indy] = data[5] 
+        sim1a_Et[i,indx,indy] = data[10] 
+        sim1a_Kh[indx,indy] = np.sqrt(kx**2 + ky**2)
+print("Finished sim1a")
+"""
+i = -1
+print("Starting sim1b")
 file = open(sim1b_fn,'r')
 for line in file.readlines():
     if "#" in line:
@@ -238,7 +246,10 @@ for line in file.readlines():
     sim1b_Et[i,indx,indy] = data[10] 
     sim1b_Kh[indx,indy] = np.sqrt(kx**2 + ky**2)
 file.close()
+print("Finished sim1b")
 
+i = -1
+print("Starting sim2a")
 file = open(sim2a_fn,'r')
 for line in file.readlines():
     if "#" in line:
@@ -258,7 +269,10 @@ for line in file.readlines():
     sim2a_Et[i,indx,indy] = data[10] 
     sim2a_Kh[indx,indy] = np.sqrt(kx**2 + ky**2)
 file.close()
+print("Finished sim2a")
 
+i = -1
+print("Starting sim2b")
 file = open(sim2b_fn,'r')
 for line in file.readlines():
     if "#" in line:
@@ -278,6 +292,8 @@ for line in file.readlines():
     sim2b_Et[i,indx,indy] = data[10] 
     sim2b_Kh[indx,indy] = np.sqrt(kx**2 + ky**2)
 file.close()
+print("Finished sim2b")
+"""
 
 # this function returns each field as a function of unique kh
 # repeat kh fields are averaged together (i.e. this presumes the fields are
