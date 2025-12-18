@@ -16,11 +16,11 @@ if (png_output){
     set output "plot_vturb.png"
 } else if (eps_output) {
     set terminal postscript enh col
-    set output "Reg_v_vturb.eps"
+    set output "plot_ReG_v_Vturb.eps"
 }
 set tics font "Roman,22"
 set title font "Roman,35"
-set key font "Roman,20"
+set key font "Roman,22"
 set xlabel font "Roman,25"
 set ylabel font "Roman,25"
 
@@ -212,13 +212,15 @@ perform_block_5 = 1
 if (perform_block_5) {
 
 set xlabel "Re_{G}"
-set key bottom right
+set key bottom right offset 3,0
 set ylabel "V_{Turb}"
-#set title "Re_{G} v V_{Turb, eff}"
-set format x "10^{%T}"
+#set format x "10^{%T}"
 #set format y "10^{%T}"
 set log x
 set yrange[0:1]
+
+set arrow from 1,0 to 1,1 nohead dt 2 lw 3 lc rgb "black"
+set label "Re_G = 1" at 1,0.8 offset 1,0 font "Roman,25"
 
 plot "steady_tavg_eta.dat" \
    i 0 u ($16/$2):92 pt 4 ps 2 lc rgb "black" title 'Steady (Re, Pr) = (600, 0.1)',\
@@ -228,7 +230,8 @@ plot "steady_tavg_eta.dat" \
 "" i 4 u ($16/$2):92 pt 4 ps 2 lc rgb "green" title 'Steady (Re, Pr) = (1000, 0.01)',\
 "stoch_tavg_eta.dat" \
    i 0 u ($16/$2):92 pt 9 ps 2 lc rgb "black" title 'Stoch. (Re, Pr) = (600, 0.1)',\
-"" i 1 u ($16/$2):92 pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)'
+"" i 1 u ($16/$2):92 pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+"" i 2 u ($16/$2):92 pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. (Re, Pr) = (300, 0.1)'
 
 }
 

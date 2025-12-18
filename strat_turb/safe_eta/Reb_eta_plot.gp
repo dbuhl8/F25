@@ -7,9 +7,9 @@ pwr = 1
 
 # {{{ Plot Settings
 
-png_output = 1
-eps_output = 0
-multiplot_mode = 1
+png_output = 0
+eps_output = 1
+multiplot_mode = 0
 
 if (png_output){
     if (multiplot_mode){
@@ -19,14 +19,14 @@ if (png_output){
     }
     set output "plot_eta.png"
 } else if (eps_output) {
-    set terminal postscript enh col size 9in,16in
-    set output "plot_eta.eps"
+    set terminal postscript enh col
+    set output "plot_ltlk_v_eta.eps"
 }
-set tics font "Roman,15"
-set title font "Roman,25"
-set key font "Roman,15"
-set xlabel font "Roman,20"
-set ylabel font "Roman,20"
+set tics font "Roman,22"
+set title font "Roman,30"
+set key font "Roman,20"
+set xlabel font "Roman,25"
+set ylabel font "Roman,25"
 
 if (multiplot_mode) {
 set multiplot layout 3,1 columnsfirst 
@@ -44,6 +44,7 @@ set multiplot layout 3,1 columnsfirst
 # stoch_tavg_eta.dat:
 # idx 0: Re600_Pe60
 # idx 1: Re1000_Pe100
+# idx 2: Re300_Pe30
 # }}}
 # {{{ Columns 
 # in each file:
@@ -102,6 +103,10 @@ set multiplot layout 3,1 columnsfirst
 # wlam_eff_wght(98/99)
 # wturb_eff_wght (100/101) 
 # }}}
+# {{{ Length scale settings
+LF_Steady = 1
+LF_Stoch = 2**0.5
+#}}}
 
 # -------------------------------------------------------------
 
@@ -131,31 +136,33 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_2 = 1
+perform_block_2 = 0
 
 # {{{ Second Plot
 
 if (perform_block_2) {
 
 set xlabel "B_{eff}"
-set key top right
-set ylabel "n"
-#set title "Fr^{-1} v n"
+set key bottom right
+set ylabel "{/Symbol h}"
 set log xy
-#set yrange [0:ub]
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Eta',\
-"" i 2 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Eta',\
+   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "green" title 'Steady  (Re, Pr) = (1000, 0.01)',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Eta',\
-"" i 1 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Eta',\
+   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+"" i 2 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "green" title 'Stoch. (Re, Pr) = (300, 0.1)',\
 
 } # end of block 2 }}} 
 
 # -------------------------------------------------------------
 
-perform_block_3 = 1
+perform_block_3 = 0
 
 # {{{ Third Plot
 
@@ -179,16 +186,15 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
-perform_block_4 = 1
+perform_block_4 = 0
 
-# {{{ Fourth Plot
+# {{{ B_eff v eta_turb
 
 if (perform_block_4) {
 
 set xlabel "B_{eff}"
 set key top right
-set ylabel "n"
-#set title "Effective Re_{B} v n_{Turb}"
+set ylabel "{/Symbol h}"
 set log xy
 #set yrange [0:ub]
 
@@ -205,7 +211,7 @@ plot "steady_tavg_eta.dat" \
 
 perform_block_5 = 0
 
-# {{{ Fifth Plot
+# {{{ VTurb v Eta
 
 if (perform_block_5) {
 
@@ -234,25 +240,29 @@ plot "steady_tavg_eta.dat" \
 
 perform_block_6 = 0
 
-# {{{ Sixth Plot
+# {{{ Gibson v eta
 
 if (perform_block_6) {
 
-set xlabel "Re_{B, emergent}"
-set key top right
-set ylabel "n"
-set title "Re_{B, emergent} v n"
-set log x
+set xlabel "Re_{G}"
+set ylabel "{/Symbol h}"
+set log xy
+set key bottom left offset -15,0
+
+set arrow from 1,0.03 to 1,1 nohead dt 2 lw 3 lc rgb "black"
+set label "Re_G = 1" at 1,0.05 offset 1,0 font "Roman, 25"
 
 plot "steady_tavg_eta.dat" \
-   i 0 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady Re=600, Pr=0.1',\
-"" i 2 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady Re=1000, Pr=0.1',\
-"" i 1 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "forest-green" title 'Steady Re=600, Pr=0.05',\
-"" i 3 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady Re=300, Pr=0.1',\
-"" i 4 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-red" title 'Steady Re=1000, Pr=0.01',\
+   i 0 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady  (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady  (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady  (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady  (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($16/$2):20:21 w yerrorbars pt 4 ps 2 lc rgb "green" title 'Steady  (Re, Pr) = (1000, 0.01)',\
 "stoch_tavg_eta.dat" \
-   i 0 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch. Re=600',\
-"" i 1 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. Re=1000',\
+   i 0 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+"" i 2 u ($16/$2):20:21 w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch (Re, Pr) = (300, 0.1)'
+
 
 } # end of block 6 }}} 
 
@@ -260,7 +270,7 @@ plot "steady_tavg_eta.dat" \
 
 perform_block_7 = 0
 
-# {{{ Seventh Plot
+# {{{ Gibson v Weird Eta
 
 if (perform_block_7) {
 
@@ -284,6 +294,61 @@ plot "steady_tavg_eta.dat" \
 
 # -------------------------------------------------------------
 
+perform_block_8 = 0
+
+# {{{ 8: Inertial Range v Eta
+
+if (perform_block_8) {
+
+set xlabel "Inertial Range"
+set key bottom right
+set ylabel "{/Symbol h}"
+set log xy
+
+plot "steady_tavg_eta.dat" \
+   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($2/($8**2)):20:21 w yerrorbars pt 4 ps 2 lc rgb "green" title 'Steady  (Re, Pr) = (1000, 0.01)',\
+"stoch_tavg_eta.dat" \
+   i 0 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+"" i 2 u ($2/($8**2)):20:21 w yerrorbars pt 9 ps 2 lc rgb "green" title 'Stoch. (Re, Pr) = (300, 0.1)',\
+
+}
+
+# }}} End of block 8
+
+# -------------------------------------------------------------
+
+perform_block_9 = 1
+
+# {{{ l_T/l_K v eta
+
+if (perform_block_9) {
+
+set xlabel "Re_{G}"
+set ylabel "(l_T/l_K)^{3/4}"
+set log xy
+set key top right
+
+#set arrow from 1,0.03 to 1,1 nohead dt 2 lw 3 lc rgb "black"
+#set label "l_T/L_K = 1" at 1,0.05 offset 1,0 font "Roman, 25"
+
+plot "steady_tavg_eta.dat" \
+   i 0 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 4 ps 2 lc rgb "black" title 'Steady  (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 4 ps 2 lc rgb "blue" title 'Steady  (Re, Pr) = (600, 0.05)',\
+"" i 2 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 4 ps 2 lc rgb "red" title 'Steady  (Re, Pr) = (1000, 0.1)',\
+"" i 3 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 4 ps 2 lc rgb "dark-violet" title 'Steady  (Re, Pr) = (300, 0.1)',\
+"" i 4 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 4 ps 2 lc rgb "green" title 'Steady  (Re, Pr) = (1000, 0.01)',\
+"stoch_tavg_eta.dat" \
+   i 0 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 9 ps 2 lc rgb "black" title 'Stoch. (Re, Pr) = (600, 0.1)',\
+"" i 1 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 9 ps 2 lc rgb "red" title 'Stoch. (Re, Pr) = (1000, 0.1)',\
+"" i 2 u ($16/$2):((5*($8**2 + $12**2)/$16)**0.5/(1./($1**2*$16))**0.25)**(3./4) w yerrorbars pt 9 ps 2 lc rgb "dark-violet" title 'Stoch (Re, Pr) = (300, 0.1)'
 
 
+} # end of block 6 }}} 
+
+# -------------------------------------------------------------
 
